@@ -1275,12 +1275,21 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 for (int k = 0; k < interp->def_fn_count; k++) {
                     if (strcasecmp(interp->def_fns[k].name, id) == 0 ||
                         qb_proc_name_match(interp->def_fns[k].name, id)) {
-                        QB_Value saved_p = qb_env_get(env, interp->def_fns[k].param);
-                        qb_env_set(env, interp->def_fns[k].param, arg1);
+                        QB_Value saved_p[8];
+                        for (int pi = 0; pi < interp->def_fns[k].param_count; pi++) {
+                            saved_p[pi] = qb_env_get(env, interp->def_fns[k].params[pi]);
+                            QB_Value arg_val = pi < farg_cnt ? fargs[pi] : qb_val_null();
+                            qb_env_set(env, interp->def_fns[k].params[pi], arg_val);
+                        }
+                        int saved_call_sp = interp->call_sp;
+                        interp->call_sp = 0;
                         const char *ep = interp->def_fns[k].expr;
                         QB_Value fn_val = qb_eval_expression(env, &ep);
-                        qb_env_set(env, interp->def_fns[k].param, saved_p);
-                        qb_val_free(&saved_p);
+                        interp->call_sp = saved_call_sp;
+                        for (int pi = 0; pi < interp->def_fns[k].param_count; pi++) {
+                            qb_env_set(env, interp->def_fns[k].params[pi], saved_p[pi]);
+                            qb_val_free(&saved_p[pi]);
+                        }
                         for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                         return fn_val;
                     }
@@ -2816,6 +2825,59 @@ static void qb_apply_lset_rset(QB_Interpreter *interp, const char *var_name, con
     free(buf);
 }
 
+static void qb_register_def_fn(QB_Interpreter *interp, const char *p) {
+    char fn_name[64] = {0};
+    int fni = 0;
+    while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && fni < 63) {
+        fn_name[fni++] = *p++;
+    }
+    fn_name[fni] = '\0';
+    skip_whitespace(&p);
+    char params[8][64] = {{0}};
+    int param_count = 0;
+    if (*p == '(') {
+        p++;
+        while (*p && *p != ')') {
+            skip_whitespace(&p);
+            char param_name[64] = {0};
+            int pni = 0;
+            while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && pni < 63) {
+                param_name[pni++] = *p++;
+            }
+            param_name[pni] = '\0';
+            if (param_name[0] && param_count < 8) {
+                strncpy(params[param_count++], param_name, 63);
+            }
+            skip_whitespace(&p);
+            if (*p == ',') p++;
+        }
+        if (*p == ')') p++;
+    }
+    skip_whitespace(&p);
+    if (*p == '=') {
+        p++;
+        skip_whitespace(&p);
+        int idx = -1;
+        for (int k = 0; k < interp->def_fn_count; k++) {
+            if (strcasecmp(interp->def_fns[k].name, fn_name) == 0) {
+                idx = k;
+                break;
+            }
+        }
+        if (idx == -1 && interp->def_fn_count < 16) {
+            idx = interp->def_fn_count++;
+        }
+        if (idx >= 0) {
+            strncpy(interp->def_fns[idx].name, fn_name, 63);
+            interp->def_fns[idx].param_count = param_count;
+            for (int pi = 0; pi < param_count; pi++) {
+                strncpy(interp->def_fns[idx].params[pi], params[pi], 63);
+            }
+            strncpy(interp->def_fns[idx].expr, p, 255);
+        }
+    }
+}
+
 bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
     const char *p = line;
     skip_whitespace(&p);
@@ -3164,36 +3226,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         }
         skip_whitespace(&p);
         if (strncasecmp(p, "FN", 2) == 0) {
-            char fn_name[64] = {0};
-            int fni = 0;
-            while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && fni < 63) {
-                fn_name[fni++] = *p++;
-            }
-            fn_name[fni] = '\0';
-            skip_whitespace(&p);
-            char param_name[64] = {0};
-            if (*p == '(') {
-                p++;
-                skip_whitespace(&p);
-                int pni = 0;
-                while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && pni < 63) {
-                    param_name[pni++] = *p++;
-                }
-                param_name[pni] = '\0';
-                skip_whitespace(&p);
-                if (*p == ')') p++;
-            }
-            skip_whitespace(&p);
-            if (*p == '=') {
-                p++;
-                skip_whitespace(&p);
-                if (interp->def_fn_count < 16) {
-                    int idx = interp->def_fn_count++;
-                    strncpy(interp->def_fns[idx].name, fn_name, 63);
-                    strncpy(interp->def_fns[idx].param, param_name, 63);
-                    strncpy(interp->def_fns[idx].expr, p, 255);
-                }
-            }
+            qb_register_def_fn(interp, p);
             return true;
         }
     }
@@ -5204,36 +5237,7 @@ void qb_interp_step(QB_Interpreter *interp) {
     if (match_keyword(&p, "DEF")) {
         skip_whitespace(&p);
         if (strncasecmp(p, "FN", 2) == 0) {
-            char fn_name[64] = {0};
-            int fni = 0;
-            while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && fni < 63) {
-                fn_name[fni++] = *p++;
-            }
-            fn_name[fni] = '\0';
-            skip_whitespace(&p);
-            char param_name[64] = {0};
-            if (*p == '(') {
-                p++;
-                skip_whitespace(&p);
-                int pni = 0;
-                while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '!' || *p == '#') && pni < 63) {
-                    param_name[pni++] = *p++;
-                }
-                param_name[pni] = '\0';
-                skip_whitespace(&p);
-                if (*p == ')') p++;
-            }
-            skip_whitespace(&p);
-            if (*p == '=') {
-                p++;
-                skip_whitespace(&p);
-                if (interp->def_fn_count < 16) {
-                    int idx = interp->def_fn_count++;
-                    strncpy(interp->def_fns[idx].name, fn_name, 63);
-                    strncpy(interp->def_fns[idx].param, param_name, 63);
-                    strncpy(interp->def_fns[idx].expr, p, 255);
-                }
-            }
+            qb_register_def_fn(interp, p);
             interp->pc++;
             return;
         }

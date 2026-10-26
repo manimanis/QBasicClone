@@ -177,7 +177,8 @@ typedef struct {
     // Fonctions simples définies par DEF FN
     struct {
         char name[64];
-        char param[64];
+        char params[8][64];
+        int param_count;
         char expr[256];
     } def_fns[16];
     int def_fn_count;

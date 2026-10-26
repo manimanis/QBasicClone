@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-26T07:50:24.127Z",
+  "timestamp": "2026-10-26T08:48:13.023Z",
   "totalSuites": 30,
   "totalVintagePrograms": 21,
   "totalGames": 3,
@@ -7,7 +7,7 @@
   "grandPassed": 368,
   "grandFailed": 0,
   "passRate": "100.0%",
-  "totalElapsedMs": 28222,
+  "totalElapsedMs": 29006,
   "suites": [
     {
       "type": "unit_suite",
@@ -16,7 +16,7 @@
       "passed": 31,
       "failed": 0,
       "total": 31,
-      "elapsed": 295,
+      "elapsed": 310,
       "exitCode": 0,
       "items": [
         {
@@ -152,7 +152,7 @@
       "passed": 28,
       "failed": 0,
       "total": 28,
-      "elapsed": 286,
+      "elapsed": 296,
       "exitCode": 0,
       "items": [
         {
@@ -276,7 +276,7 @@
       "passed": 19,
       "failed": 0,
       "total": 19,
-      "elapsed": 279,
+      "elapsed": 284,
       "exitCode": 0,
       "items": [
         {
@@ -364,7 +364,7 @@
       "passed": 18,
       "failed": 0,
       "total": 18,
-      "elapsed": 302,
+      "elapsed": 315,
       "exitCode": 0,
       "items": [
         {
@@ -448,7 +448,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 295,
+      "elapsed": 266,
       "exitCode": 0,
       "items": [
         {
@@ -492,7 +492,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 256,
+      "elapsed": 267,
       "exitCode": 0,
       "items": [
         {
@@ -524,7 +524,7 @@
       "passed": 10,
       "failed": 0,
       "total": 10,
-      "elapsed": 264,
+      "elapsed": 281,
       "exitCode": 0,
       "items": [
         {
@@ -620,7 +620,7 @@
       "passed": 11,
       "failed": 0,
       "total": 11,
-      "elapsed": 289,
+      "elapsed": 293,
       "exitCode": 0,
       "items": [
         {
@@ -676,7 +676,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 264,
+      "elapsed": 278,
       "exitCode": 0,
       "items": [
         {
@@ -716,7 +716,7 @@
       "passed": 23,
       "failed": 0,
       "total": 23,
-      "elapsed": 271,
+      "elapsed": 293,
       "exitCode": 0,
       "items": [
         {
@@ -820,7 +820,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 267,
+      "elapsed": 332,
       "exitCode": 0,
       "items": [
         {
@@ -852,7 +852,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 276,
+      "elapsed": 252,
       "exitCode": 0,
       "items": [
         {
@@ -884,7 +884,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 256,
+      "elapsed": 281,
       "exitCode": 0,
       "items": [
         {
@@ -916,7 +916,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 280,
+      "elapsed": 298,
       "exitCode": 0,
       "items": [
         {
@@ -952,7 +952,7 @@
       "passed": 10,
       "failed": 0,
       "total": 10,
-      "elapsed": 303,
+      "elapsed": 319,
       "exitCode": 0,
       "items": [
         {
@@ -1004,7 +1004,7 @@
       "passed": 12,
       "failed": 0,
       "total": 12,
-      "elapsed": 312,
+      "elapsed": 310,
       "exitCode": 0,
       "items": [
         {
@@ -1064,7 +1064,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 254,
+      "elapsed": 287,
       "exitCode": 0,
       "items": [
         {
@@ -1108,7 +1108,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 267,
+      "elapsed": 264,
       "exitCode": 0,
       "items": [
         {
@@ -1144,7 +1144,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 284,
+      "elapsed": 256,
       "exitCode": 0,
       "items": [
         {
@@ -1188,7 +1188,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 283,
+      "elapsed": 258,
       "exitCode": 0,
       "items": [
         {
@@ -1228,7 +1228,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 328,
+      "elapsed": 309,
       "exitCode": 0,
       "items": [
         {
@@ -1268,7 +1268,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 271,
+      "elapsed": 260,
       "exitCode": 0,
       "items": [
         {
@@ -1308,7 +1308,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 267,
+      "elapsed": 263,
       "exitCode": 0,
       "items": [
         {
@@ -1344,7 +1344,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 278,
+      "elapsed": 269,
       "exitCode": 0,
       "items": [
         {
@@ -1380,7 +1380,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 348,
+      "elapsed": 256,
       "exitCode": 0,
       "items": [
         {
@@ -1416,7 +1416,7 @@
       "passed": 31,
       "failed": 0,
       "total": 31,
-      "elapsed": 320,
+      "elapsed": 335,
       "exitCode": 0,
       "items": [
         {
@@ -1552,7 +1552,7 @@
       "passed": 17,
       "failed": 0,
       "total": 17,
-      "elapsed": 279,
+      "elapsed": 437,
       "exitCode": 0,
       "items": [
         {
@@ -1632,7 +1632,7 @@
       "passed": 13,
       "failed": 0,
       "total": 13,
-      "elapsed": 661,
+      "elapsed": 734,
       "exitCode": 0,
       "items": [
         {
@@ -1696,7 +1696,7 @@
       "passed": 11,
       "failed": 0,
       "total": 11,
-      "elapsed": 278,
+      "elapsed": 274,
       "exitCode": 0,
       "items": [
         {
@@ -1755,7 +1755,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 265,
+      "elapsed": 278,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1767,7 +1767,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 296,
+      "elapsed": 283,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1779,7 +1779,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 702,
+      "elapsed": 687,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1791,7 +1791,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 313,
+      "elapsed": 315,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1803,7 +1803,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 539,
+      "elapsed": 563,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1815,7 +1815,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 278,
+      "elapsed": 260,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1827,7 +1827,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 716,
+      "elapsed": 723,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1839,7 +1839,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 521,
+      "elapsed": 568,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1851,7 +1851,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 350,
+      "elapsed": 387,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1863,7 +1863,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 477,
+      "elapsed": 493,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1875,7 +1875,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 1924,
+      "elapsed": 2066,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1887,7 +1887,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 341,
+      "elapsed": 452,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1899,7 +1899,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 306,
+      "elapsed": 379,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1911,7 +1911,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 906,
+      "elapsed": 987,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1923,7 +1923,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 349,
+      "elapsed": 370,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1935,7 +1935,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 264,
+      "elapsed": 365,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1947,7 +1947,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 524,
+      "elapsed": 645,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1959,7 +1959,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 577,
+      "elapsed": 627,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1971,7 +1971,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 2678,
+      "elapsed": 2675,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1983,7 +1983,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 4033,
+      "elapsed": 4138,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1995,7 +1995,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 524,
+      "elapsed": 528,
       "exitCode": 0,
       "status": "PASS"
     }
@@ -2009,7 +2009,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 287,
+      "elapsed": 337,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2021,7 +2021,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 838,
+      "elapsed": 371,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2033,7 +2033,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 1276,
+      "elapsed": 1308,
       "exitCode": 0,
       "status": "PASS"
     }
