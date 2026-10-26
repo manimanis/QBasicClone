@@ -1,0 +1,2041 @@
+{
+  "timestamp": "2026-10-26T07:50:24.127Z",
+  "totalSuites": 30,
+  "totalVintagePrograms": 21,
+  "totalGames": 3,
+  "grandTotal": 368,
+  "grandPassed": 368,
+  "grandFailed": 0,
+  "passRate": "100.0%",
+  "totalElapsedMs": 28222,
+  "suites": [
+    {
+      "type": "unit_suite",
+      "file": "test_01_math.bas",
+      "category": "MATH",
+      "passed": 31,
+      "failed": 0,
+      "total": 31,
+      "elapsed": 295,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "MATH_ADD",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_SUB",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_MUL",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_DIV_FLOAT",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_DIV_INT",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_MOD",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_POW",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_PRECEDENCE_1",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_PRECEDENCE_PARENS",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_UNARY_MINUS",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_UNARY_PLUS",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_ABS",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_SQR",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_INT",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_FIX",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_CINT",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_SGN",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_COS_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_SIN_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_TAN_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_ATN_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_EXP_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_LOG_NATURAL",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_BIT_AND",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_BIT_OR",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_BIT_XOR",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_BIT_NOT",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_RND",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_RANDOMIZE",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_HEX_LITERAL",
+          "status": "PASS"
+        },
+        {
+          "name": "MATH_HEX_LITERAL_FF",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_02_strings.bas",
+      "category": "STRINGS",
+      "passed": 28,
+      "failed": 0,
+      "total": 28,
+      "elapsed": 286,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "STR_CONCAT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_NEQ",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_GT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LEN",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LEN_EMPTY",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LEFT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_RIGHT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_MID_LEN",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_MID_REST",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_UCASE",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LCASE",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_LTRIM",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_RTRIM",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_SPACE",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_STRING_CHAR",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_STRING_CODE",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_CHR",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_ASC",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_VAL",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_VAL_PREFIX",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_ROUNDTRIP",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_HEX",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_OCT",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_INSTR_2ARG",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_INSTR_3ARG",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_INSTR_OFFSET",
+          "status": "PASS"
+        },
+        {
+          "name": "STR_INSTR_NOTFOUND",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_03_types_vars.bas",
+      "category": "TYPES_VARS",
+      "passed": 19,
+      "failed": 0,
+      "total": 19,
+      "elapsed": 279,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "VAR_SUFFIX_INT",
+          "status": "PASS"
+        },
+        {
+          "name": "VAR_SUFFIX_LONG",
+          "status": "PASS"
+        },
+        {
+          "name": "VAR_SUFFIX_SINGLE",
+          "status": "PASS"
+        },
+        {
+          "name": "VAR_SUFFIX_DOUBLE",
+          "status": "PASS"
+        },
+        {
+          "name": "VAR_SUFFIX_STR",
+          "status": "PASS"
+        },
+        {
+          "name": "CONST_NUM",
+          "status": "PASS"
+        },
+        {
+          "name": "CONST_STR",
+          "status": "PASS"
+        },
+        {
+          "name": "SWAP_NUM",
+          "status": "PASS"
+        },
+        {
+          "name": "SWAP_STR",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_1D_DEFAULT",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_BOUNDS_DEFAULT",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_1D_RANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_BOUNDS_RANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_2D",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_2D_BOUNDS_1",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_2D_BOUNDS_2",
+          "status": "PASS"
+        },
+        {
+          "name": "ARRAY_ERASE",
+          "status": "PASS"
+        },
+        {
+          "name": "TYPE_SCALAR",
+          "status": "PASS"
+        },
+        {
+          "name": "TYPE_ARRAY",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_04_control_flow.bas",
+      "category": "CONTROL_FLOW",
+      "passed": 18,
+      "failed": 0,
+      "total": 18,
+      "elapsed": 302,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "IF_SINGLE_TRUE",
+          "status": "PASS"
+        },
+        {
+          "name": "IF_SINGLE_FALSE",
+          "status": "PASS"
+        },
+        {
+          "name": "IF_BLOCK_ELSEIF",
+          "status": "PASS"
+        },
+        {
+          "name": "IF_BLOCK_ELSE",
+          "status": "PASS"
+        },
+        {
+          "name": "FOR_NEXT_STEP1",
+          "status": "PASS"
+        },
+        {
+          "name": "FOR_NEXT_STEP_NEG",
+          "status": "PASS"
+        },
+        {
+          "name": "FOR_EXIT_FOR",
+          "status": "PASS"
+        },
+        {
+          "name": "WHILE_WEND",
+          "status": "PASS"
+        },
+        {
+          "name": "DO_WHILE_LOOP",
+          "status": "PASS"
+        },
+        {
+          "name": "DO_LOOP_WHILE",
+          "status": "PASS"
+        },
+        {
+          "name": "DO_UNTIL_LOOP",
+          "status": "PASS"
+        },
+        {
+          "name": "DO_EXIT_DO",
+          "status": "PASS"
+        },
+        {
+          "name": "SELECT_CASE_IS",
+          "status": "PASS"
+        },
+        {
+          "name": "SELECT_CASE_RANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "SELECT_CASE_ELSE",
+          "status": "PASS"
+        },
+        {
+          "name": "GOTO_LABEL",
+          "status": "PASS"
+        },
+        {
+          "name": "GOSUB_RETURN",
+          "status": "PASS"
+        },
+        {
+          "name": "CONTROL_FLOW_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_05_procedures.bas",
+      "category": "PROCEDURES",
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "elapsed": 295,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "DEF_FN_1PARAM",
+          "status": "PASS"
+        },
+        {
+          "name": "DEF_FN_SQR",
+          "status": "PASS"
+        },
+        {
+          "name": "FUNCTION_CALL",
+          "status": "PASS"
+        },
+        {
+          "name": "FUNCTION_RECURSION",
+          "status": "PASS"
+        },
+        {
+          "name": "SUB_BY_REF",
+          "status": "PASS"
+        },
+        {
+          "name": "SUB_BY_VAL",
+          "status": "PASS"
+        },
+        {
+          "name": "SUB_EXIT_SUB",
+          "status": "PASS"
+        },
+        {
+          "name": "PROCEDURES_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_06_data_read.bas",
+      "category": "DATA_READ",
+      "passed": 5,
+      "failed": 0,
+      "total": 5,
+      "elapsed": 256,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "DATA_READ_NUM",
+          "status": "PASS"
+        },
+        {
+          "name": "DATA_READ_STR",
+          "status": "PASS"
+        },
+        {
+          "name": "DATA_READ_MULTILINE",
+          "status": "PASS"
+        },
+        {
+          "name": "DATA_RESTORE",
+          "status": "PASS"
+        },
+        {
+          "name": "DATA_READ_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_07_file_io.bas",
+      "category": "FILE_IO",
+      "passed": 10,
+      "failed": 0,
+      "total": 10,
+      "elapsed": 264,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "FILE_OPEN_OUTPUT",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_LOF",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_LINE_INPUT_1",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_LINE_INPUT_2",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_INPUT_NUM",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_EOF",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_OPEN_APPEND",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_APPEND_CONTENT",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_KILL",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_IO_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_08_system_hardware.bas",
+      "category": "SYSTEM_HARDWARE",
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "elapsed": 312,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "SYS_TIMER",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_DATE",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_TIME",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_PEEK_NUMLOCK",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_INP_3DA_VGA",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_INP_60_KBD",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_OUT_PORT",
+          "status": "PASS"
+        },
+        {
+          "name": "SYS_HARDWARE_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_09_graphics.bas",
+      "category": "GRAPHICS",
+      "passed": 11,
+      "failed": 0,
+      "total": 11,
+      "elapsed": 289,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "GRAPHICS_SCREEN_13",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_CLS_COLOR",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_PSET_POINT",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_PRESET",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_LINE_SIMPLE",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_LINE_BOX",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_LINE_BOX_FILL",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_CIRCLE",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_GET_PUT",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_SCREEN_0",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_10_algorithms.bas",
+      "category": "ALGORITHMS",
+      "passed": 7,
+      "failed": 0,
+      "total": 7,
+      "elapsed": 264,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "ALGO_BUBBLE_SORT",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGO_BINARY_SEARCH",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGO_SIEVE_PRIMES",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGO_GCD_EUCLID",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGO_FIBONACCI",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGO_MATRIX_MUL",
+          "status": "PASS"
+        },
+        {
+          "name": "ALGORITHMS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_11_edge_cases.bas",
+      "category": "EDGE_CASES",
+      "passed": 23,
+      "failed": 0,
+      "total": 23,
+      "elapsed": 271,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "EDGE_STR_GROWTH",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_PREFIX",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_SUFFIX",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_MID_OUT_OF_BOUNDS",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_MID_ZERO_LEN",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_MID_EXCESS_LEN",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_INSTR_BEYOND",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_VAL_SPACES_TEXT",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_ROUNDTRIP_NEG",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_MATH_PRECEDENCE_COMPLEX",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_MATH_POW_NEG",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_INT_NEG",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_FIX_SYMMETRY",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_CINT_ROUND",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_ARRAY_NEG_INDICES",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_ARRAY_NEG_BOUNDS_1D",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_ARRAY_NEG_2D",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_ARRAY_NEG_BOUNDS_2D_1",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_ARRAY_NEG_BOUNDS_2D_2",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_EMPTY_LT",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_PREFIX_LT",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_STR_GT",
+          "status": "PASS"
+        },
+        {
+          "name": "EDGE_CASES_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_12_nested_structures.bas",
+      "category": "NESTED_STRUCTURES",
+      "passed": 5,
+      "failed": 0,
+      "total": 5,
+      "elapsed": 267,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "NESTED_FOR_3_LEVELS",
+          "status": "PASS"
+        },
+        {
+          "name": "NESTED_DO_SELECT_IF",
+          "status": "PASS"
+        },
+        {
+          "name": "NESTED_FOR_GOSUB",
+          "status": "PASS"
+        },
+        {
+          "name": "NESTED_TYPE_ARRAY_CALC",
+          "status": "PASS"
+        },
+        {
+          "name": "NESTED_STRUCTURES_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_13_advanced_procedures.bas",
+      "category": "ADVANCED_PROCEDURES",
+      "passed": 5,
+      "failed": 0,
+      "total": 5,
+      "elapsed": 276,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "PROC_ARRAY_IN_PLACE",
+          "status": "PASS"
+        },
+        {
+          "name": "PROC_MULTI_REF_OUT",
+          "status": "PASS"
+        },
+        {
+          "name": "PROC_RECURSION_POWER",
+          "status": "PASS"
+        },
+        {
+          "name": "PROC_SCOPE_ISOLATION",
+          "status": "PASS"
+        },
+        {
+          "name": "ADVANCED_PROCEDURES_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_14_binary_file_io.bas",
+      "category": "BINARY_FILE_IO",
+      "passed": 5,
+      "failed": 0,
+      "total": 5,
+      "elapsed": 256,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "STREAM_FILE_LOF",
+          "status": "PASS"
+        },
+        {
+          "name": "STREAM_INPUT_EXACT_BYTES",
+          "status": "PASS"
+        },
+        {
+          "name": "STREAM_LINE_INPUT_SEEK",
+          "status": "PASS"
+        },
+        {
+          "name": "STREAM_FILE_CLEANUP",
+          "status": "PASS"
+        },
+        {
+          "name": "STREAM_IO_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_15_graphics_stress.bas",
+      "category": "GRAPHICS_STRESS",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "elapsed": 280,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "GFX_STRESS_INIT_BG",
+          "status": "PASS"
+        },
+        {
+          "name": "GFX_STRESS_XOR_DRAW",
+          "status": "PASS"
+        },
+        {
+          "name": "GFX_STRESS_XOR_RESTORE",
+          "status": "PASS"
+        },
+        {
+          "name": "GFX_STRESS_PAINT_FILL",
+          "status": "PASS"
+        },
+        {
+          "name": "GFX_STRESS_SCREEN_RESET",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPHICS_STRESS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_16_vintage_programs.bas",
+      "category": "VINTAGE_PROGRAMS",
+      "passed": 10,
+      "failed": 0,
+      "total": 10,
+      "elapsed": 303,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "TEST 16.01 - Fibonacci fact(7) == 13",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.02 - 10th Prime Number == 29",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.03 - IDNUMS weighted check sum == 112",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.04 - HYBRID Mendelian dihybrid 1:2:1:2:4:2:1:2:1",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.05 - TWOS digit 2 count in 1..100 == 20",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.06 - BWDATE 100,000s -> Jan 2 03:46:40",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.07 - DRAW square drawing & turtle positioning",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.08 - Shell Sort ascending 10 elements",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.09 - OPEN A: path resolution & file #87/#88",
+          "status": "PASS"
+        },
+        {
+          "name": "TEST 16.10 - Tokenized multi-input from single line",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_17_tetris_engine.bas",
+      "category": "TETRIS_ENGINE",
+      "passed": 12,
+      "failed": 0,
+      "total": 12,
+      "elapsed": 312,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "TETRIS_3D_ARRAY_DIM_ACCESS",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_PIECE_DATA_LOAD",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_BITMAP_FONT_DATA",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_COLLISION_DETECTION",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_PIECE_ROTATION_MATH",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_LINE_CLEAR_GRAVITY",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_SCORING_CALCULATION",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_VGA_DAC_PALETTE_PORTS",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_WAIT_VSYNC_STATEMENT",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_AI_HEURISTIC_WEIGHTS",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_MULTI_LETTER_RENDER",
+          "status": "PASS"
+        },
+        {
+          "name": "TETRIS_SUB_SAME_NAME_LABEL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_18_data_structures.bas",
+      "category": "DATA_STRUCTURES",
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "elapsed": 254,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "DS_STACK_LIFO_OPS",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_CIRCULAR_QUEUE_FIFO",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_DOUBLY_LINKED_LIST",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_BST_SEARCH",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_BST_INORDER_SORT",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_HASH_TABLE_LOOKUP",
+          "status": "PASS"
+        },
+        {
+          "name": "DS_MIN_HEAP_PRIORITY_Q",
+          "status": "PASS"
+        },
+        {
+          "name": "DATA_STRUCTURES_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_19_graph_and_pathfinding.bas",
+      "category": "GRAPH_AND_PATHFINDING",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "elapsed": 267,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "GRAPH_DIJKSTRA_SHORTEST_PATH",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPH_GRID_BFS_MAZE",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPH_TOPOLOGICAL_SORT",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPH_WARSHALL_CYCLE_DETECTION",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPH_CONNECTED_COMPONENTS",
+          "status": "PASS"
+        },
+        {
+          "name": "GRAPH_PATHFINDING_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_20_numerical_methods.bas",
+      "category": "NUMERICAL_METHODS",
+      "passed": 8,
+      "failed": 0,
+      "total": 8,
+      "elapsed": 284,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "NUM_GAUSS_ELIMINATION",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_INTEGRATION_SIMPSON",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_NEWTON_RAPHSON_ROOT",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_BISECTION_METHOD",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_MATRIX_DETERMINANT",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_MODULAR_EXPONENTIATION",
+          "status": "PASS"
+        },
+        {
+          "name": "NUM_HORNERS_POLYNOMIAL",
+          "status": "PASS"
+        },
+        {
+          "name": "NUMERICAL_METHODS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_21_compiler_and_lexer.bas",
+      "category": "COMPILER_AND_LEXER",
+      "passed": 7,
+      "failed": 0,
+      "total": 7,
+      "elapsed": 283,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "COMPILER_LEXER_TOKENIZER",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_SHUNTING_YARD_RPN",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_RPN_EVALUATOR",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_RLE_COMPRESSION",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_BASE64_ROUNDTRIP",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_DFA_STATE_MACHINE",
+          "status": "PASS"
+        },
+        {
+          "name": "COMPILER_LEXER_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_22_cellular_and_physics.bas",
+      "category": "CELLULAR_AND_PHYSICS",
+      "passed": 7,
+      "failed": 0,
+      "total": 7,
+      "elapsed": 328,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "CELLULAR_LIFE_BLINKER_OSCILLATOR",
+          "status": "PASS"
+        },
+        {
+          "name": "CELLULAR_LIFE_GLIDER_TRANSLATION",
+          "status": "PASS"
+        },
+        {
+          "name": "PHYSICS_KINEMATICS_PROJECTILE",
+          "status": "PASS"
+        },
+        {
+          "name": "PHYSICS_BOUNCE_RESTITUTION",
+          "status": "PASS"
+        },
+        {
+          "name": "GEOMETRY_CIRCLE_COLLISION",
+          "status": "PASS"
+        },
+        {
+          "name": "GEOMETRY_POINT_IN_POLYGON",
+          "status": "PASS"
+        },
+        {
+          "name": "CELLULAR_PHYSICS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_23_advanced_sorting_bench.bas",
+      "category": "ADVANCED_SORTING_BENCH",
+      "passed": 7,
+      "failed": 0,
+      "total": 7,
+      "elapsed": 271,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "SORT_QUICKSORT_STACK",
+          "status": "PASS"
+        },
+        {
+          "name": "SORT_MERGESORT_ITERATIVE",
+          "status": "PASS"
+        },
+        {
+          "name": "SORT_HEAPSORT_IN_PLACE",
+          "status": "PASS"
+        },
+        {
+          "name": "SORT_COUNTING_SORT_LINEAR",
+          "status": "PASS"
+        },
+        {
+          "name": "SEARCH_LOWER_UPPER_BOUNDS",
+          "status": "PASS"
+        },
+        {
+          "name": "SORT_CROSS_ALGORITHM_EQUIVALENCE",
+          "status": "PASS"
+        },
+        {
+          "name": "SORTING_BENCH_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_24_dynamic_programming.bas",
+      "category": "DYNAMIC_PROGRAMMING",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "elapsed": 267,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "DP_01_KNAPSACK",
+          "status": "PASS"
+        },
+        {
+          "name": "DP_LONGEST_COMMON_SUBSEQUENCE",
+          "status": "PASS"
+        },
+        {
+          "name": "DP_LEVENSHTEIN_DISTANCE",
+          "status": "PASS"
+        },
+        {
+          "name": "DP_MATRIX_CHAIN_MULTIPLICATION",
+          "status": "PASS"
+        },
+        {
+          "name": "DP_COIN_CHANGE_MIN_AND_WAYS",
+          "status": "PASS"
+        },
+        {
+          "name": "DYNAMIC_PROGRAMMING_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_25_cryptography_and_hashing.bas",
+      "category": "CRYPTOGRAPHY_AND_HASHING",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "elapsed": 278,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "CRYPTO_VIGENERE_POLYALPHABETIC",
+          "status": "PASS"
+        },
+        {
+          "name": "CRYPTO_RC4_STREAM_CIPHER",
+          "status": "PASS"
+        },
+        {
+          "name": "CRYPTO_FNV1A_AVALANCHE_HASH",
+          "status": "PASS"
+        },
+        {
+          "name": "CRYPTO_DIFFIE_HELLMAN_KEY_EXCHANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "CRYPTO_SHANNON_ENTROPY",
+          "status": "PASS"
+        },
+        {
+          "name": "CRYPTOGRAPHY_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_26_modular_nested_systems.bas",
+      "category": "MODULAR_NESTED_SYSTEMS",
+      "passed": 6,
+      "failed": 0,
+      "total": 6,
+      "elapsed": 348,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "MODULAR_PHYSICS_COLLISION_CASCADE",
+          "status": "PASS"
+        },
+        {
+          "name": "MODULAR_NESTED_CONTROL_DISPATCHER",
+          "status": "PASS"
+        },
+        {
+          "name": "MODULAR_ECONOMY_TRANSACTION_PIPELINE",
+          "status": "PASS"
+        },
+        {
+          "name": "MODULAR_RECURSIVE_SCORE_ANALYTICS",
+          "status": "PASS"
+        },
+        {
+          "name": "MODULAR_FULL_PIPELINE_INTEGRATION",
+          "status": "PASS"
+        },
+        {
+          "name": "MODULAR_NESTED_SYSTEMS_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_27_input_and_inkey.bas",
+      "category": "INPUT_AND_INKEY",
+      "passed": 31,
+      "failed": 0,
+      "total": 31,
+      "elapsed": 320,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "INKEY_EMPTY_QUEUE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_CLEAR_IDIOM",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_KEY_ESCAPE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_KEY_RETURN",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_KEY_BACKSPACE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_KEY_TAB",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_KEY_SPACE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_UP_LEN_AND_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_UP_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_DOWN_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_LEFT_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_RIGHT_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_F1_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_F10_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_HOME_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_END_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_INSERT_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_EXT_DELETE_SCANCODE",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_SELECT_CASE_EXT",
+          "status": "PASS"
+        },
+        {
+          "name": "INKEY_D5000_KEY_HANDLER",
+          "status": "PASS"
+        },
+        {
+          "name": "LINE_INPUT_PRESERVES_COMMAS",
+          "status": "PASS"
+        },
+        {
+          "name": "LINE_INPUT_MULTILINE_EMPTY",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FILE_BASIC",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FILE_MULTI_VARS",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FILE_MIXED_TYPES",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FILE_QUOTED_COMMAS",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FUNC_EXACT_LEN",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FUNC_NUMERIC_STREAM",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FUNC_BYTE_BY_BYTE",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_FUNC_BINARY_NULL_BYTE",
+          "status": "PASS"
+        },
+        {
+          "name": "INPUT_AND_INKEY_BATTERY_ALL",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_28_error_handling.bas",
+      "category": "ERROR_HANDLING",
+      "passed": 17,
+      "failed": 0,
+      "total": 17,
+      "elapsed": 279,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "ERR_BASIC_RESUME_NEXT",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_ERL_NUMBERED_LINE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_ERL_UNNUMBERED_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RESUME_RETRY",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RESUME_LABEL",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_HANDLER_SWITCH_1",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_HANDLER_SWITCH_2",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_HANDLER_GOTO_ZERO_RESET",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUNTIME_DIV_ZERO",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUNTIME_FILE_NOT_FOUND",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUNTIME_SUBSCRIPT_OUT_OF_RANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_LOOP_FOR_INTEGRITY",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_LOOP_WHILE_INTEGRITY",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MULTIPLE_CONSECUTIVE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_PROPAGATE_FROM_SUB",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_SUB_LOCAL_HANDLER",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RESET_AFTER_RESUME",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_29_event_handling.bas",
+      "category": "EVENT_HANDLING",
+      "passed": 13,
+      "failed": 0,
+      "total": 13,
+      "elapsed": 661,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "EVT_KEY_ON_TRAP_F1",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_KEY_OFF_IGNORED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_KEY_STOP_QUEUED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_KEY_ARROWS_TRAP",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_KEY_SET_SOFTKEY",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_TIMER_ON_FIRE",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_TIMER_OFF_IGNORED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_TIMER_STOP_QUEUED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_PLAY_FUNCTION_COUNT",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_PLAY_ON_TRAP",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_PLAY_OFF_IGNORED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_PLAY_STOP_QUEUED",
+          "status": "PASS"
+        },
+        {
+          "name": "EVT_LOOP_STACK_INTEGRITY",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_30_file_handling.bas",
+      "category": "FILE_HANDLING",
+      "passed": 11,
+      "failed": 0,
+      "total": 11,
+      "elapsed": 278,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "FILE_CONV_INT_LONG",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_CONV_FLOAT_DOUBLE",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_LSET_RSET",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_RANDOM_PUT_LOC_LOF",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_RANDOM_GET_REC1",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_RANDOM_GET_REC2",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_RANDOM_TYPE_RECORD",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_BINARY_ADVANCED_SEEK",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_FREEFILE_ALLOC",
+          "status": "PASS"
+        },
+        {
+          "name": "FILE_SYSTEM_OPERATIONS",
+          "status": "PASS"
+        },
+        {
+          "name": "ALL_FILE_TESTS_DONE",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "vintagePrograms": [
+    {
+      "type": "vintage_program",
+      "name": "FIBONUM.BAS",
+      "category": "ALGORITHME (RECURSION)",
+      "desc": "Calcul récursif du 7e terme de Fibonacci (fact(7) == 13)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 265,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "PRIME1.BAS",
+      "category": "MATHEMATIQUES",
+      "desc": "Calcul du 10e nombre premier (29) via boucles et GOTO",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 296,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "TWOS.BAS",
+      "category": "CHAÎNES & PROGRESSIONS",
+      "desc": "Comptage des '2' dans 5 suites arithmétiques de 2000 termes",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 702,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "BWDATE.BAS",
+      "category": "CALCUL DE DATES",
+      "desc": "Conversion de 100 000 secondes écoulées en date/heure formatée",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 313,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "IDNUMS.BAS",
+      "category": "ALGORITHME (SUB & TABLEAUX)",
+      "desc": "Calcul de clé de contrôle pondérée et recherche de prochains PINs",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 539,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "HYBRID.BAS",
+      "category": "GENETIQUE & STATISTIQUES",
+      "desc": "Calcul des ratios mendéliens de croisements dihybrides",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 278,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "7X7GRID.BAS",
+      "category": "AFFICHAGE (LOCATE/PRINT)",
+      "desc": "Dessin géométrique d'une grille 7x7 sur la matrice d'écran",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 716,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "ACSL1BW.BAS",
+      "category": "ASCII ART & SUBROUTINES",
+      "desc": "Génération de figures géométriques ACSL (Carrés, Croix, Bandes)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 521,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "ACSL4BW.BAS",
+      "category": "THEORIE DES NOMBRES",
+      "desc": "Test de nombres de Smith, premiers circulaires et tronquables",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 350,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "BWACSL3.BAS",
+      "category": "MANIPULATION DE CHAINES",
+      "desc": "Comptage, inversion par mot et tri alphabétique complet",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 477,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "BUBBLE.BAS",
+      "category": "FICHIERS & TRI (BUBBLE SORT)",
+      "desc": "Tri à bulles de 1000 entiers (NUMBERS.TXT -> bubble.txt)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 1924,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "SHELL.BAS",
+      "category": "FICHIERS & TRI (SHELL SORT)",
+      "desc": "Tri de Shell de 1000 entiers (NUMBERS.TXT -> shell.txt)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 341,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "RNDNUM.BAS",
+      "category": "ALEATOIRE & EXPORT FICHIER",
+      "desc": "Générateur pseudo-aléatoire et écriture dans rndnum.txt",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 306,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "BWML.BAS",
+      "category": "FICHIERS CSV (MADLIB)",
+      "desc": "Analyse lexicale de madlib.txt et composition de l'histoire endlib.txt",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 906,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "BWFLAG.BAS",
+      "category": "TURTLE DRAW & MUSIQUE",
+      "desc": "Drapeau américain (DRAW/PAINT/GET/PUT) et hymne national (PLAY)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 349,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "SONG.BAS",
+      "category": "AUDIO MML (MOZART)",
+      "desc": "Interprétation poly-octave de Eine Kleine Nachtmusik via PLAY",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 264,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "TICTAC.BAS",
+      "category": "JEU INTERACTIF (MORPION)",
+      "desc": "Partie complète de Morpion 2 joueurs avec détection de victoire",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 524,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "RBTRIVIA.BAS",
+      "category": "JEU DE CULTURE GENERALE",
+      "desc": "Quiz interactif de 20 questions à choix multiples avec score final",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 577,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "TETRIS.BAS",
+      "category": "JEU COMPLET (FUTURE BLOCKS)",
+      "desc": "Navigation TitleScreen -> Menu interactif -> Sortie propre (Tableaux 3D, VGA DAC)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 2678,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "TETRIS_AI.BAS",
+      "category": "IA TETRIS AUTONOME",
+      "desc": "Exécution autonome du mode ordinateur (IA de placement de blocs & heuristique)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 4033,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "vintage_program",
+      "name": "CONX4.BAS",
+      "category": "JEU COMPLET (PUISSANCE 4)",
+      "desc": "Partie de Puissance 4 à 2 joueurs avec alignement vertical victorieux",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 524,
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ],
+  "games": [
+    {
+      "type": "game_program",
+      "name": "DEMO.BAS",
+      "category": "DÉMONSTRATION DU PORT WIN64",
+      "desc": "Validation calculs flottants, chaînes, boucles, timer et affichage couleur",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 287,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "game_program",
+      "name": "GORILLA.BAS",
+      "category": "JEU VINTAGE DOS (IBM 1991)",
+      "desc": "Partie de Gorillas (paysage urbain procédural, balistique bananes, explosions, score)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 838,
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "game_program",
+      "name": "NIBBLES.BAS",
+      "category": "JEU VINTAGE DOS (MS 1990)",
+      "desc": "Partie de Nibbles (arène graphique 80x50, physique serpent, bonus aléatoires, sortie propre)",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "elapsed": 1276,
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+
+'  ***********************************************************************
+' * Language utilise: QuickBasic 4.5fr & Bibliotheque: QB /L QB.QLB /AH   *
+' * Une creation de : Ange.ø.Noir                                         *
+' * Date de creation: juin 2006.                                          *
+'  ********************[Bienvenue dans le nouveau jeu]********************
+' *                                                                       *
+' *  þþþþþþþþþþþ     þþþþþþþþþþþþ   þþþþþþþþ     þþþþþþþþ     þþþþþþþþ    *
+' *    þþ       þþ   þþþ           þþþ     þþ   þþþ     þþ   þþþ     þþ   *
+' *    þþ        þþ  þþþ          þþþ       þþ þþþ       þþ þþþ       þþ  *
+' *    þþ        þþ   þþþþþþþþþþ  þþþ       þþ þþþ       þþ þþþ       þþ  *
+' *    þþ        þþ            þþ þþþ       þþ þþþ       þþ þþþ       þþ  *
+' *    þþ       þþ   þ         þþ  þþþ     þþ   þþþ     þþ   þþþ     þþ   *
+' *  þþþþþþþþþþþ      þþþþþþþþþþ    þþþþþþþþ     þþþþþþþþ     þþþþþþþþ    *
+' *                                                                       *
+' *************************************************************************
+' * D5000 est un jeu de Dés don les participants doivent atteindre 5000Pt *
+' * avec le Total de 3 dés qui accumule à chaque lancé.                   *
+' * Les joueurs peuvent arreter de jouer à tout moment pour ne pas perdre *
+' * les Points déjà accumulé et les ajouter à leur Score personnel.       *
+' * Le but du jeu est d'arriver bon premier à 5000 juste car si vous      *
+' * dépassez 5000, tout les points accumulé durant votre tour sont déduit *
+' * de votre Score personnel.                                             *
+' *************************************************************************
+' * LES TOUCHES:                                                          *
+' * ***********                                                           *
+' *             ENTER ou RETOUR  pour effectuer un nouveau lancé          *
+' *                                                                       *
+' *             SPACE-BAR ou BARRE-ESPACEMENT pour garder les points      *
+' *                                                                       *
+' *             ESC ou ECHAP pour quitter le jeu                          *
+' *                                                                       *
+'  ***********************************************************************
+'                              BONNE PARTIE :)
+

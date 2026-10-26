@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QBasic Windows Native Port - Rapport de Tests Unitaires & Programmes Réels</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --border: #475569;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+        h1 { font-size: 2.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+        .metric-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .metric-title { font-size: 0.875rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .metric-value { font-size: 2rem; font-weight: 800; color: var(--text-primary); }
+        .metric-value.success { color: var(--accent-green); }
+        .metric-value.error { color: var(--accent-red); }
+        .metric-value.highlight { color: var(--accent-cyan); }
+        .metric-value.purple { color: var(--accent-purple); }
+        
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; margin-bottom: 1.25rem; }
+        .search-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 280px;
+        }
+        
+        .suite-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .suite-card:hover { border-color: var(--accent-cyan); }
+        .suite-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .suite-info { display: flex; align-items: center; gap: 1rem; }
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .badge-pass { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .badge-fail { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .suite-name { font-weight: 600; font-size: 1.05rem; }
+        .suite-cat { color: var(--text-secondary); font-size: 0.875rem; background: var(--bg-card); padding: 0.2rem 0.5rem; border-radius: 4px; }
+        .suite-stats { display: flex; align-items: center; gap: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+        
+        .suite-content {
+            padding: 1rem 1.5rem;
+            background-color: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 0.75rem;
+        }
+        .assertion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            border: 1px solid rgba(71, 85, 105, 0.4);
+        }
+        .assertion-pass { color: var(--accent-green); font-weight: 600; }
+        .assertion-fail { color: var(--accent-red); font-weight: 600; }
+        .tag-vintage { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+        .tetris-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .screenshot-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid var(--border);
+        }
+        .screenshot-card .caption {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Batterie de Tests Complète QBasic Port Win32</h1>
+            <p class="subtitle">30 suites unitaires, 21 programmes DOS vintage & 3 jeux complets (tests/games) intégrés et validés</p>
+        </header>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Suites Unitaires</div>
+                <div class="metric-value highlight">30</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Programmes Réels</div>
+                <div class="metric-value purple">21</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Jeux tests/games</div>
+                <div class="metric-value" style="color: var(--accent-cyan);">3</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Vérifications Validées</div>
+                <div class="metric-value success">368 / 368</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Taux de Réussite</div>
+                <div class="metric-value success">100.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Temps Total</div>
+                <div class="metric-value">28.22s</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Jeux Rétro & Démonstrations (Dossier tests/games)</h2>
+        </div>
+        <div id="gamesList">
+            
+                <div class="suite-card" data-name="DEMO.BAS DÉMONSTRATION DU PORT WIN64 Validation calculs flottants, chaînes, boucles, timer et affichage couleur">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge" style="background-color: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple);">JEU DOS</span>
+                            <span class="suite-name">DEMO.BAS</span>
+                            <span class="suite-cat">DÉMONSTRATION DU PORT WIN64</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Validation calculs flottants, chaînes, boucles, timer et affichage couleur</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>287 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="GORILLA.BAS JEU VINTAGE DOS (IBM 1991) Partie de Gorillas (paysage urbain procédural, balistique bananes, explosions, score)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge" style="background-color: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple);">JEU DOS</span>
+                            <span class="suite-name">GORILLA.BAS</span>
+                            <span class="suite-cat">JEU VINTAGE DOS (IBM 1991)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Partie de Gorillas (paysage urbain procédural, balistique bananes, explosions, score)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>838 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="NIBBLES.BAS JEU VINTAGE DOS (MS 1990) Partie de Nibbles (arène graphique 80x50, physique serpent, bonus aléatoires, sortie propre)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge" style="background-color: rgba(168, 85, 247, 0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple);">JEU DOS</span>
+                            <span class="suite-name">NIBBLES.BAS</span>
+                            <span class="suite-cat">JEU VINTAGE DOS (MS 1990)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Partie de Nibbles (arène graphique 80x50, physique serpent, bonus aléatoires, sortie propre)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>1276 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+
+        <div class="section-header">
+            <h2>Showcase Graphique : Jeu Tetris (Future Blocks)</h2>
+        </div>
+        <div class="tetris-showcase">
+            <div class="screenshot-card">
+                <img src="tetris/screenshot1.png" alt="Écran Titre Tetris (Screen 12)">
+                <div class="caption">Écran Titre 3D (SCREEN 12 & Palette VGA)</div>
+            </div>
+            <div class="screenshot-card">
+                <img src="tetris/screenshot2.png" alt="Menu Principal">
+                <div class="caption">Menu Principal Interactif (6 Modes)</div>
+            </div>
+            <div class="screenshot-card">
+                <img src="tetris/screenshot3.png" alt="Partie en Cours / Mode IA">
+                <div class="caption">Partie en Cours / Mode Ordinateur (IA Heuristique)</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Programmes Réels QBasic (Vintage & Jeux)</h2>
+        </div>
+        <div id="vintageList">
+            
+                <div class="suite-card" data-name="FIBONUM.BAS ALGORITHME (RECURSION) Calcul récursif du 7e terme de Fibonacci (fact(7) == 13)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">FIBONUM.BAS</span>
+                            <span class="suite-cat">ALGORITHME (RECURSION)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Calcul récursif du 7e terme de Fibonacci (fact(7) == 13)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>265 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="PRIME1.BAS MATHEMATIQUES Calcul du 10e nombre premier (29) via boucles et GOTO">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">PRIME1.BAS</span>
+                            <span class="suite-cat">MATHEMATIQUES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Calcul du 10e nombre premier (29) via boucles et GOTO</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>296 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="TWOS.BAS CHAÎNES & PROGRESSIONS Comptage des '2' dans 5 suites arithmétiques de 2000 termes">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">TWOS.BAS</span>
+                            <span class="suite-cat">CHAÎNES & PROGRESSIONS</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Comptage des '2' dans 5 suites arithmétiques de 2000 termes</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>702 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="BWDATE.BAS CALCUL DE DATES Conversion de 100 000 secondes écoulées en date/heure formatée">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">BWDATE.BAS</span>
+                            <span class="suite-cat">CALCUL DE DATES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Conversion de 100 000 secondes écoulées en date/heure formatée</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>313 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="IDNUMS.BAS ALGORITHME (SUB & TABLEAUX) Calcul de clé de contrôle pondérée et recherche de prochains PINs">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">IDNUMS.BAS</span>
+                            <span class="suite-cat">ALGORITHME (SUB & TABLEAUX)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Calcul de clé de contrôle pondérée et recherche de prochains PINs</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>539 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="HYBRID.BAS GENETIQUE & STATISTIQUES Calcul des ratios mendéliens de croisements dihybrides">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">HYBRID.BAS</span>
+                            <span class="suite-cat">GENETIQUE & STATISTIQUES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Calcul des ratios mendéliens de croisements dihybrides</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>278 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="7X7GRID.BAS AFFICHAGE (LOCATE/PRINT) Dessin géométrique d'une grille 7x7 sur la matrice d'écran">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">7X7GRID.BAS</span>
+                            <span class="suite-cat">AFFICHAGE (LOCATE/PRINT)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Dessin géométrique d'une grille 7x7 sur la matrice d'écran</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>716 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="ACSL1BW.BAS ASCII ART & SUBROUTINES Génération de figures géométriques ACSL (Carrés, Croix, Bandes)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">ACSL1BW.BAS</span>
+                            <span class="suite-cat">ASCII ART & SUBROUTINES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Génération de figures géométriques ACSL (Carrés, Croix, Bandes)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>521 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="ACSL4BW.BAS THEORIE DES NOMBRES Test de nombres de Smith, premiers circulaires et tronquables">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">ACSL4BW.BAS</span>
+                            <span class="suite-cat">THEORIE DES NOMBRES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Test de nombres de Smith, premiers circulaires et tronquables</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>350 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="BWACSL3.BAS MANIPULATION DE CHAINES Comptage, inversion par mot et tri alphabétique complet">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">BWACSL3.BAS</span>
+                            <span class="suite-cat">MANIPULATION DE CHAINES</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Comptage, inversion par mot et tri alphabétique complet</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>477 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="BUBBLE.BAS FICHIERS & TRI (BUBBLE SORT) Tri à bulles de 1000 entiers (NUMBERS.TXT -> bubble.txt)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">BUBBLE.BAS</span>
+                            <span class="suite-cat">FICHIERS & TRI (BUBBLE SORT)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Tri à bulles de 1000 entiers (NUMBERS.TXT -> bubble.txt)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>1924 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="SHELL.BAS FICHIERS & TRI (SHELL SORT) Tri de Shell de 1000 entiers (NUMBERS.TXT -> shell.txt)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">SHELL.BAS</span>
+                            <span class="suite-cat">FICHIERS & TRI (SHELL SORT)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Tri de Shell de 1000 entiers (NUMBERS.TXT -> shell.txt)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>341 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="RNDNUM.BAS ALEATOIRE & EXPORT FICHIER Générateur pseudo-aléatoire et écriture dans rndnum.txt">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">RNDNUM.BAS</span>
+                            <span class="suite-cat">ALEATOIRE & EXPORT FICHIER</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Générateur pseudo-aléatoire et écriture dans rndnum.txt</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>306 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="BWML.BAS FICHIERS CSV (MADLIB) Analyse lexicale de madlib.txt et composition de l'histoire endlib.txt">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">BWML.BAS</span>
+                            <span class="suite-cat">FICHIERS CSV (MADLIB)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Analyse lexicale de madlib.txt et composition de l'histoire endlib.txt</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>906 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="BWFLAG.BAS TURTLE DRAW & MUSIQUE Drapeau américain (DRAW/PAINT/GET/PUT) et hymne national (PLAY)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">BWFLAG.BAS</span>
+                            <span class="suite-cat">TURTLE DRAW & MUSIQUE</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Drapeau américain (DRAW/PAINT/GET/PUT) et hymne national (PLAY)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>349 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="SONG.BAS AUDIO MML (MOZART) Interprétation poly-octave de Eine Kleine Nachtmusik via PLAY">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">SONG.BAS</span>
+                            <span class="suite-cat">AUDIO MML (MOZART)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Interprétation poly-octave de Eine Kleine Nachtmusik via PLAY</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>264 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="TICTAC.BAS JEU INTERACTIF (MORPION) Partie complète de Morpion 2 joueurs avec détection de victoire">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">TICTAC.BAS</span>
+                            <span class="suite-cat">JEU INTERACTIF (MORPION)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Partie complète de Morpion 2 joueurs avec détection de victoire</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>524 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="RBTRIVIA.BAS JEU DE CULTURE GENERALE Quiz interactif de 20 questions à choix multiples avec score final">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">RBTRIVIA.BAS</span>
+                            <span class="suite-cat">JEU DE CULTURE GENERALE</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Quiz interactif de 20 questions à choix multiples avec score final</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>577 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="TETRIS.BAS JEU COMPLET (FUTURE BLOCKS) Navigation TitleScreen -> Menu interactif -> Sortie propre (Tableaux 3D, VGA DAC)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">TETRIS.BAS</span>
+                            <span class="suite-cat">JEU COMPLET (FUTURE BLOCKS)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Navigation TitleScreen -> Menu interactif -> Sortie propre (Tableaux 3D, VGA DAC)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>2678 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="TETRIS_AI.BAS IA TETRIS AUTONOME Exécution autonome du mode ordinateur (IA de placement de blocs & heuristique)">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">TETRIS_AI.BAS</span>
+                            <span class="suite-cat">IA TETRIS AUTONOME</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Exécution autonome du mode ordinateur (IA de placement de blocs & heuristique)</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>4033 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="CONX4.BAS JEU COMPLET (PUISSANCE 4) Partie de Puissance 4 à 2 joueurs avec alignement vertical victorieux">
+                    <div class="suite-header" style="cursor: default;">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="badge tag-vintage">PROGRAMME DOS</span>
+                            <span class="suite-name">CONX4.BAS</span>
+                            <span class="suite-cat">JEU COMPLET (PUISSANCE 4)</span>
+                            <span style="color: var(--text-secondary); font-size: 0.875rem;">Partie de Puissance 4 à 2 joueurs avec alignement vertical victorieux</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span>524 ms</span>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+
+        <div class="section-header">
+            <h2>Suites de Tests Unitaires du Noyau (30 Suites)</h2>
+            <input type="text" id="searchBox" class="search-box" placeholder="Filtrer une suite ou assertion...">
+        </div>
+
+        <div id="suitesList">
+            
+                <div class="suite-card" data-name="test_01_math.bas MATH">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_01_math.bas</span>
+                            <span class="suite-cat">MATH</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>31</strong> / 31 assertions</span>
+                            <span>295 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>MATH_ADD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_SUB</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_MUL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_DIV_FLOAT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_DIV_INT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_MOD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_POW</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_PRECEDENCE_1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_PRECEDENCE_PARENS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_UNARY_MINUS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_UNARY_PLUS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_ABS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_SQR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_INT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_FIX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_CINT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_SGN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_COS_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_SIN_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_TAN_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_ATN_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_EXP_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_LOG_NATURAL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_BIT_AND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_BIT_OR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_BIT_XOR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_BIT_NOT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_RND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_RANDOMIZE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_HEX_LITERAL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MATH_HEX_LITERAL_FF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_02_strings.bas STRINGS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_02_strings.bas</span>
+                            <span class="suite-cat">STRINGS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>28</strong> / 28 assertions</span>
+                            <span>286 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>STR_CONCAT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_NEQ</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_GT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LEN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LEN_EMPTY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LEFT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_RIGHT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_MID_LEN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_MID_REST</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_UCASE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LCASE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_LTRIM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_RTRIM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_SPACE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_STRING_CHAR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_STRING_CODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_CHR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_ASC</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_VAL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_VAL_PREFIX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_ROUNDTRIP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_HEX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_OCT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_INSTR_2ARG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_INSTR_3ARG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_INSTR_OFFSET</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STR_INSTR_NOTFOUND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_03_types_vars.bas TYPES_VARS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_03_types_vars.bas</span>
+                            <span class="suite-cat">TYPES_VARS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>19</strong> / 19 assertions</span>
+                            <span>279 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>VAR_SUFFIX_INT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>VAR_SUFFIX_LONG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>VAR_SUFFIX_SINGLE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>VAR_SUFFIX_DOUBLE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>VAR_SUFFIX_STR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CONST_NUM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CONST_STR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SWAP_NUM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SWAP_STR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_1D_DEFAULT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_BOUNDS_DEFAULT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_1D_RANGE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_BOUNDS_RANGE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_2D</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_2D_BOUNDS_1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_2D_BOUNDS_2</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ARRAY_ERASE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TYPE_SCALAR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TYPE_ARRAY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_04_control_flow.bas CONTROL_FLOW">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_04_control_flow.bas</span>
+                            <span class="suite-cat">CONTROL_FLOW</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>18</strong> / 18 assertions</span>
+                            <span>302 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>IF_SINGLE_TRUE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>IF_SINGLE_FALSE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>IF_BLOCK_ELSEIF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>IF_BLOCK_ELSE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FOR_NEXT_STEP1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FOR_NEXT_STEP_NEG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FOR_EXIT_FOR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>WHILE_WEND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DO_WHILE_LOOP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DO_LOOP_WHILE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DO_UNTIL_LOOP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DO_EXIT_DO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SELECT_CASE_IS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SELECT_CASE_RANGE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SELECT_CASE_ELSE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GOTO_LABEL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GOSUB_RETURN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CONTROL_FLOW_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_05_procedures.bas PROCEDURES">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_05_procedures.bas</span>
+                            <span class="suite-cat">PROCEDURES</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>8</strong> / 8 assertions</span>
+                            <span>295 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>DEF_FN_1PARAM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DEF_FN_SQR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FUNCTION_CALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FUNCTION_RECURSION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SUB_BY_REF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SUB_BY_VAL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SUB_EXIT_SUB</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PROCEDURES_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_06_data_read.bas DATA_READ">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_06_data_read.bas</span>
+                            <span class="suite-cat">DATA_READ</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>5</strong> / 5 assertions</span>
+                            <span>256 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>DATA_READ_NUM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DATA_READ_STR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DATA_READ_MULTILINE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DATA_RESTORE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DATA_READ_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_07_file_io.bas FILE_IO">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_07_file_io.bas</span>
+                            <span class="suite-cat">FILE_IO</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>10</strong> / 10 assertions</span>
+                            <span>264 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>FILE_OPEN_OUTPUT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_LOF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_LINE_INPUT_1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_LINE_INPUT_2</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_INPUT_NUM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_EOF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_OPEN_APPEND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_APPEND_CONTENT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_KILL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_IO_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_08_system_hardware.bas SYSTEM_HARDWARE">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_08_system_hardware.bas</span>
+                            <span class="suite-cat">SYSTEM_HARDWARE</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>8</strong> / 8 assertions</span>
+                            <span>312 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>SYS_TIMER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_DATE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_TIME</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_PEEK_NUMLOCK</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_INP_3DA_VGA</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_INP_60_KBD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_OUT_PORT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SYS_HARDWARE_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_09_graphics.bas GRAPHICS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_09_graphics.bas</span>
+                            <span class="suite-cat">GRAPHICS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>11</strong> / 11 assertions</span>
+                            <span>289 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_SCREEN_13</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_CLS_COLOR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_PSET_POINT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_PRESET</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_LINE_SIMPLE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_LINE_BOX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_LINE_BOX_FILL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_CIRCLE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_GET_PUT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_SCREEN_0</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_10_algorithms.bas ALGORITHMS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_10_algorithms.bas</span>
+                            <span class="suite-cat">ALGORITHMS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>7</strong> / 7 assertions</span>
+                            <span>264 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_BUBBLE_SORT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_BINARY_SEARCH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_SIEVE_PRIMES</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_GCD_EUCLID</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_FIBONACCI</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGO_MATRIX_MUL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALGORITHMS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_11_edge_cases.bas EDGE_CASES">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_11_edge_cases.bas</span>
+                            <span class="suite-cat">EDGE_CASES</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>23</strong> / 23 assertions</span>
+                            <span>271 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_GROWTH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_PREFIX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_SUFFIX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_MID_OUT_OF_BOUNDS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_MID_ZERO_LEN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_MID_EXCESS_LEN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_INSTR_BEYOND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_VAL_SPACES_TEXT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_ROUNDTRIP_NEG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_MATH_PRECEDENCE_COMPLEX</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_MATH_POW_NEG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_INT_NEG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_FIX_SYMMETRY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_CINT_ROUND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_ARRAY_NEG_INDICES</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_ARRAY_NEG_BOUNDS_1D</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_ARRAY_NEG_2D</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_ARRAY_NEG_BOUNDS_2D_1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_ARRAY_NEG_BOUNDS_2D_2</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_EMPTY_LT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_PREFIX_LT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_STR_GT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EDGE_CASES_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_12_nested_structures.bas NESTED_STRUCTURES">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_12_nested_structures.bas</span>
+                            <span class="suite-cat">NESTED_STRUCTURES</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>5</strong> / 5 assertions</span>
+                            <span>267 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>NESTED_FOR_3_LEVELS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NESTED_DO_SELECT_IF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NESTED_FOR_GOSUB</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NESTED_TYPE_ARRAY_CALC</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NESTED_STRUCTURES_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_13_advanced_procedures.bas ADVANCED_PROCEDURES">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_13_advanced_procedures.bas</span>
+                            <span class="suite-cat">ADVANCED_PROCEDURES</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>5</strong> / 5 assertions</span>
+                            <span>276 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>PROC_ARRAY_IN_PLACE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PROC_MULTI_REF_OUT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PROC_RECURSION_POWER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PROC_SCOPE_ISOLATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ADVANCED_PROCEDURES_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_14_binary_file_io.bas BINARY_FILE_IO">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_14_binary_file_io.bas</span>
+                            <span class="suite-cat">BINARY_FILE_IO</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>5</strong> / 5 assertions</span>
+                            <span>256 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>STREAM_FILE_LOF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STREAM_INPUT_EXACT_BYTES</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STREAM_LINE_INPUT_SEEK</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STREAM_FILE_CLEANUP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>STREAM_IO_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_15_graphics_stress.bas GRAPHICS_STRESS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_15_graphics_stress.bas</span>
+                            <span class="suite-cat">GRAPHICS_STRESS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>6</strong> / 6 assertions</span>
+                            <span>280 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>GFX_STRESS_INIT_BG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GFX_STRESS_XOR_DRAW</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GFX_STRESS_XOR_RESTORE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GFX_STRESS_PAINT_FILL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GFX_STRESS_SCREEN_RESET</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPHICS_STRESS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_16_vintage_programs.bas VINTAGE_PROGRAMS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_16_vintage_programs.bas</span>
+                            <span class="suite-cat">VINTAGE_PROGRAMS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>10</strong> / 10 assertions</span>
+                            <span>303 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.01 - Fibonacci fact(7) == 13</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.02 - 10th Prime Number == 29</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.03 - IDNUMS weighted check sum == 112</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.04 - HYBRID Mendelian dihybrid 1:2:1:2:4:2:1:2:1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.05 - TWOS digit 2 count in 1..100 == 20</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.06 - BWDATE 100,000s -> Jan 2 03:46:40</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.07 - DRAW square drawing & turtle positioning</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.08 - Shell Sort ascending 10 elements</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.09 - OPEN A: path resolution & file #87/#88</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TEST 16.10 - Tokenized multi-input from single line</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_17_tetris_engine.bas TETRIS_ENGINE">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_17_tetris_engine.bas</span>
+                            <span class="suite-cat">TETRIS_ENGINE</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>12</strong> / 12 assertions</span>
+                            <span>312 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_3D_ARRAY_DIM_ACCESS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_PIECE_DATA_LOAD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_BITMAP_FONT_DATA</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_COLLISION_DETECTION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_PIECE_ROTATION_MATH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_LINE_CLEAR_GRAVITY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_SCORING_CALCULATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_VGA_DAC_PALETTE_PORTS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_WAIT_VSYNC_STATEMENT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_AI_HEURISTIC_WEIGHTS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_MULTI_LETTER_RENDER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>TETRIS_SUB_SAME_NAME_LABEL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_18_data_structures.bas DATA_STRUCTURES">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_18_data_structures.bas</span>
+                            <span class="suite-cat">DATA_STRUCTURES</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>8</strong> / 8 assertions</span>
+                            <span>254 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>DS_STACK_LIFO_OPS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_CIRCULAR_QUEUE_FIFO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_DOUBLY_LINKED_LIST</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_BST_SEARCH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_BST_INORDER_SORT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_HASH_TABLE_LOOKUP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DS_MIN_HEAP_PRIORITY_Q</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DATA_STRUCTURES_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_19_graph_and_pathfinding.bas GRAPH_AND_PATHFINDING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_19_graph_and_pathfinding.bas</span>
+                            <span class="suite-cat">GRAPH_AND_PATHFINDING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>6</strong> / 6 assertions</span>
+                            <span>267 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_DIJKSTRA_SHORTEST_PATH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_GRID_BFS_MAZE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_TOPOLOGICAL_SORT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_WARSHALL_CYCLE_DETECTION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_CONNECTED_COMPONENTS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GRAPH_PATHFINDING_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_20_numerical_methods.bas NUMERICAL_METHODS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_20_numerical_methods.bas</span>
+                            <span class="suite-cat">NUMERICAL_METHODS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>8</strong> / 8 assertions</span>
+                            <span>284 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>NUM_GAUSS_ELIMINATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_INTEGRATION_SIMPSON</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_NEWTON_RAPHSON_ROOT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_BISECTION_METHOD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_MATRIX_DETERMINANT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_MODULAR_EXPONENTIATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUM_HORNERS_POLYNOMIAL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>NUMERICAL_METHODS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_21_compiler_and_lexer.bas COMPILER_AND_LEXER">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_21_compiler_and_lexer.bas</span>
+                            <span class="suite-cat">COMPILER_AND_LEXER</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>7</strong> / 7 assertions</span>
+                            <span>283 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_LEXER_TOKENIZER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_SHUNTING_YARD_RPN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_RPN_EVALUATOR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_RLE_COMPRESSION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_BASE64_ROUNDTRIP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_DFA_STATE_MACHINE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>COMPILER_LEXER_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_22_cellular_and_physics.bas CELLULAR_AND_PHYSICS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_22_cellular_and_physics.bas</span>
+                            <span class="suite-cat">CELLULAR_AND_PHYSICS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>7</strong> / 7 assertions</span>
+                            <span>328 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>CELLULAR_LIFE_BLINKER_OSCILLATOR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CELLULAR_LIFE_GLIDER_TRANSLATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PHYSICS_KINEMATICS_PROJECTILE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>PHYSICS_BOUNCE_RESTITUTION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GEOMETRY_CIRCLE_COLLISION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>GEOMETRY_POINT_IN_POLYGON</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CELLULAR_PHYSICS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_23_advanced_sorting_bench.bas ADVANCED_SORTING_BENCH">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_23_advanced_sorting_bench.bas</span>
+                            <span class="suite-cat">ADVANCED_SORTING_BENCH</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>7</strong> / 7 assertions</span>
+                            <span>271 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>SORT_QUICKSORT_STACK</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SORT_MERGESORT_ITERATIVE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SORT_HEAPSORT_IN_PLACE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SORT_COUNTING_SORT_LINEAR</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SEARCH_LOWER_UPPER_BOUNDS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SORT_CROSS_ALGORITHM_EQUIVALENCE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>SORTING_BENCH_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_24_dynamic_programming.bas DYNAMIC_PROGRAMMING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_24_dynamic_programming.bas</span>
+                            <span class="suite-cat">DYNAMIC_PROGRAMMING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>6</strong> / 6 assertions</span>
+                            <span>267 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>DP_01_KNAPSACK</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DP_LONGEST_COMMON_SUBSEQUENCE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DP_LEVENSHTEIN_DISTANCE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DP_MATRIX_CHAIN_MULTIPLICATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DP_COIN_CHANGE_MIN_AND_WAYS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>DYNAMIC_PROGRAMMING_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_25_cryptography_and_hashing.bas CRYPTOGRAPHY_AND_HASHING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_25_cryptography_and_hashing.bas</span>
+                            <span class="suite-cat">CRYPTOGRAPHY_AND_HASHING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>6</strong> / 6 assertions</span>
+                            <span>278 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTO_VIGENERE_POLYALPHABETIC</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTO_RC4_STREAM_CIPHER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTO_FNV1A_AVALANCHE_HASH</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTO_DIFFIE_HELLMAN_KEY_EXCHANGE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTO_SHANNON_ENTROPY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>CRYPTOGRAPHY_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_26_modular_nested_systems.bas MODULAR_NESTED_SYSTEMS">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_26_modular_nested_systems.bas</span>
+                            <span class="suite-cat">MODULAR_NESTED_SYSTEMS</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>6</strong> / 6 assertions</span>
+                            <span>348 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_PHYSICS_COLLISION_CASCADE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_NESTED_CONTROL_DISPATCHER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_ECONOMY_TRANSACTION_PIPELINE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_RECURSIVE_SCORE_ANALYTICS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_FULL_PIPELINE_INTEGRATION</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>MODULAR_NESTED_SYSTEMS_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_27_input_and_inkey.bas INPUT_AND_INKEY">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_27_input_and_inkey.bas</span>
+                            <span class="suite-cat">INPUT_AND_INKEY</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>31</strong> / 31 assertions</span>
+                            <span>320 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EMPTY_QUEUE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_CLEAR_IDIOM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_KEY_ESCAPE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_KEY_RETURN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_KEY_BACKSPACE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_KEY_TAB</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_KEY_SPACE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_UP_LEN_AND_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_UP_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_DOWN_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_LEFT_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_RIGHT_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_F1_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_F10_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_HOME_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_END_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_INSERT_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_EXT_DELETE_SCANCODE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_SELECT_CASE_EXT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INKEY_D5000_KEY_HANDLER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>LINE_INPUT_PRESERVES_COMMAS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>LINE_INPUT_MULTILINE_EMPTY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FILE_BASIC</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FILE_MULTI_VARS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FILE_MIXED_TYPES</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FILE_QUOTED_COMMAS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FUNC_EXACT_LEN</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FUNC_NUMERIC_STREAM</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FUNC_BYTE_BY_BYTE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_FUNC_BINARY_NULL_BYTE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>INPUT_AND_INKEY_BATTERY_ALL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_28_error_handling.bas ERROR_HANDLING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_28_error_handling.bas</span>
+                            <span class="suite-cat">ERROR_HANDLING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>17</strong> / 17 assertions</span>
+                            <span>279 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>ERR_BASIC_RESUME_NEXT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_ERL_NUMBERED_LINE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_ERL_UNNUMBERED_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RESUME_RETRY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RESUME_LABEL</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_HANDLER_SWITCH_1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_HANDLER_SWITCH_2</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_HANDLER_GOTO_ZERO_RESET</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RUNTIME_DIV_ZERO</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RUNTIME_FILE_NOT_FOUND</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RUNTIME_SUBSCRIPT_OUT_OF_RANGE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_LOOP_FOR_INTEGRITY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_LOOP_WHILE_INTEGRITY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_MULTIPLE_CONSECUTIVE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_PROPAGATE_FROM_SUB</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_SUB_LOCAL_HANDLER</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ERR_RESET_AFTER_RESUME</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_29_event_handling.bas EVENT_HANDLING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_29_event_handling.bas</span>
+                            <span class="suite-cat">EVENT_HANDLING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>13</strong> / 13 assertions</span>
+                            <span>661 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>EVT_KEY_ON_TRAP_F1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_KEY_OFF_IGNORED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_KEY_STOP_QUEUED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_KEY_ARROWS_TRAP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_KEY_SET_SOFTKEY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_TIMER_ON_FIRE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_TIMER_OFF_IGNORED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_TIMER_STOP_QUEUED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_PLAY_FUNCTION_COUNT</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_PLAY_ON_TRAP</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_PLAY_OFF_IGNORED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_PLAY_STOP_QUEUED</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>EVT_LOOP_STACK_INTEGRITY</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+                <div class="suite-card" data-name="test_30_file_handling.bas FILE_HANDLING">
+                    <div class="suite-header" onclick="this.nextElementSibling.style.display = (this.nextElementSibling.style.display === 'none' ? 'grid' : 'none')">
+                        <div class="suite-info">
+                            <span class="badge badge-pass">PASS</span>
+                            <span class="suite-name">test_30_file_handling.bas</span>
+                            <span class="suite-cat">FILE_HANDLING</span>
+                        </div>
+                        <div class="suite-stats">
+                            <span><strong>11</strong> / 11 assertions</span>
+                            <span>278 ms</span>
+                        </div>
+                    </div>
+                    <div class="suite-content">
+                        
+                            <div class="assertion-item">
+                                <span>FILE_CONV_INT_LONG</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_CONV_FLOAT_DOUBLE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_LSET_RSET</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_RANDOM_PUT_LOC_LOF</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_RANDOM_GET_REC1</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_RANDOM_GET_REC2</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_RANDOM_TYPE_RECORD</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_BINARY_ADVANCED_SEEK</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_FREEFILE_ALLOC</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>FILE_SYSTEM_OPERATIONS</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                            <div class="assertion-item">
+                                <span>ALL_FILE_TESTS_DONE</span>
+                                <span class="assertion-pass">PASS</span>
+                            </div>
+                        
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+
+    <script>
+        const searchBox = document.getElementById('searchBox');
+        searchBox.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('#suitesList .suite-card, #vintageList .suite-card, #gamesList .suite-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
