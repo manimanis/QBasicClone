@@ -112,8 +112,13 @@ DIM SHARED BadGuy(1 TO 10) AS EnemyType, Player AS PlayerType, Game AS GameType,
 Initialize
 IF Exist("bt.cfg") THEN
  OPEN "bt.cfg" FOR BINARY AS #1
-  Game.SoundOn = ASC(INPUT$(1, 1)) - 2
-  Game.Level = ASC(INPUT$(1, 1)) - 1
+  IF LOF(1) >= 2 THEN
+   Game.SoundOn = ASC(INPUT$(1, 1)) - 2
+   Game.Level = ASC(INPUT$(1, 1)) - 1
+  ELSE
+   Game.SoundOn = TRUE
+   Game.Level = 1
+  END IF
  CLOSE #1
  IF Game.Level > 100 THEN Game.Level = 100
  IF Game.Level < 1 THEN Game.Level = 1
@@ -362,56 +367,87 @@ FUNCTION CheckEnemyXY (EnemyNumber)
 END FUNCTION
 
 SUB CheckKey
- I$ = CHR$(INP(96))
- WHILE INKEY$ <> ""
- WEND
- SELECT CASE I$
-  CASE "H"
+ DIM KeyHit AS INTEGER
+ DIM KeyDir AS INTEGER
+ KeyHit = 0
+ KeyDir = 0
+
+ ' 1. Saisie prioritaire via INKEY$ (compatible SDL, fleches, WASD, ZQSD, Espace, Entree)
+ K$ = INKEY$
+ IF K$ <> "" THEN
+  SELECT CASE K$
+   CASE CHR$(0) + "H", "w", "W", "z", "Z", "8"
+    KeyHit = 1: KeyDir = 1
+   CASE CHR$(0) + "P", "s", "S", "2", "5"
+    KeyHit = 1: KeyDir = 2
+   CASE CHR$(0) + "K", "a", "A", "q", "Q", "4"
+    KeyHit = 1: KeyDir = 3
+   CASE CHR$(0) + "M", "d", "D", "6"
+    KeyHit = 1: KeyDir = 4
+   CASE " ", CHR$(13), "b", "B"
+    KeyHit = 2
+   CASE CHR$(0) + CHR$(63), "c", "C"
+    KeyHit = 3
+   CASE "m", "M"
+    KeyHit = 4
+   CASE "r", "R"
+    KeyHit = 5
+   CASE "p", "P"
+    KeyHit = 6
+   CASE CHR$(0) + CHR$(59)
+    KeyHit = 7
+   CASE CHR$(27), CHR$(3)
+    KeyHit = 8
+  END SELECT
+ END IF
+
+ ' 2. Saisie materielle de secours via INP(96) (scancodes DOS bruts)
+ IF KeyHit = 0 THEN
+  RawSc% = INP(96)
+  SELECT CASE RawSc%
+   CASE 72
+    KeyHit = 1: KeyDir = 1
+   CASE 80
+    KeyHit = 1: KeyDir = 2
+   CASE 75
+    KeyHit = 1: KeyDir = 3
+   CASE 77
+    KeyHit = 1: KeyDir = 4
+   CASE 29, 57
+    KeyHit = 2
+   CASE 63
+    KeyHit = 3
+   CASE 31
+    KeyHit = 4
+   CASE 19
+    KeyHit = 5
+   CASE 25
+    KeyHit = 6
+   CASE 59
+    KeyHit = 7
+   CASE 1
+    KeyHit = 8
+  END SELECT
+ END IF
+
+ SELECT CASE KeyHit
+  CASE 1
    IF Player.TestMove = 0 AND Player.Action = 0 AND Player.TestFall = 0 THEN
-    IF Player.Dir <> 1 THEN
-     Player.Dir = 1
+    Player.Dir = KeyDir
+    IF CheckPlayerXY THEN
+     Player.Action = 1
+     Player.Moving = TRUE
+    ELSE
      Player.Action = 0
      Player.Moving = FALSE
-    ELSE
-     Player.Action = 1
     END IF
    END IF
-  CASE "P"
-   IF Player.TestMove = 0 AND Player.Action = 0 AND Player.TestFall = 0 THEN
-    IF Player.Dir <> 2 THEN
-     Player.Dir = 2
-     Player.Action = 0
-     Player.Moving = FALSE
-    ELSE
-     Player.Action = 1
-    END IF
-   END IF
-  CASE "K"
-   IF Player.TestMove = 0 AND Player.Action = 0 AND Player.TestFall = 0 THEN
-    IF Player.Dir <> 3 THEN
-     Player.Dir = 3
-     Player.Action = 0
-     Player.Moving = FALSE
-    ELSE
-     Player.Action = 1
-    END IF
-   END IF
-  CASE "M"
-   IF Player.TestMove = 0 AND Player.Action = 0 AND Player.TestFall = 0 THEN
-    IF Player.Dir <> 4 THEN
-     Player.Dir = 4
-     Player.Action = 0
-     Player.Moving = FALSE
-    ELSE
-     Player.Action = 1
-    END IF
-   END IF
-  CASE CHR$(29)
+  CASE 2
    IF Player.TestMove = 0 AND Player.Action = 0 AND Player.TestFall = 0 THEN
     Player.Action = 2
     Player.Moving = 0
    END IF
-  CASE CHR$(63)
+  CASE 3
    Code$ = UCASE$(GetInput("Enter cheat code: "))
    SELECT CASE Code$
     CASE Cheat(0)
@@ -493,21 +529,25 @@ SUB CheckKey
      IF Game.SoundOn THEN PLAY Snd(I)
      Message "Playing Sound " + FNTrim$(I)
    END SELECT
-  CASE CHR$(31)
+  CASE 4
    Game.SoundOn = NOT Game.SoundOn
    GET (0, 96)-(319, 103), Temp
    IF Game.SoundOn THEN S$ = "on " ELSE S$ = "off"
    Center " Sound is " + S$, 13
    WaitKey
    PUT (0, 96), Temp, PSET
-  CASE CHR$(19)
-   IF UCASE$(GetInput("Restart level (y/n)? ")) = "Y" THEN Player.Aborted = TRUE
-  CASE CHR$(25)
+  CASE 5
+   IF UCASE$(GetInput("Restart level (y/n)? ")) = "Y" THEN
+    Player.Aborted = TRUE
+   ELSE
+    ActualizeMap
+   END IF
+  CASE 6
    GET (0, 96)-(319, 103), Temp
    Center " GAME PAUSED ", 13
    WaitKey
    PUT (0, 96), Temp, PSET
-  CASE CHR$(59)
+  CASE 7
    OPEN "O", 1, "SCREEN" + FNTrim$(ImageFile) + ".BT"
     DEF SEG = &HA000
     FOR I& = 0 TO 63999
@@ -516,10 +556,12 @@ SUB CheckKey
     DEF SEG
    CLOSE 1
    ImageFile = ImageFile + 1
-  CASE CHR$(1)
+  CASE 8
    IF UCASE$(GetInput("Really quit (y/n)? ")) = "Y" THEN
     Player.Aborted = TRUE
     Game.Over = TRUE
+   ELSE
+    ActualizeMap
    END IF
  END SELECT
 END SUB
@@ -616,8 +658,10 @@ SUB DoLevel (Level)
  CLS
  COLOR 15
  I$ = "LEVEL " + FNTrim$(Level)
- LOCATE 13, 21 - INT(LEN(I$) / 2)
+ LOCATE 12, 21 - INT(LEN(I$) / 2)
  PRINT I$;
+ COLOR 7
+ Center "Press any key to start", 15
  IF Game.SoundOn THEN PLAY Snd(1)
  WaitKey
  SOUND 0, 0
@@ -641,7 +685,7 @@ SUB DoMovement
   END IF
  NEXT I
  IF Player.JustHit THEN
-  IF Map(Player.MapX, Player.MapY).EnemyNumber > 0 AND Player.JustHit < 50 THEN
+  IF Map(Player.MapX, Player.MapY).EnemyNumber > 0 AND Player.JustHitCount < 50 THEN
    Player.JustHitCount = 50
   END IF
  ELSE
@@ -718,7 +762,7 @@ In:
   CASE "S"
    Game.SoundOn = NOT Game.SoundOn
    GOTO In
-  CASE "B"
+  CASE "B", " ", CHR$(13)
    Game.Level = 1
    EXIT SUB
   CASE "R"
@@ -799,19 +843,12 @@ Controls:
  LOCATE 5, 1
  COLOR 15
  Center "Move around:", 5
- Center "  ÚÄ¿  ", 6
- Center "  ³" + CHR$(24) + "³  ", 7
- Center "ÚÄÅÄÅÄ¿", 8
- Center "³" + CHR$(27) + "³" + CHR$(25) + "³" + CHR$(26) + "³", 9
- Center "ÀÄÁÄÁÄÙ", 10
- Center "Place bomb:", 12
- Center "ÚÄÄÄÄ¿", 13
- Center "³Ctrl³", 14
- Center "ÀÄÄÄÄÙ", 15
- Center "Abort game:", 17
- Center "ÚÄÄÄ¿", 18
- Center "³Esc³", 19
- Center "ÀÄÄÄÙ", 20
+ Center "Arrows or W-A-S-D / Z-Q-S-D", 7
+ Center "Place bomb:", 10
+ Center "Space, Enter, B, or Ctrl", 12
+ Center "In-game keys:", 15
+ Center "P: Pause  |  R: Restart Level", 17
+ Center "M: Toggle Sound  |  Esc: Abort", 19
  Message "Press any key to continue"
  GOTO Main
 END SUB
@@ -3122,9 +3159,26 @@ SUB MapEditor
  I = 1
  I$ = "Nothing"
  DO
-  IX$ = CHR$(INP(96))
-  WHILE INKEY$ <> ""
-  WEND
+  IX$ = ""
+  K$ = INKEY$
+  IF K$ <> "" THEN
+   SELECT CASE K$
+    CASE CHR$(0) + "H", "w", "W", "z", "Z": IX$ = "H"
+    CASE CHR$(0) + "P", "s", "S":          IX$ = "P"
+    CASE CHR$(0) + "K", "a", "A", "q", "Q": IX$ = "K"
+    CASE CHR$(0) + "M", "d", "D":          IX$ = "M"
+    CASE CHR$(9):                          IX$ = CHR$(15)
+    CASE " ":                              IX$ = "9"
+    CASE "x", "X":                         IX$ = "-"
+    CASE "e", "E", "d", "D":               IX$ = " "
+    CASE "l", "L":                         IX$ = "&"
+    CASE CHR$(27):                         IX$ = CHR$(1)
+   END SELECT
+  END IF
+  IF IX$ = "" THEN
+   RawSc% = INP(96)
+   IF RawSc% <> 0 THEN IX$ = CHR$(RawSc%)
+  END IF
   SELECT CASE IX$
    CASE "H"
     PUT (FNC(X), FNC(Y)), Temp, PSET
@@ -3405,7 +3459,7 @@ SUB MovePlayer
      END IF
      Player.TestMove = Player.TestMove + Player.Speed
     CASE 3
-     IF Player.Moving THEN IF Map(Player.MapX, Player.MapY).Object <> 0 THEN PutNothing Player.MapX, Player.MapY
+     IF Player.Moving THEN PutNothing Player.MapX, Player.MapY
      IF CheckPlayerXY THEN
       Player.X = Player.X - Player.Speed
       Player.Moving = TRUE
@@ -3414,7 +3468,7 @@ SUB MovePlayer
      END IF
      Player.TestMove = Player.TestMove + Player.Speed
     CASE 4
-     IF Player.Moving THEN IF Map(Player.MapX, Player.MapY).Object <> 0 THEN PutNothing Player.MapX, Player.MapY
+     IF Player.Moving THEN PutNothing Player.MapX, Player.MapY
      IF CheckPlayerXY THEN
       Player.X = Player.X + Player.Speed
       Player.Moving = TRUE
@@ -3479,7 +3533,12 @@ Set:
 END SUB
 
 SUB Pause (Time)
- PLAY "T255MLMFP" + STR$(65 - Time) + "P" + STR$(65 - Time)
+ IF Time <= 1 THEN
+  SLEEP 0.025
+ ELSE
+  dur! = (65 - Time) * 0.03
+  IF dur! > 0 THEN SLEEP dur!
+ END IF
 END SUB
 
 SUB PlayerLose (Level)
@@ -3556,6 +3615,8 @@ SUB PutNothing (IX, IY)
    PutObject FNC(IX), FNC(IY), 2
   CASE 4
    PutObject FNC(IX), FNC(IY), 3
+  CASE 6
+   PutObject FNC(IX), FNC(IY), 11
  END SELECT
 END SUB
 
@@ -3584,7 +3645,7 @@ SUB RandomMap (Level)
   IF IY < 12 THEN
    IF Map(IX, IY + 1).Element = " " AND Map(IX + 1, IY + 1).Element = " " AND Map(IX + 2, IY + 1).Element = " " AND Map(IX, IY - 1).Element = " " AND Map(IX + 1, IY - 1).Element = " " AND Map(IX + 2, IY - 1).Element = " " THEN
     FOR J = 0 TO INT(RND * 4)
-     IF IY + 1 < 12 THEN Map(IX + J, IY + 1).Element = "Û"
+     IF IY + 1 < 12 AND (IX + J) <= 20 THEN Map(IX + J, IY + 1).Element = "Û"
     NEXT J
    END IF
   END IF
@@ -3600,7 +3661,7 @@ SUB RandomMap (Level)
     Y = IY
     DO UNTIL Map(IX, Y).Element = "Û" OR Y = 12
      Y = Y + 1
-     Map(IX + J - 1, Y).Element = "="
+     nj = IX + J - 1: IF nj >= 1 AND nj <= 20 THEN Map(nj, Y).Element = "="
     LOOP
   END SELECT
  NEXT I
@@ -3660,7 +3721,7 @@ SUB ResetMap
    Map(X, Y).Ahib = FALSE
    Map(X, Y).Element = " "
  NEXT X, Y
- FOR I = 1 TO 3
+ FOR I = 1 TO 10
   Bomb(I).Exist = FALSE
  NEXT I
 END SUB
@@ -3771,9 +3832,13 @@ END FUNCTION
 
 SUB WaitKey
  WHILE INKEY$ <> ""
+  SLEEP 0.01
  WEND
- WHILE INKEY$ = ""
- WEND
+ DO
+  IF INKEY$ <> "" THEN EXIT SUB
+  IF INP(96) <> 0 THEN EXIT SUB
+  SLEEP 0.02
+ LOOP
 END SUB
 
 FUNCTION Zero$ (Number, Length)

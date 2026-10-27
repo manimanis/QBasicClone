@@ -38,10 +38,11 @@
    hold the platforms together, and when you destroy them all, the derrick
    is history.
 
-   To set a bomb, press Ctrl.  To move around, use the arrow keys.  If you
-   want to cheat,  press F5 to enter a cheat.  Cheats are available when you
-   complete the game.  If you have played enough, press Esc to abort the
-   game.  If you have come to an impossible point, press 'R' to restart the
-   level.
+   To set a bomb, press Space, Enter, 'B', or Ctrl.  To move around, use
+   the arrow keys, Numpad, or WASD / ZQSD.  Press 'P' to pause the game,
+   and 'M' to toggle sound.  If you want to cheat, press F5 (or 'C') to enter
+   a cheat.  Cheats are available when you complete the game.  If you have
+   played enough, press Esc to abort the game.  If you have come to an
+   impossible point, press 'R' to restart the level.
 
    Have great fun playing!
