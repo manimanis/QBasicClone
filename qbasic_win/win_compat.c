@@ -492,6 +492,37 @@ void qb_screen(int mode) {
     qb_cls();
 }
 
+void qb_width(int cols, int rows) {
+    if (cols <= 0) cols = text_max_cols;
+    if (rows <= 0) rows = text_max_rows;
+
+    if (gfx_mode == 9 || gfx_mode == 10) {
+        if (rows >= 43) {
+            font_h = 8;
+        } else {
+            font_h = 14;
+        }
+        text_max_cols = (font_w > 0) ? (gfx_width / font_w) : 80;
+        text_max_rows = (font_h > 0) ? (gfx_height / font_h) : 25;
+    } else if (gfx_mode == 0) {
+        if (rows >= 43 || rows == 50) {
+            font_h = 8;
+        } else {
+            font_h = 16;
+        }
+        text_max_cols = (font_w > 0) ? (gfx_width / font_w) : 80;
+        text_max_rows = (font_h > 0) ? (gfx_height / font_h) : 25;
+    } else if (gfx_mode == 11 || gfx_mode == 12) {
+        if (rows >= 50 || rows == 60) {
+            font_h = 8;
+        } else {
+            font_h = 16;
+        }
+        text_max_cols = (font_w > 0) ? (gfx_width / font_w) : 80;
+        text_max_rows = (font_h > 0) ? (gfx_height / font_h) : 30;
+    }
+}
+
 void qb_palette_set(int attr, int hw_color) {
     if (attr < 0 || attr >= palette_size) return;
     if (gfx_mode == 9 || gfx_mode == 10) {

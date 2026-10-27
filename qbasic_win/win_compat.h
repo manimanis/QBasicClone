@@ -57,6 +57,9 @@ void qb_palette_set(int attr, int hw_color);
 // SCREEN mode (0 = texte 80x25, 12 = 640x480, 13 = 320x200)
 void qb_screen(int mode);
 
+// WIDTH [cols] [, rows]
+void qb_width(int cols, int rows);
+
 // PSET (x, y), color
 void qb_pset(int x, int y, int color);
 

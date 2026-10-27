@@ -3158,11 +3158,33 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         return true;
     }
 
+    // WIDTH [cols] [, rows]
+    if (match_keyword(&p, "WIDTH")) {
+        skip_whitespace(&p);
+        int cols = -1, rows = -1;
+        if (*p && *p != ':' && *p != ',') {
+            QB_Value vc = qb_eval_expression(interp->env, &p);
+            cols = (int)vc.number;
+            qb_val_free(&vc);
+        }
+        skip_whitespace(&p);
+        if (*p == ',') {
+            p++;
+            skip_whitespace(&p);
+            if (*p && *p != ':') {
+                QB_Value vr = qb_eval_expression(interp->env, &p);
+                rows = (int)vr.number;
+                qb_val_free(&vr);
+            }
+        }
+        qb_width(cols, rows);
+        return true;
+    }
+
     // Directives et déclarations ignorées (no-ops)
     if (match_keyword(&p, "DEFINT") || match_keyword(&p, "DEFLNG") ||
         match_keyword(&p, "DEFSNG") || match_keyword(&p, "DEFDBL") ||
         match_keyword(&p, "DEFSTR") || match_keyword(&p, "VIEW") ||
-        match_keyword(&p, "WIDTH") ||
         match_keyword(&p, "'$DYNAMIC") || match_keyword(&p, "'$STATIC")) {
         return true;
     }
