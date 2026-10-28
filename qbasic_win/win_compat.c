@@ -117,11 +117,12 @@ static void init_palette_vga_256(void) {
 /*                          AUDIO PC SPEAKER SYNTHESIZER                     */
 /* ========================================================================= */
 
-#define MAX_AUDIO_QUEUE 512
+#define MAX_AUDIO_QUEUE 2048
 
 typedef struct {
     int freq;
     int duration_ms;
+    int rest_ms;
 } AudioNote;
 
 static AudioNote audio_queue[MAX_AUDIO_QUEUE];
@@ -131,6 +132,12 @@ static SDL_AudioDeviceID audio_dev = 0;
 static double audio_phase = 0.0;
 static int cur_note_freq = 0;
 static int cur_note_samples_left = 0;
+static int cur_note_rest_samples_left = 0;
+
+static bool is_test_mode(void) {
+    const char *tm = getenv("QB_TEST_MODE");
+    return (tm && tm[0] == '1');
+}
 
 static void sdl_audio_callback(void *userdata, Uint8 *stream, int len) {
     (void)userdata;
@@ -138,16 +145,18 @@ static void sdl_audio_callback(void *userdata, Uint8 *stream, int len) {
     int sample_count = len / 2;
 
     for (int i = 0; i < sample_count; i++) {
-        if (cur_note_samples_left <= 0) {
+        if (cur_note_samples_left <= 0 && cur_note_rest_samples_left <= 0) {
             if (audio_head != audio_tail) {
                 AudioNote note = audio_queue[audio_head];
                 audio_head = (audio_head + 1) % MAX_AUDIO_QUEUE;
                 cur_note_freq = note.freq;
                 cur_note_samples_left = (int)((long long)note.duration_ms * 44100 / 1000);
+                cur_note_rest_samples_left = (int)((long long)note.rest_ms * 44100 / 1000);
                 audio_phase = 0.0;
             } else {
                 cur_note_freq = 0;
                 cur_note_samples_left = 0;
+                cur_note_rest_samples_left = 0;
             }
         }
 
@@ -160,6 +169,8 @@ static void sdl_audio_callback(void *userdata, Uint8 *stream, int len) {
             cur_note_samples_left--;
         } else if (cur_note_samples_left > 0) {
             cur_note_samples_left--;
+        } else if (cur_note_rest_samples_left > 0) {
+            cur_note_rest_samples_left--;
         }
         out[i] = sample;
     }
@@ -167,6 +178,10 @@ static void sdl_audio_callback(void *userdata, Uint8 *stream, int len) {
 
 static void init_sdl_audio(void) {
     if (audio_dev != 0) return;
+    if (SDL_WasInit(SDL_INIT_AUDIO) == 0) {
+        SDL_SetMainReady();
+        SDL_InitSubSystem(SDL_INIT_AUDIO);
+    }
     SDL_AudioSpec want, have;
     SDL_zero(want);
     want.freq = 44100;
@@ -181,19 +196,26 @@ static void init_sdl_audio(void) {
     }
 }
 
-static void queue_tone(int freq, int duration_ms) {
+static void queue_tone(int freq, int duration_ms, int rest_ms) {
     init_sdl_audio();
-    if (duration_ms <= 0) return;
+    if (duration_ms <= 0 && rest_ms <= 0) return;
     if (audio_dev != 0) {
-        SDL_LockAudioDevice(audio_dev);
-        int next = (audio_tail + 1) % MAX_AUDIO_QUEUE;
-        if (next != audio_head) {
-            audio_queue[audio_tail].freq = freq;
-            audio_queue[audio_tail].duration_ms = duration_ms;
-            audio_tail = next;
+        while (1) {
+            SDL_LockAudioDevice(audio_dev);
+            int next = (audio_tail + 1) % MAX_AUDIO_QUEUE;
+            if (next != audio_head) {
+                audio_queue[audio_tail].freq = freq;
+                audio_queue[audio_tail].duration_ms = duration_ms;
+                audio_queue[audio_tail].rest_ms = rest_ms;
+                audio_tail = next;
+                SDL_UnlockAudioDevice(audio_dev);
+                SDL_PauseAudioDevice(audio_dev, 0);
+                break;
+            }
+            SDL_UnlockAudioDevice(audio_dev);
+            if (is_test_mode()) break;
+            SDL_Delay(5);
         }
-        SDL_UnlockAudioDevice(audio_dev);
-        SDL_PauseAudioDevice(audio_dev, 0);
     }
 }
 
@@ -202,7 +224,7 @@ int qb_play_get_notes_remaining(void) {
     if (audio_dev != 0) {
         SDL_LockAudioDevice(audio_dev);
         count = (audio_tail - audio_head + MAX_AUDIO_QUEUE) % MAX_AUDIO_QUEUE;
-        if (cur_note_samples_left > 0) count++;
+        if (cur_note_samples_left > 0 || cur_note_rest_samples_left > 0) count++;
         SDL_UnlockAudioDevice(audio_dev);
     }
     return count;
@@ -397,12 +419,17 @@ void qb_compat_init(void) {
         FlushConsoleInputBuffer(hStdIn);
     }
 
-    SetConsoleOutputCP(437);
-    SetConsoleCP(437);
+    // Support Unicode (UTF-8) par défaut sur Windows
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
         defaultAttributes = csbi.wAttributes;
+    }
+    DWORD cMode = 0;
+    if (GetConsoleMode(hStdOut, &cMode)) {
+        SetConsoleMode(hStdOut, cMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_PROCESSED_OUTPUT);
     }
     init_palette_16();
     init_sdl_audio();
@@ -644,8 +671,13 @@ void qb_print_string(const char *text) {
     if (!text) return;
 
     if (sdl_window && gfx_vram) {
-        for (const unsigned char *p = (const unsigned char*)text; *p; p++) {
+        for (const unsigned char *p = (const unsigned char*)text; *p; ) {
             unsigned char ch = *p;
+            int consumed = 1;
+            if (ch >= 0x80) {
+                ch = sdl_utf8_to_cp437(p, &consumed);
+                if (consumed <= 0) consumed = 1;
+            }
             if (ch == '\n') {
                 text_row++;
                 text_col = 1;
@@ -686,17 +718,34 @@ void qb_print_string(const char *text) {
                 draw_glyph(px, py, ch, text_fg, text_bg);
                 text_col++;
             }
+            p += consumed;
         }
         gfx_dirty = true;
         sdl_flip();
     }
     if (hStdOut != INVALID_HANDLE_VALUE) {
+        DWORD written = 0;
+        DWORD cMode = 0;
         if (strcmp(text, "\b") == 0) {
-            DWORD written = 0;
-            WriteConsoleA(hStdOut, "\b \b", 3, &written, NULL);
+            if (GetConsoleMode(hStdOut, &cMode)) {
+                WriteConsoleW(hStdOut, L"\b \b", 3, &written, NULL);
+            } else {
+                WriteFile(hStdOut, "\b \b", 3, &written, NULL);
+            }
         } else {
-            DWORD written = 0;
-            if (!WriteConsoleA(hStdOut, text, (DWORD)strlen(text), &written, NULL)) {
+            if (GetConsoleMode(hStdOut, &cMode)) {
+                int wlen = MultiByteToWideChar(CP_UTF8, 0, text, -1, NULL, 0);
+                if (wlen > 1) {
+                    wchar_t *wbuf = (wchar_t*)malloc(wlen * sizeof(wchar_t));
+                    if (wbuf) {
+                        MultiByteToWideChar(CP_UTF8, 0, text, -1, wbuf, wlen);
+                        WriteConsoleW(hStdOut, wbuf, (DWORD)(wlen - 1), &written, NULL);
+                        free(wbuf);
+                    } else {
+                        WriteFile(hStdOut, text, (DWORD)strlen(text), &written, NULL);
+                    }
+                }
+            } else {
                 WriteFile(hStdOut, text, (DWORD)strlen(text), &written, NULL);
             }
         }
@@ -1735,9 +1784,10 @@ char* qb_console_read_line(char *buf, int max_len) {
         }
 
         pump_gfx_messages();
-        const char *k = qb_inkey();
+        int klen = 0;
+        const char *k = qb_inkey_ex(&klen);
         static bool last_was_cr = false;
-        if (k && *k) {
+        if (k && klen > 0) {
             if (*k == '\r' || *k == '\n') {
                 if (*k == '\n' && last_was_cr) {
                     last_was_cr = false;
@@ -1752,20 +1802,24 @@ char* qb_console_read_line(char *buf, int max_len) {
             if (*k == '\b') {
                 if (len > 0) {
                     if (cursor_is_drawn) draw_cursor(false);
-                    len--;
+                    // Efface la séquence UTF-8 complète jusqu'à l'octet de début
+                    do {
+                        len--;
+                    } while (len > 0 && (unsigned char)buf[len] >= 0x80 && (buf[len] & 0xC0) == 0x80);
                     buf[len] = '\0';
                     qb_print_string("\b");
                     cursor_on = true;
                     draw_cursor(true);
                     last_blink = now;
                 }
-            } else if (*k >= 32 && *k < 127) {
-                if (len < max_len - 1) {
+            } else if ((unsigned char)*k >= 32 && (unsigned char)*k != 127) {
+                if (len + klen < max_len) {
                     if (cursor_is_drawn) draw_cursor(false);
-                    buf[len++] = *k;
+                    for (int bi = 0; bi < klen; bi++) {
+                        buf[len++] = k[bi];
+                    }
                     buf[len] = '\0';
-                    char s[2] = { *k, 0 };
-                    qb_print_string(s);
+                    qb_print_string(k);
                     cursor_on = true;
                     draw_cursor(true);
                     last_blink = now;
@@ -1782,7 +1836,8 @@ char* qb_console_read_line(char *buf, int max_len) {
 /* ========================================================================= */
 
 void qb_beep(void) {
-    queue_tone(750, 250);
+    queue_tone(750, 250, 0);
+    if (!is_test_mode()) qb_sleep(0.25);
 }
 
 void qb_sound(int freq, int duration_ms) {
@@ -1792,13 +1847,15 @@ void qb_sound(int freq, int duration_ms) {
             audio_head = 0;
             audio_tail = 0;
             cur_note_samples_left = 0;
+            cur_note_rest_samples_left = 0;
             SDL_UnlockAudioDevice(audio_dev);
         }
         return;
     }
     if (freq < 37) freq = 37;
     if (freq > 32767) freq = 32767;
-    queue_tone(freq, duration_ms);
+    queue_tone(freq, duration_ms, 0);
+    if (!is_test_mode()) qb_sleep((double)duration_ms / 1000.0);
 }
 
 void qb_sleep(double seconds) {
@@ -1822,13 +1879,31 @@ double qb_timer(void) {
     return secs;
 }
 
-static bool s_music_foreground = false;
+static int s_play_octave = 4;
+static int s_play_def_len = 4;
+static int s_play_tempo = 120;
+static int s_music_style = 0; // 0 = MN (7/8 sound, 1/8 rest), 1 = ML (1/1 sound), 2 = MS (3/4 sound, 1/4 rest)
+static bool s_music_foreground = true; // MF by default in QBasic
+
+void qb_play_reset(void) {
+    s_play_octave = 4;
+    s_play_def_len = 4;
+    s_play_tempo = 120;
+    s_music_style = 0;
+    s_music_foreground = true;
+}
+
+void qb_play_wait_finished(void) {
+    if (is_test_mode()) return;
+    while (qb_play_get_notes_remaining() > 0) {
+        const char *k = qb_inkey();
+        if (k && *k) break;
+        qb_sleep(0.05);
+    }
+}
 
 void qb_play(const char *mml) {
     if (!mml || !*mml) return;
-    int octave = 4;
-    int def_len = 4;
-    int tempo = 120;
 
     const char *p = mml;
     while (*p) {
@@ -1841,55 +1916,65 @@ void qb_play(const char *mml) {
         if (cmd == 'O') {
             int o = 0;
             while (isdigit((unsigned char)*p)) o = o * 10 + (*p++ - '0');
-            if (o >= 0 && o <= 6) octave = o;
+            if (o >= 0 && o <= 6) s_play_octave = o;
         } else if (cmd == '>') {
-            if (octave < 6) octave++;
+            if (s_play_octave < 6) s_play_octave++;
         } else if (cmd == '<') {
-            if (octave > 0) octave--;
+            if (s_play_octave > 0) s_play_octave--;
         } else if (cmd == 'T') {
             int t = 0;
             while (isdigit((unsigned char)*p)) t = t * 10 + (*p++ - '0');
-            if (t >= 32 && t <= 255) tempo = t;
+            if (t >= 32 && t <= 255) s_play_tempo = t;
         } else if (cmd == 'L') {
             int l = 0;
             while (isdigit((unsigned char)*p)) l = l * 10 + (*p++ - '0');
-            if (l >= 1 && l <= 64) def_len = l;
+            if (l >= 1 && l <= 64) s_play_def_len = l;
         } else if (cmd == 'M') {
             while (*p && isspace((unsigned char)*p)) p++;
             if (*p) {
                 char sub = (char)toupper((unsigned char)*p++);
                 if (sub == 'F') s_music_foreground = true;
                 else if (sub == 'B') s_music_foreground = false;
+                else if (sub == 'N') s_music_style = 0; // MN: Normal (7/8 sound, 1/8 rest)
+                else if (sub == 'L') s_music_style = 1; // ML: Legato (1/1 sound)
+                else if (sub == 'S') s_music_style = 2; // MS: Staccato (3/4 sound, 1/4 rest)
             }
         } else if (cmd == 'P') {
-            int len = def_len;
+            int len = s_play_def_len;
             if (isdigit((unsigned char)*p)) {
                 len = 0;
                 while (isdigit((unsigned char)*p)) len = len * 10 + (*p++ - '0');
             }
-            int dur_ms = (int)(240000.0 / (tempo * (len > 0 ? len : 4)));
+            int dur_ms = (int)(240000.0 / (s_play_tempo * (len > 0 ? len : 4)));
             while (*p == '.') { p++; dur_ms = (int)(dur_ms * 1.5); }
-            if (s_music_foreground) {
-                if (dur_ms > 0) qb_sleep((double)dur_ms / 1000.0);
-            } else {
-                queue_tone(0, dur_ms); // Silence in background
+            queue_tone(0, dur_ms, 0);
+            if (s_music_foreground && dur_ms > 0) {
+                if (!is_test_mode()) qb_sleep((double)dur_ms / 1000.0);
             }
         } else if (cmd == 'N') {
             int note_num = 0;
             while (isdigit((unsigned char)*p)) note_num = note_num * 10 + (*p++ - '0');
-            int dur_ms = (int)(240000.0 / (tempo * def_len));
+            int dur_ms = (int)(240000.0 / (s_play_tempo * s_play_def_len));
             if (note_num == 0) {
-                if (s_music_foreground) {
-                    if (dur_ms > 0) qb_sleep((double)dur_ms / 1000.0);
-                } else {
-                    queue_tone(0, dur_ms);
+                queue_tone(0, dur_ms, 0);
+                if (s_music_foreground && dur_ms > 0) {
+                    if (!is_test_mode()) qb_sleep((double)dur_ms / 1000.0);
                 }
             } else if (note_num >= 1 && note_num <= 84) {
                 int semi = note_num - 1;
                 double freq = 440.0 * pow(2.0, (semi - 45) / 12.0);
-                queue_tone((int)freq, dur_ms);
+                int play_ms = dur_ms;
+                int rest_ms = 0;
+                if (s_music_style == 0) {
+                    play_ms = (dur_ms * 7) / 8;
+                    rest_ms = dur_ms - play_ms;
+                } else if (s_music_style == 2) {
+                    play_ms = (dur_ms * 3) / 4;
+                    rest_ms = dur_ms - play_ms;
+                }
+                queue_tone((int)freq, play_ms, rest_ms);
                 if (s_music_foreground && dur_ms > 0) {
-                    qb_sleep((double)dur_ms / 1000.0);
+                    if (!is_test_mode()) qb_sleep((double)dur_ms / 1000.0);
                 }
             }
         } else if (cmd >= 'A' && cmd <= 'G') {
@@ -1899,19 +1984,29 @@ void qb_play(const char *mml) {
             else if (*p == '-') { semi--; p++; }
             while (*p && isspace((unsigned char)*p)) p++;
 
-            int len = def_len;
+            int len = s_play_def_len;
             if (isdigit((unsigned char)*p)) {
                 len = 0;
                 while (isdigit((unsigned char)*p)) len = len * 10 + (*p++ - '0');
             }
-            int dur_ms = (int)(240000.0 / (tempo * (len > 0 ? len : 4)));
+            int dur_ms = (int)(240000.0 / (s_play_tempo * (len > 0 ? len : 4)));
             while (*p == '.') { p++; dur_ms = (int)(dur_ms * 1.5); }
 
-            int total_semi = (octave - 4) * 12 + semi - 9;
+            int total_semi = (s_play_octave - 4) * 12 + semi - 9;
             double freq = 440.0 * pow(2.0, (double)total_semi / 12.0);
-            queue_tone((int)freq, dur_ms);
+
+            int play_ms = dur_ms;
+            int rest_ms = 0;
+            if (s_music_style == 0) {
+                play_ms = (dur_ms * 7) / 8;
+                rest_ms = dur_ms - play_ms;
+            } else if (s_music_style == 2) {
+                play_ms = (dur_ms * 3) / 4;
+                rest_ms = dur_ms - play_ms;
+            }
+            queue_tone((int)freq, play_ms, rest_ms);
             if (s_music_foreground && dur_ms > 0) {
-                qb_sleep((double)dur_ms / 1000.0);
+                if (!is_test_mode()) qb_sleep((double)dur_ms / 1000.0);
             }
         }
     }

@@ -17,6 +17,23 @@ static void print_usage(const char *prog_name) {
 int main(int argc, char *argv[]) {
     qb_compat_init();
 
+    int wargc = 0;
+    LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &wargc);
+    if (wargv && wargc > 0) {
+        char **utf8_argv = (char**)calloc(wargc, sizeof(char*));
+        for (int i = 0; i < wargc; i++) {
+            int ulen = WideCharToMultiByte(CP_UTF8, 0, wargv[i], -1, NULL, 0, NULL, NULL);
+            if (ulen > 0) {
+                utf8_argv[i] = (char*)malloc(ulen);
+                WideCharToMultiByte(CP_UTF8, 0, wargv[i], -1, utf8_argv[i], ulen, NULL, NULL);
+            } else {
+                utf8_argv[i] = strdup("");
+            }
+        }
+        argc = wargc;
+        argv = utf8_argv;
+    }
+
     if (argc < 2) {
         print_usage(argv[0]);
         return 1;
@@ -64,6 +81,7 @@ int main(int argc, char *argv[]) {
         QB_Program *prog = qb_program_create();
         QB_Interpreter *interp = qb_interp_create(prog);
         qb_interp_exec_immediate(interp, inline_cmd);
+        qb_play_wait_finished();
         qb_interp_free(interp);
         qb_program_free(prog);
         return 0;
@@ -79,6 +97,7 @@ int main(int argc, char *argv[]) {
         }
         QB_Interpreter *interp = qb_interp_create(prog);
         qb_interp_run(interp);
+        qb_play_wait_finished();
         qb_interp_free(interp);
         qb_program_free(prog);
         return 0;

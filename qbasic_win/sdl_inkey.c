@@ -160,6 +160,24 @@ unsigned char sdl_utf8_to_cp437(const unsigned char *s, int *bytes_consumed) {
             case 0x00A7: return 0x15; // §
             case 0x00B5: return 0xE6; // µ
             case 0x00B1: return 0xF1; // ±
+            case 0x00DF: return 0xE1; // ß
+            case 0x00A2: return 0x9B; // ¢
+            case 0x00F7: return 0xF6; // ÷
+            // Lettres grecques CP437
+            case 0x03B1: return 0xE0; // α
+            case 0x03B2: return 0xE1; // β
+            case 0x0393: return 0xE2; // Γ
+            case 0x03C0: return 0xE3; // π
+            case 0x03A3: return 0xE4; // Σ
+            case 0x03C3: return 0xE5; // σ
+            case 0x03BC: return 0xE6; // µ
+            case 0x03C4: return 0xE7; // τ
+            case 0x03A6: return 0xE8; // Φ
+            case 0x0398: return 0xE9; // Θ
+            case 0x03A9: return 0xEA; // Ω
+            case 0x03B4: return 0xEB; // δ
+            case 0x03C6: return 0xED; // φ
+            case 0x03B5: return 0xEE; // ε
             default:     return (unsigned char)'?';
         }
     }
@@ -168,8 +186,61 @@ unsigned char sdl_utf8_to_cp437(const unsigned char *s, int *bytes_consumed) {
     if ((s[0] & 0xF0) == 0xE0 && s[1] != '\0' && s[2] != '\0') {
         if (bytes_consumed) *bytes_consumed = 3;
         unsigned int cp = ((s[0] & 0x0F) << 12) | ((s[1] & 0x3F) << 6) | (s[2] & 0x3F);
-        if (cp == 0x20AC) return 'E'; // Euro (€)
-        return '?';
+        switch (cp) {
+            case 0x20AC: return 'E';  // Euro (€)
+            case 0x221E: return 0xEC; // ∞
+            case 0x2229: return 0xEF; // ∩
+            case 0x2261: return 0xF0; // ≡
+            case 0x2265: return 0xF2; // ≥
+            case 0x2264: return 0xF3; // ≤
+            case 0x2320: return 0xF4; // ⌠
+            case 0x2321: return 0xF5; // ⌡
+            case 0x2248: return 0xF7; // ≈
+            case 0x221A: return 0xFB; // √
+            case 0x207F: return 0xFC; // ⁿ
+            // Tracé de cadres simples (Box drawing single)
+            case 0x2500: return 0xC4; // ─
+            case 0x2502: return 0xB3; // │
+            case 0x250C: return 0xDA; // ┌
+            case 0x2510: return 0xBF; // ┐
+            case 0x2514: return 0xC0; // └
+            case 0x2518: return 0xD9; // ┘
+            case 0x251C: return 0xC3; // ├
+            case 0x2524: return 0xB4; // ┤
+            case 0x252C: return 0xC2; // ┬
+            case 0x2534: return 0xC1; // ┴
+            case 0x253C: return 0xC5; // ┼
+            // Tracé de cadres doubles (Box drawing double)
+            case 0x2550: return 0xCD; // ═
+            case 0x2551: return 0xBA; // ║
+            case 0x2554: return 0xC9; // ╔
+            case 0x2557: return 0xBB; // ╗
+            case 0x255A: return 0xC8; // ╚
+            case 0x255D: return 0xBC; // ╝
+            // Pavés / blocs (Block elements)
+            case 0x2588: return 0xDB; // █
+            case 0x2584: return 0xDC; // ▄
+            case 0x258C: return 0xDD; // ▌
+            case 0x2590: return 0xDE; // ▐
+            case 0x2580: return 0xDF; // ▀
+            case 0x2591: return 0xB0; // ░
+            case 0x2592: return 0xB1; // ▒
+            case 0x2593: return 0xB2; // ▓
+            case 0x25A0: return 0xFE; // ■
+            // Symboles divers
+            case 0x2022: return 0x07; // •
+            case 0x25CF: return 0x07; // ●
+            case 0x2665: return 0x03; // ♥
+            case 0x2666: return 0x04; // ♦
+            case 0x2663: return 0x05; // ♣
+            case 0x2660: return 0x06; // ♠
+            case 0x263A: return 0x01; // ☺
+            case 0x263B: return 0x02; // ☻
+            case 0x266A: return 0x0D; // ♪
+            case 0x266B: return 0x0E; // ♫
+            case 0x2713: return 0xFB; // ✓ (mappé vers radical/check)
+            default:     return '?';
+        }
     }
 
     if (bytes_consumed) *bytes_consumed = 1;

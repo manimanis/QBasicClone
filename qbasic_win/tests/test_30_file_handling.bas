@@ -208,5 +208,29 @@ ELSE
     PRINT "FILE_SYSTEM_OPERATIONS: FAIL"
 END IF
 
+' --------------------------------------------------------
+' SECTION 8: Print Delimiters & Spacing (Leading Comma, Semicolon, Consecutive Commas, SPC)
+' --------------------------------------------------------
+OPEN "temp_test_print_delims.tmp" FOR OUTPUT AS #1
+PRINT #1, , "Welcome to TicTacToe"
+PRINT #1, ; "NoLeadingSpace"
+PRINT #1, "A", , "B"
+PRINT #1, SPC(4); "Spc"
+CLOSE #1
+
+OPEN "temp_test_print_delims.tmp" FOR INPUT AS #1
+LINE INPUT #1, delim_l1$
+LINE INPUT #1, delim_l2$
+LINE INPUT #1, delim_l3$
+LINE INPUT #1, delim_l4$
+CLOSE #1
+KILL "temp_test_print_delims.tmp"
+
+IF (delim_l1$ = CHR$(9) + "Welcome to TicTacToe" AND delim_l2$ = "NoLeadingSpace" AND delim_l3$ = "A" + CHR$(9) + CHR$(9) + "B" AND delim_l4$ = "    Spc") THEN
+    PRINT "FILE_PRINT_DELIMITERS: PASS"
+ELSE
+    PRINT "FILE_PRINT_DELIMITERS: FAIL"
+END IF
+
 PRINT "ALL_FILE_TESTS_DONE: PASS"
 END

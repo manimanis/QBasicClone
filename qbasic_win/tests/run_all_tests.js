@@ -2,6 +2,8 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+process.env.QB_TEST_MODE = '1';
+
 const exePath = path.join(__dirname, '..', 'qbasic_win.exe');
 const testsDir = __dirname;
 const vintageDir = path.join(__dirname, 'qbasic-programs', 'qbasic-programs-master');

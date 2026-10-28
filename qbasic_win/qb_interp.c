@@ -57,6 +57,118 @@ typedef struct {
 static QB_Value eval_expr_logical(QB_Env *env, const char **p);
 void qb_interp_step(QB_Interpreter *interp);
 
+static int qb_utf8_encode(unsigned int cp, char out[5]) {
+    if (cp <= 0x7F) {
+        out[0] = (char)cp;
+        out[1] = '\0';
+        return 1;
+    } else if (cp <= 0x7FF) {
+        out[0] = (char)(0xC0 | (cp >> 6));
+        out[1] = (char)(0x80 | (cp & 0x3F));
+        out[2] = '\0';
+        return 2;
+    } else if (cp <= 0xFFFF) {
+        out[0] = (char)(0xE0 | (cp >> 12));
+        out[1] = (char)(0x80 | ((cp >> 6) & 0x3F));
+        out[2] = (char)(0x80 | (cp & 0x3F));
+        out[3] = '\0';
+        return 3;
+    } else if (cp <= 0x10FFFF) {
+        out[0] = (char)(0xF0 | (cp >> 18));
+        out[1] = (char)(0x80 | ((cp >> 12) & 0x3F));
+        out[2] = (char)(0x80 | ((cp >> 6) & 0x3F));
+        out[3] = (char)(0x80 | (cp & 0x3F));
+        out[4] = '\0';
+        return 4;
+    }
+    out[0] = (char)(cp & 0xFF);
+    out[1] = '\0';
+    return 1;
+}
+
+static unsigned int qb_utf8_decode(const unsigned char *s, int len, int *bytes_consumed) {
+    if (!s || len <= 0) {
+        if (bytes_consumed) *bytes_consumed = 0;
+        return 0;
+    }
+    if (s[0] < 0x80) {
+        if (bytes_consumed) *bytes_consumed = 1;
+        return s[0];
+    }
+    if ((s[0] & 0xE0) == 0xC0 && len >= 2 && (s[1] & 0xC0) == 0x80) {
+        if (bytes_consumed) *bytes_consumed = 2;
+        return ((s[0] & 0x1F) << 6) | (s[1] & 0x3F);
+    }
+    if ((s[0] & 0xF0) == 0xE0 && len >= 3 && (s[1] & 0xC0) == 0x80 && (s[2] & 0xC0) == 0x80) {
+        if (bytes_consumed) *bytes_consumed = 3;
+        return ((s[0] & 0x0F) << 12) | ((s[1] & 0x3F) << 6) | (s[2] & 0x3F);
+    }
+    if ((s[0] & 0xF8) == 0xF0 && len >= 4 && (s[1] & 0xC0) == 0x80 && (s[2] & 0xC0) == 0x80 && (s[3] & 0xC0) == 0x80) {
+        if (bytes_consumed) *bytes_consumed = 4;
+        return ((s[0] & 0x07) << 18) | ((s[1] & 0x3F) << 12) | ((s[2] & 0x3F) << 6) | (s[3] & 0x3F);
+    }
+    if (bytes_consumed) *bytes_consumed = 1;
+    return s[0];
+}
+
+static FILE* qb_os_fopen(const char *path, const char *mode) {
+    if (!path || !mode) return NULL;
+    int wpath_len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
+    int wmode_len = MultiByteToWideChar(CP_UTF8, 0, mode, -1, NULL, 0);
+    if (wpath_len > 0 && wmode_len > 0) {
+        wchar_t *wpath = (wchar_t*)malloc(wpath_len * sizeof(wchar_t));
+        wchar_t *wmode = (wchar_t*)malloc(wmode_len * sizeof(wchar_t));
+        if (wpath && wmode) {
+            MultiByteToWideChar(CP_UTF8, 0, path, -1, wpath, wpath_len);
+            MultiByteToWideChar(CP_UTF8, 0, mode, -1, wmode, wmode_len);
+            FILE *f = _wfopen(wpath, wmode);
+            free(wpath);
+            free(wmode);
+            if (f) return f;
+        } else {
+            if (wpath) free(wpath);
+            if (wmode) free(wmode);
+        }
+    }
+    return fopen(path, mode);
+}
+
+static int qb_os_remove(const char *path) {
+    if (!path) return -1;
+    int wpath_len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
+    if (wpath_len > 0) {
+        wchar_t *wpath = (wchar_t*)malloc(wpath_len * sizeof(wchar_t));
+        if (wpath) {
+            MultiByteToWideChar(CP_UTF8, 0, path, -1, wpath, wpath_len);
+            int ret = _wremove(wpath);
+            free(wpath);
+            return ret;
+        }
+    }
+    return remove(path);
+}
+
+static int qb_os_rename(const char *oldp, const char *newp) {
+    if (!oldp || !newp) return -1;
+    int wold_len = MultiByteToWideChar(CP_UTF8, 0, oldp, -1, NULL, 0);
+    int wnew_len = MultiByteToWideChar(CP_UTF8, 0, newp, -1, NULL, 0);
+    if (wold_len > 0 && wnew_len > 0) {
+        wchar_t *wold = (wchar_t*)malloc(wold_len * sizeof(wchar_t));
+        wchar_t *wnew = (wchar_t*)malloc(wnew_len * sizeof(wchar_t));
+        if (wold && wnew) {
+            MultiByteToWideChar(CP_UTF8, 0, oldp, -1, wold, wold_len);
+            MultiByteToWideChar(CP_UTF8, 0, newp, -1, wnew, wnew_len);
+            int ret = _wrename(wold, wnew);
+            free(wold);
+            free(wnew);
+            return ret;
+        }
+        if (wold) free(wold);
+        if (wnew) free(wnew);
+    }
+    return rename(oldp, newp);
+}
+
 static const char* find_caseless(const char *haystack, const char *needle) {
     if (!haystack || !needle) return NULL;
     size_t nlen = strlen(needle);
@@ -880,19 +992,52 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 return qb_val_number(res);
             }
             if (strcasecmp(id, "CHR$") == 0) {
-                char ch[2] = { (char)(int)arg1.number, '\0' };
+                int code = (int)arg1.number;
                 qb_val_free(&arg1);
-                return qb_val_string_len(ch, 1);
+                if (code >= 0 && code <= 255) {
+                    char ch[2] = { (char)code, '\0' };
+                    return qb_val_string_len(ch, 1);
+                } else if (code > 255) {
+                    char ubuf[5];
+                    int ulen = qb_utf8_encode((unsigned int)code, ubuf);
+                    return qb_val_string_len(ubuf, ulen);
+                }
+                return qb_val_string("");
             }
-            if (strcasecmp(id, "ASC") == 0) {
-                double res = (arg1.type == QB_VAL_STRING && arg1.string && arg1.string_len > 0) ? (double)(unsigned char)arg1.string[0] : 0;
+            if (strcasecmp(id, "UCHR$") == 0 || strcasecmp(id, "_UCHR$") == 0) {
+                int code = (int)arg1.number;
+                qb_val_free(&arg1);
+                if (code >= 0) {
+                    char ubuf[5];
+                    int ulen = qb_utf8_encode((unsigned int)code, ubuf);
+                    return qb_val_string_len(ubuf, ulen);
+                }
+                return qb_val_string("");
+            }
+            if (strcasecmp(id, "ASC") == 0 || strcasecmp(id, "UCODE") == 0 || strcasecmp(id, "_UCODE") == 0) {
+                double res = 0;
+                if (arg1.type == QB_VAL_STRING && arg1.string && arg1.string_len > 0) {
+                    const unsigned char *us = (const unsigned char*)arg1.string;
+                    int consumed = 0;
+                    res = (double)qb_utf8_decode(us, arg1.string_len, &consumed);
+                }
                 qb_val_free(&arg1);
                 return qb_val_number(res);
             }
-            if (strcasecmp(id, "STR$") == 0) {
+            if (strcasecmp(id, "STR$") == 0 || strcasecmp(id, "STR") == 0) {
                 char sbuf[64];
-                snprintf(sbuf, sizeof(sbuf), "%g", arg1.number);
-                qb_val_free(&arg1);
+                if (arg1.type == QB_VAL_STRING) {
+                    QB_Value ret = qb_val_string(arg1.string ? arg1.string : "");
+                    for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
+                    return ret;
+                }
+                double num = arg1.number;
+                if (num == (long long)num) {
+                    snprintf(sbuf, sizeof(sbuf), "%lld", (long long)num);
+                } else {
+                    snprintf(sbuf, sizeof(sbuf), "%g", num);
+                }
+                for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                 return qb_val_string(sbuf);
             }
             if (strcasecmp(id, "VAL") == 0) {
@@ -924,35 +1069,79 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 free(s);
                 return ret;
             }
-            if (strcasecmp(id, "UCASE$") == 0) {
+            if (strcasecmp(id, "UCASE$") == 0 || strcasecmp(id, "UCASE") == 0) {
                 if (arg1.type == QB_VAL_STRING && arg1.string) {
-                    int len = arg1.string_len;
-                    char *dup = (char*)malloc(len + 1);
-                    for (int ci = 0; ci < len; ci++) dup[ci] = (char)toupper((unsigned char)arg1.string[ci]);
-                    dup[len] = '\0';
+                    const char *src = arg1.string;
+                    int src_len = arg1.string_len;
+                    int wlen = MultiByteToWideChar(CP_UTF8, 0, src, src_len, NULL, 0);
+                    if (wlen > 0) {
+                        wchar_t *wbuf = (wchar_t*)malloc((wlen + 1) * sizeof(wchar_t));
+                        if (wbuf) {
+                            MultiByteToWideChar(CP_UTF8, 0, src, src_len, wbuf, wlen);
+                            wbuf[wlen] = L'\0';
+                            CharUpperBuffW(wbuf, wlen);
+                            int out_len = WideCharToMultiByte(CP_UTF8, 0, wbuf, wlen, NULL, 0, NULL, NULL);
+                            char *out_buf = (char*)malloc(out_len + 1);
+                            if (out_buf) {
+                                WideCharToMultiByte(CP_UTF8, 0, wbuf, wlen, out_buf, out_len, NULL, NULL);
+                                out_buf[out_len] = '\0';
+                                free(wbuf);
+                                qb_val_free(&arg1);
+                                QB_Value ret = qb_val_string_len(out_buf, out_len);
+                                free(out_buf);
+                                return ret;
+                            }
+                            free(wbuf);
+                        }
+                    }
+                    char *dup = (char*)malloc(src_len + 1);
+                    for (int ci = 0; ci < src_len; ci++) dup[ci] = (char)toupper((unsigned char)src[ci]);
+                    dup[src_len] = '\0';
                     qb_val_free(&arg1);
-                    QB_Value ret = qb_val_string_len(dup, len);
+                    QB_Value ret = qb_val_string_len(dup, src_len);
                     free(dup);
                     return ret;
                 }
                 qb_val_free(&arg1);
                 return qb_val_string("");
             }
-            if (strcasecmp(id, "LCASE$") == 0) {
+            if (strcasecmp(id, "LCASE$") == 0 || strcasecmp(id, "LCASE") == 0) {
                 if (arg1.type == QB_VAL_STRING && arg1.string) {
-                    int len = arg1.string_len;
-                    char *dup = (char*)malloc(len + 1);
-                    for (int ci = 0; ci < len; ci++) dup[ci] = (char)tolower((unsigned char)arg1.string[ci]);
-                    dup[len] = '\0';
+                    const char *src = arg1.string;
+                    int src_len = arg1.string_len;
+                    int wlen = MultiByteToWideChar(CP_UTF8, 0, src, src_len, NULL, 0);
+                    if (wlen > 0) {
+                        wchar_t *wbuf = (wchar_t*)malloc((wlen + 1) * sizeof(wchar_t));
+                        if (wbuf) {
+                            MultiByteToWideChar(CP_UTF8, 0, src, src_len, wbuf, wlen);
+                            wbuf[wlen] = L'\0';
+                            CharLowerBuffW(wbuf, wlen);
+                            int out_len = WideCharToMultiByte(CP_UTF8, 0, wbuf, wlen, NULL, 0, NULL, NULL);
+                            char *out_buf = (char*)malloc(out_len + 1);
+                            if (out_buf) {
+                                WideCharToMultiByte(CP_UTF8, 0, wbuf, wlen, out_buf, out_len, NULL, NULL);
+                                out_buf[out_len] = '\0';
+                                free(wbuf);
+                                qb_val_free(&arg1);
+                                QB_Value ret = qb_val_string_len(out_buf, out_len);
+                                free(out_buf);
+                                return ret;
+                            }
+                            free(wbuf);
+                        }
+                    }
+                    char *dup = (char*)malloc(src_len + 1);
+                    for (int ci = 0; ci < src_len; ci++) dup[ci] = (char)tolower((unsigned char)src[ci]);
+                    dup[src_len] = '\0';
                     qb_val_free(&arg1);
-                    QB_Value ret = qb_val_string_len(dup, len);
+                    QB_Value ret = qb_val_string_len(dup, src_len);
                     free(dup);
                     return ret;
                 }
                 qb_val_free(&arg1);
                 return qb_val_string("");
             }
-            if (strcasecmp(id, "LEFT$") == 0) {
+            if (strcasecmp(id, "LEFT$") == 0 || strcasecmp(id, "LEFT") == 0) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
                 int count = (int)arg2.number;
@@ -963,7 +1152,7 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 qb_val_free(&arg2);
                 return ret;
             }
-            if (strcasecmp(id, "RIGHT$") == 0) {
+            if (strcasecmp(id, "RIGHT$") == 0 || strcasecmp(id, "RIGHT") == 0) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
                 int count = (int)arg2.number;
@@ -975,7 +1164,7 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 qb_val_free(&arg2);
                 return ret;
             }
-            if (strcasecmp(id, "MID$") == 0) {
+            if (strcasecmp(id, "MID$") == 0 || strcasecmp(id, "MID") == 0) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
                 int start = (int)arg2.number - 1;
@@ -1090,16 +1279,66 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 return ret;
             }
 
-            if (strcasecmp(id, "LTRIM$") == 0) {
-                const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
+            if (strcasecmp(id, "LTRIM$") == 0 || strcasecmp(id, "LTRIM") == 0) {
+                char nbuf[64];
+                const char *src = "";
+                if (arg1.type == QB_VAL_STRING && arg1.string) {
+                    src = arg1.string;
+                } else if (arg1.type == QB_VAL_NUMBER) {
+                    double num = arg1.number;
+                    if (num == (long long)num) {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %lld" : "%lld", (long long)num);
+                    } else {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %g" : "%g", num);
+                    }
+                    src = nbuf;
+                }
                 while (*src && isspace((unsigned char)*src)) src++;
                 QB_Value ret = qb_val_string(src);
                 for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                 return ret;
             }
 
-            if (strcasecmp(id, "RTRIM$") == 0) {
-                const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
+            if (strcasecmp(id, "RTRIM$") == 0 || strcasecmp(id, "RTRIM") == 0) {
+                char nbuf[64];
+                const char *src = "";
+                if (arg1.type == QB_VAL_STRING && arg1.string) {
+                    src = arg1.string;
+                } else if (arg1.type == QB_VAL_NUMBER) {
+                    double num = arg1.number;
+                    if (num == (long long)num) {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %lld" : "%lld", (long long)num);
+                    } else {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %g" : "%g", num);
+                    }
+                    src = nbuf;
+                }
+                char *dup = strdup(src);
+                int len = (int)strlen(dup);
+                while (len > 0 && isspace((unsigned char)dup[len - 1])) {
+                    dup[--len] = '\0';
+                }
+                QB_Value ret = qb_val_string(dup);
+                free(dup);
+                for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
+                return ret;
+            }
+
+            if (strcasecmp(id, "TRIM$") == 0 || strcasecmp(id, "TRIM") == 0) {
+                char nbuf[64];
+                const char *src = "";
+                if (arg1.type == QB_VAL_STRING && arg1.string) {
+                    src = arg1.string;
+                } else if (arg1.type == QB_VAL_NUMBER) {
+                    double num = arg1.number;
+                    if (num == (long long)num) {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %lld" : "%lld", (long long)num);
+                    } else {
+                        snprintf(nbuf, sizeof(nbuf), (num >= 0) ? " %g" : "%g", num);
+                    }
+                    src = nbuf;
+                }
+                while (*src && isspace((unsigned char)*src)) src++;
                 char *dup = strdup(src);
                 int len = (int)strlen(dup);
                 while (len > 0 && isspace((unsigned char)dup[len - 1])) {
@@ -1767,15 +2006,26 @@ bool qb_program_load_file(QB_Program *prog, const char *filename) {
     }
     qb_set_program_dir(dir);
 
-    FILE *f = fopen(filename, "r");
+    FILE *f = qb_os_fopen(filename, "r");
     if (!f) return false;
-    char buffer[2048];
+    char buffer[4096];
+    bool is_first_line = true;
     while (fgets(buffer, sizeof(buffer), f)) {
         char *nl = strchr(buffer, '\n');
         if (nl) *nl = '\0';
         nl = strchr(buffer, '\r');
         if (nl) *nl = '\0';
-        qb_program_add_line(prog, buffer);
+        char *line_ptr = buffer;
+        if (is_first_line) {
+            is_first_line = false;
+            // Supprimer le marqueur d'ordre des octets UTF-8 (BOM: EF BB BF)
+            if ((unsigned char)line_ptr[0] == 0xEF &&
+                (unsigned char)line_ptr[1] == 0xBB &&
+                (unsigned char)line_ptr[2] == 0xBF) {
+                line_ptr += 3;
+            }
+        }
+        qb_program_add_line(prog, line_ptr);
     }
     fclose(f);
     return true;
@@ -1863,6 +2113,7 @@ QB_Interpreter* qb_interp_create(QB_Program *prog) {
     interp->play_state = 0;
     interp->play_pending = false;
     interp->play_fired = false;
+    qb_play_reset();
     for (int i = 0; i < 256; i++) {
         interp->file_modes[i] = QB_FILE_MODE_NONE;
         interp->file_record_lens[i] = 128;
@@ -2396,18 +2647,18 @@ static FILE *qb_fopen_helper(const char *filename, const char *mode) {
 
     if (was_floppy_a && pdir && pdir[0]) {
         snprintf(full_path, sizeof(full_path), "%s/%s", pdir, actual_name);
-        f = fopen(full_path, mode);
+        f = qb_os_fopen(full_path, mode);
     }
     if (!f) {
-        f = fopen(fn, mode);
+        f = qb_os_fopen(fn, mode);
     }
     if (!f && pdir && pdir[0] && !was_floppy_a) {
         snprintf(full_path, sizeof(full_path), "%s/%s", pdir, actual_name);
-        f = fopen(full_path, mode);
+        f = qb_os_fopen(full_path, mode);
     }
     if (!f && strcmp(mode, "rb+") == 0) {
-        if (full_path[0]) f = fopen(full_path, "wb+");
-        if (!f) f = fopen(fn, "wb+");
+        if (full_path[0]) f = qb_os_fopen(full_path, "wb+");
+        if (!f) f = qb_os_fopen(fn, "wb+");
     }
     return f;
 }
@@ -3220,12 +3471,12 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
     if (match_keyword(&p, "KILL")) {
         QB_Value file_val = qb_eval_expression(interp->env, &p);
         if (file_val.type == QB_VAL_STRING && file_val.string) {
-            if (remove(file_val.string) != 0) {
+            if (qb_os_remove(file_val.string) != 0) {
                 const char *pdir = qb_get_program_dir();
                 if (pdir && pdir[0] && !strchr(file_val.string, ':') && file_val.string[0] != '/' && file_val.string[0] != '\\') {
                     char full_path[512];
                     snprintf(full_path, sizeof(full_path), "%s/%s", pdir, file_val.string);
-                    remove(full_path);
+                    qb_os_remove(full_path);
                 }
             }
         }
@@ -3379,13 +3630,31 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
     // RANDOMIZE [seed]
     if (match_keyword(&p, "RANDOMIZE")) {
         skip_whitespace(&p);
-        if (*p) {
+        if (*p && *p != ':' && *p != '\'') {
             QB_Value s = qb_eval_expression(interp->env, &p);
-            srand((unsigned int)s.number);
+            uint32_t seed = (uint32_t)s.number;
+            double frac = s.number - floor(s.number);
+            if (frac > 1e-6) {
+                seed ^= (uint32_t)(frac * 10000000.0);
+            }
+            srand(seed);
             qb_val_free(&s);
         } else {
-            srand((unsigned int)time(NULL));
+            LARGE_INTEGER qpc;
+            QueryPerformanceCounter(&qpc);
+            uint32_t seed = (uint32_t)qpc.QuadPart ^ (uint32_t)(qpc.QuadPart >> 32) ^ (uint32_t)GetTickCount64() ^ (uint32_t)time(NULL);
+            // Brassage binaire (SplitMix/Murmur3 finalizer) pour une dispersion maximale
+            seed ^= seed >> 16;
+            seed *= 0x85ebca6b;
+            seed ^= seed >> 13;
+            seed *= 0xc2b2ae35;
+            seed ^= seed >> 16;
+            srand(seed);
         }
+        // Élimine le biais de corrélation linéaire du 1er tirage LCG
+        (void)rand();
+        (void)rand();
+        (void)rand();
         return true;
     }
 
@@ -4366,6 +4635,11 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                     while (*p && *p != ':') p++;
                     break;
                 }
+                if (*p == ';' || *p == ',') {
+                    p++;
+                    newline = false;
+                    continue;
+                }
                 QB_Value arg = qb_eval_expression(interp->env, &p);
                 char formatted[256];
                 qb_format_using(fmt_str, arg, formatted, sizeof(formatted));
@@ -4408,6 +4682,21 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 while (*p && *p != ':') p++;
                 break;
             }
+            if (*p == ';') {
+                p++;
+                newline = false;
+                continue;
+            }
+            if (*p == ',') {
+                p++;
+                if (target_out == stdout) {
+                    qb_print_string("\t");
+                } else {
+                    fprintf(target_out, "\t");
+                }
+                newline = false;
+                continue;
+            }
             if (match_keyword(&p, "TAB")) {
                 skip_whitespace(&p);
                 if (*p == '(') p++;
@@ -4423,7 +4712,34 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 }
                 skip_whitespace(&p);
                 if (*p == ';') { p++; newline = false; }
-                else if (*p == ',') { p++; newline = false; }
+                else if (*p == ',') {
+                    p++;
+                    if (target_out == stdout) qb_print_string("\t");
+                    else fprintf(target_out, "\t");
+                    newline = false;
+                }
+                continue;
+            }
+            if (match_keyword(&p, "SPC")) {
+                skip_whitespace(&p);
+                if (*p == '(') p++;
+                QB_Value nspc = qb_eval_expression(interp->env, &p);
+                skip_whitespace(&p);
+                if (*p == ')') p++;
+                int count = (int)nspc.number;
+                qb_val_free(&nspc);
+                for (int s = 0; s < count; s++) {
+                    if (target_out == stdout) qb_print_string(" ");
+                    else fputc(' ', target_out);
+                }
+                skip_whitespace(&p);
+                if (*p == ';') { p++; newline = false; }
+                else if (*p == ',') {
+                    p++;
+                    if (target_out == stdout) qb_print_string("\t");
+                    else fprintf(target_out, "\t");
+                    newline = false;
+                }
                 continue;
             }
 
@@ -4911,13 +5227,13 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         }
         QB_Value new_v = qb_eval_expression(interp->env, &p);
         if (old_v.type == QB_VAL_STRING && old_v.string && new_v.type == QB_VAL_STRING && new_v.string) {
-            if (rename(old_v.string, new_v.string) != 0) {
+            if (qb_os_rename(old_v.string, new_v.string) != 0) {
                 const char *pdir = qb_get_program_dir();
                 if (pdir && pdir[0] && !strchr(old_v.string, ':')) {
                     char f1[512], f2[512];
                     snprintf(f1, sizeof(f1), "%s/%s", pdir, old_v.string);
                     snprintf(f2, sizeof(f2), "%s/%s", pdir, new_v.string);
-                    if (rename(f1, f2) != 0) {
+                    if (qb_os_rename(f1, f2) != 0) {
                         qb_trigger_error(interp, 53);
                     }
                 } else {
@@ -4988,17 +5304,24 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             }
             qb_val_free(&pv);
         }
-        struct _finddata_t fileinfo;
-        intptr_t handle = _findfirst(pattern, &fileinfo);
+        wchar_t wpattern[260] = L"*.*";
+        int wpat_len = MultiByteToWideChar(CP_UTF8, 0, pattern, -1, NULL, 0);
+        if (wpat_len > 0 && wpat_len < 260) {
+            MultiByteToWideChar(CP_UTF8, 0, pattern, -1, wpattern, wpat_len);
+        }
+        struct _wfinddata_t fileinfo;
+        intptr_t handle = _wfindfirst(wpattern, &fileinfo);
         if (handle != -1) {
             int col = 0;
             do {
+                char fname_utf8[260] = {0};
+                WideCharToMultiByte(CP_UTF8, 0, fileinfo.name, -1, fname_utf8, sizeof(fname_utf8) - 1, NULL, NULL);
                 if (fileinfo.attrib & _A_SUBDIR) {
-                    char dname[64];
-                    snprintf(dname, sizeof(dname), "<%s>", fileinfo.name);
+                    char dname[300];
+                    snprintf(dname, sizeof(dname), "<%s>", fname_utf8);
                     qb_print_string(dname);
                 } else {
-                    qb_print_string(fileinfo.name);
+                    qb_print_string(fname_utf8);
                 }
                 qb_print_string("  ");
                 col++;
@@ -5006,7 +5329,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                     qb_print_string("\n");
                     col = 0;
                 }
-            } while (_findnext(handle, &fileinfo) == 0);
+            } while (_wfindnext(handle, &fileinfo) == 0);
             _findclose(handle);
             if (col > 0) qb_print_string("\n");
         } else {

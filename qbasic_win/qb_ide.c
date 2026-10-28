@@ -313,6 +313,7 @@ static bool is_qb_keyword(const char *word, int len) {
         "EXIT", "IS", "SQR", "SIN", "COS", "TAN", "ATN", "INT", "FIX", "ABS", "RND",
         "TIMER", "INKEY$", "DATE$", "TIME$", "HEX$", "OCT$", "SGN", "INSTR",
         "LEN", "MID$", "LEFT$", "RIGHT$", "UCASE$", "LCASE$", "CHR$", "ASC", "STR$", "VAL",
+        "LTRIM$", "RTRIM$", "TRIM$", "LTRIM", "RTRIM", "TRIM", "STR", "LEFT", "RIGHT", "MID", "UCASE", "LCASE",
         "AND", "OR", "NOT", "XOR", "MOD", NULL
     };
     for (int i = 0; kw[i]; i++) {

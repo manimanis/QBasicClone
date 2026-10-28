@@ -87,6 +87,8 @@ void qb_gfx_put(int x, int y, void *env, const char *arr_name, int offset, const
 // PLAY "..." : Interpréteur Music Macro Language (MML)
 void qb_play(const char *mml);
 int qb_play_get_notes_remaining(void);
+void qb_play_reset(void);
+void qb_play_wait_finished(void);
 
 // DRAW "..." : Interpréteur de commandes graphiques Turtle/Graphics
 void qb_draw(const char *cmd_str);

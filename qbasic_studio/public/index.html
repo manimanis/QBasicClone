@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QBasic Studio - Environnement de Développement Professionnel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Barre supérieure / Header -->
+        <header id="header">
+            <div class="brand">
+                <div class="brand-icon">QB</div>
+                <div class="brand-title">QBasic Studio</div>
+                <span class="brand-badge">UTF-8 Unicode</span>
+            </div>
+
+            <div class="toolbar">
+                <button id="btn-new" class="btn" title="Nouveau fichier (Ctrl+N)">
+                    <span>📄</span> Nouveau
+                </button>
+                <button id="btn-save" class="btn" title="Enregistrer (Ctrl+S)">
+                    <span>💾</span> Enregistrer
+                </button>
+
+                <div class="divider"></div>
+
+                <button id="btn-run" class="btn btn-primary" title="Exécuter le programme dans une fenêtre terminal séparée (F5)">
+                    <span>▶</span> Exécuter (F5)
+                </button>
+                <button id="btn-stop" class="btn btn-danger" disabled title="Fermer / Arrêter le terminal (Maj+F5)">
+                    <span>⏹</span> Arrêter
+                </button>
+
+                <div class="divider"></div>
+
+                <button id="btn-theme" class="btn" title="Basculer entre thème Dark Moderne et Rétro DOS QBasic">
+                    <span>🎨</span> Thème
+                </button>
+                <button id="btn-clear-console" class="btn" title="Effacer la console">
+                    <span>🧹</span> Effacer sortie
+                </button>
+            </div>
+        </header>
+
+        <!-- Espace de travail principal -->
+        <div id="workspace">
+            <!-- Sidebar / Explorateur de fichiers -->
+            <aside id="sidebar">
+                <div class="sidebar-header">
+                    <span>Explorateur</span>
+                    <div class="sidebar-actions">
+                        <button id="btn-new-in-folder" class="icon-btn" title="Nouveau fichier .bas">+</button>
+                        <button id="btn-refresh-files" class="icon-btn" title="Rafraîchir">↻</button>
+                    </div>
+                </div>
+                <div id="file-tree">
+                    <!-- Rempli dynamiquement par app.js -->
+                </div>
+            </aside>
+
+            <!-- Zone de code centrale -->
+            <main id="editor-area">
+                <!-- Barre des onglets -->
+                <div id="tabs-bar">
+                    <!-- Rempli dynamiquement par app.js -->
+                </div>
+
+                <!-- Conteneur pour l'instance Monaco Editor -->
+                <div id="monaco-container"></div>
+
+                <!-- Panneau Console / Terminal inférieur -->
+                <div id="console-panel">
+                    <div class="resizer-h" id="console-resizer"></div>
+                    <div class="console-header">
+                        <div class="console-title">
+                            <span id="status-indicator" class="status-indicator stopped"></span>
+                            <span>Journal d'exécution & Terminal</span>
+                        </div>
+                        <div class="console-actions">
+                            <button id="btn-toggle-console" class="icon-btn" title="Réduire/Agrandir journal">▾</button>
+                        </div>
+                    </div>
+                    <div id="console-output"></div>
+                    
+                    <!-- Ligne d'état d'interaction -->
+                    <div id="console-input-bar">
+                        <span id="console-input-prompt">&gt;</span>
+                        <input type="text" id="console-input" placeholder="L'exécution et les saisies (INPUT) s'effectuent directement dans la fenêtre terminal séparée..." disabled>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Barre de statut inférieure -->
+        <footer id="status-bar">
+            <div class="status-left">
+                <div class="status-item">
+                    <span id="cursor-pos">Ln 1, Col 1</span>
+                </div>
+                <div class="status-item">
+                    <span>Encodage : <strong>UTF-8</strong></span>
+                </div>
+                <div class="status-item">
+                    <span>Langage : <strong>QBasic 1.1 / Win64</strong></span>
+                </div>
+            </div>
+            <div class="status-right">
+                <div class="status-item">
+                    <span id="proc-status">Prêt</span>
+                </div>
+                <div class="status-item">
+                    <span>Raccourcis : <strong>F5</strong> Exécuter | <strong>Ctrl+S</strong> Sauvegarder</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Nouveau Fichier -->
+    <div id="new-file-modal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">Nouveau fichier QBasic</div>
+            <div class="modal-body">
+                <label for="new-filename-input" style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px;">Nom du fichier :</label>
+                <input type="text" id="new-filename-input" class="modal-input" placeholder="ex: mon_programme.bas">
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-modal" class="btn">Annuler</button>
+                <button id="btn-create-modal" class="btn btn-primary">Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Monaco et de l'IDE -->
+    <script src="qbasic-lang.js"></script>
+    <script src="qbasic-completions.js"></script>
+    <script src="/vs/loader.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
