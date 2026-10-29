@@ -202,6 +202,7 @@ void qb_interp_run(QB_Interpreter *interp);
 void qb_interp_step(QB_Interpreter *interp);
 bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line);
 void qb_trigger_error(QB_Interpreter *interp, int code);
+const char* qb_get_error_message(int code);
 void qb_interp_trigger_key_event(QB_Interpreter *interp, int kn);
 
 // Évaluateur d'expressions

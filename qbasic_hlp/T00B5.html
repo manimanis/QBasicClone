@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Error-Handling Example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T00B5</span>
+      <a href="index.html#T00B5" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+&apos;Illustrates ERDEV, ERDEV$, ERL, ERR, ERROR, ON ERROR, and RESUME.
+   ON ERROR GOTO Handler
+10 CHDIR &quot;a:\&quot;                &apos;Causes ERR 71 &quot;Disk not ready&quot;
+                              &apos;if no disk in Drive A.
+20 y% = 0
+30 x% = 5 / y%                &apos;ERR 11 &quot;Division by zero.&quot;
+40 PRINT &quot;x% =&quot;; x%
+50 ERROR 57                   &apos;ERR 57 &quot;Device I/O error.&quot;
+
+Handler:
+  PRINT
+  PRINT &quot;Error &quot;; ERR; &quot; on line &quot;; ERL
+  SELECT CASE ERR
+    CASE 71
+      PRINT &quot;Using device &quot;; ERDEV$; &quot; device error code = &quot;; ERDEV
+      RESUME NEXT
+    CASE 11
+      INPUT &quot;What value do you want to divide by&quot;; y%
+      RESUME                  &apos;Retry line 30 with new value of y%.
+    CASE ELSE
+      PRINT &quot;Unexpected error, ending program.&quot;
+      END
+  END SELECT</pre>
+  </body>
+</html>

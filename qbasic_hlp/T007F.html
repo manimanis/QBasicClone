@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>DIM, REDIM Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T007F</span>
+      <a href="index.html#T007F" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+DIM declares an array or specifies a data type for a nonarray variable.
+REDIM declares or resizes a dynamic array, erasing any previous values.
+
+<b>DIM [SHARED] variable[(subscripts)] [AS type]</b>
+             <b>[,variable[(subscripts)] [AS type]]...</b>
+<b>REDIM [SHARED] variable(subscripts) [AS type]</b>
+               <b>[,variable(subscripts) [AS type]]...</b>
+
+    ■ <b>SHARED</b>        Specifies that variables are shared with all SUB or
+                    FUNCTION procedures in the module.
+    ■ <b>variable</b>      The name of an array or variable.
+    ■ <b>subscripts</b>    Dimensions of the array, expressed as follows:
+
+                    <b>[lower TO] upper [,[lower TO] upper]...</b>
+
+                    <b>lower</b>    The lower bound of the array&apos;s subscripts. The
+                             default lower bound is zero.
+                    <b>upper</b>    The upper bound.
+
+    ■ <b>AS type</b>       Declares the data type of the array or variable
+                    (INTEGER, LONG, SINGLE, DOUBLE, STRING, or a
+                    user-defined data type).
+
+    ■ DIM declares either static or dynamic arrays. Unless array storage has
+      been determined by $STATIC, $DYNAMIC, or COMMON, arrays dimensioned
+      with numbers are static and arrays dimensioned with variables are
+      dynamic. REDIM always declares dynamic arrays.
+    ■ Static array storage is allocated when you start a program and
+      remains fixed. Dynamic array storage is allocated while a program runs.
+
+Example:
+    &apos; $DYNAMIC
+    DIM A(49, 49)
+    REDIM A(19, 14)
+
+See Also    <i>◄</i><a href="T007C.html">COMMON</a><i>►</i>    <i>◄</i><a href="T0080.html">ERASE</a><i>►</i>    <i>◄</i><a href="T0083.html">OPTION BASE</a><i>►</i>    <i>◄</i><a href="T0085.html">SHARED, STATIC</a><i>►</i>
+            <i>◄</i><a href="T007B.html">$STATIC, $DYNAMIC</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

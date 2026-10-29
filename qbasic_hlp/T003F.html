@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>PMAP Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T003F</span>
+      <a href="index.html#T003F" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the window coordinate equivalent to a viewport coordinate, as defined
+by the WINDOW statement, or vice versa.
+
+<b>PMAP (startcoordinate#, n%)</b>
+
+    ■ <b>startcoordinate#</b>    A window or viewport coordinate.
+    ■ <b>n%</b>                  A value indicating which coordinate is returned:
+
+                          startcoordinate#        n%   Returns
+                          ═════════════════════   ══   ═════════════════════
+                          Window x coordinate     0    Viewport x coordinate
+                          Window y coordinate     1    Viewport y coordinate
+                          Viewport x coordinate   2    Window x coordinate
+                          Viewport y coordinate   3    Window y coordinate
+
+Example:
+    &apos;This example requires a graphics adapter that supports screen mode 1.
+    SCREEN 1
+    WINDOW SCREEN (0, 0)-(100, 100)
+    PRINT &quot;Logical x=50, physical x=&quot;; PMAP(50, 0)
+    PRINT &quot;Logical y=50, physical y=&quot;; PMAP(50, 1)
+
+See Also    <i>◄</i><a href="T0040.html">POINT</a><i>►</i>    <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i></pre>
+  </body>
+</html>

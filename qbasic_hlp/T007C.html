@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>COMMON Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T007C</span>
+      <a href="index.html#T007C" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Defines global variables that can be shared throughout a program or between
+chained programs.
+
+<b>COMMON [SHARED] variablelist</b>
+
+    ■ <b>SHARED</b>          Indicates that variables are shared with all SUB
+                      or FUNCTION procedures.
+    ■ <b>variablelist</b>    One or more variables to be shared:
+
+                      <b>variable[( )] [AS type] [, variable[( )] [AS type]]...</b>
+
+                      <b>variable</b>    A Basic variable name. Variable names can
+                                  consist of up to 40 characters and must
+                                  begin with a letter. Valid characters are
+                                  A-Z, 0-9, and period (.).
+                      <b>type</b>        The data type of the variable (INTEGER,
+                                  LONG, SINGLE, DOUBLE, STRING, or a
+                                  user-defined data type).
+
+    ■ Unless it has been declared as a static array in a preceding DIM
+      statement, an array variable in a COMMON statement is a dynamic array.
+      Its dimensions must be set in a later DIM or REDIM statement.
+
+See Also    <i>◄</i><a href="T008B.html">CHAIN</a><i>►</i>    <i>◄</i><a href="T007F.html">DIM, REDIM</a><i>►</i>    <i>◄</i><a href="T006C.html">FUNCTION</a><i>►</i>
+            <i>◄</i><a href="T0085.html">SHARED, STATIC</a><i>►</i>           <i>◄</i><a href="T006E.html">SUB</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>FUNCTION Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T006C</span>
+      <a href="index.html#T006C" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Defines a FUNCTION procedure.
+
+<b>FUNCTION name [(parameterlist)] [STATIC]</b>
+    <b>[statementblock]</b>
+  <b>name = expression</b>
+    <b>[statementblock]</b>
+<b>END FUNCTION</b>
+
+    ■ <b>name</b>             The name of the function and the data type it returns,
+                       specified by a data-type suffix (%, &amp;, !, #, or $).
+    ■ <b>parameterlist</b>    One or more variables that specify parameters to be
+                       passed to the function when it is called:
+
+                       <b>variable[( )] [AS type] [, variable[( )] [AS type]]...</b>
+
+                       <b>variable</b>    A Basic variable name.
+                       <b>type</b>        The data type of the variable (INTEGER,
+                                   LONG, SINGLE, DOUBLE, STRING, or a
+                                   user-defined data type).
+
+    ■ <b>STATIC</b>           Specifies that the values of the function&apos;s local
+                       variables are saved between function calls.
+    ■ <b>expression</b>       The return value of the function.
+
+    ■ When you call the function, you can specify that an argument&apos;s value
+      will not be changed by the function by enclosing the argument in
+      parentheses.
+
+
+Example:
+    The program REMLINE.BAS illustrates calling FUNCTION procedures. To view
+    or run this program, load REMLINE.BAS using the Open command from the
+    File menu.
+
+See Also    <i>◄</i><a href="T0069.html">DECLARE</a><i>►</i>    <i>◄</i><a href="T006A.html">DEF FN</a><i>►</i>    <i>◄</i><a href="T008E.html">EXIT</a><i>►</i>    <i>◄</i><a href="T0085.html">SHARED, STATIC</a><i>►</i>    <i>◄</i><a href="T006E.html">SUB</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>STRIG Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0075</span>
+      <a href="index.html#T0075" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the status of a joystick trigger.
+
+<b>STRIG(n%)</b>
+
+    ■ <b>n%</b>    A value that specifies a joystick status condition:
+
+            n%    Condition
+            ══    ════════════════════════════════════════════════════════
+            0     Lower joystick A trigger was pressed since last STRIG(0)
+            1     Lower joystick A trigger is currently pressed
+            2     Lower joystick B trigger was pressed since last STRIG(2)
+            3     Lower joystick B trigger is currently pressed
+            4     Upper joystick A trigger was pressed since last STRIG(4)
+            5     Upper joystick A trigger is currently pressed
+            6     Upper joystick B trigger was pressed since last STRIG(6)
+            7     Upper joystick B trigger is currently pressed
+
+    ■ STRIG returns -1 if the condition is true, 0 otherwise.
+
+Example:
+    PRINT &quot;Press Esc to exit.&quot;
+    DO
+        IF STRIG(0) OR INKEY$ = CHR$(27) THEN EXIT DO
+    LOOP
+    DO
+        BEEP                  &apos;BEEP while trigger A is pressed.
+    LOOP WHILE STRIG(1)
+
+See Also    <i>◄</i><a href="T0047.html">STICK</a><i>►</i>    <i>◄</i><a href="T0076.html">STRIG, ON STRIG Statements</a><i>►</i></pre>
+  </body>
+</html>

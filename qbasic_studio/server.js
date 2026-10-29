@@ -13,6 +13,7 @@ const RUNNER_BAT = path.resolve(__dirname, 'run_program.bat');
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/help', express.static(path.join(ROOT_DIR, 'qbasic_hlp')));
 app.use('/vs', express.static(path.join(__dirname, 'node_modules', 'monaco-editor', 'min', 'vs')));
 
 // Gestion du processus QBasic en cours d'exécution

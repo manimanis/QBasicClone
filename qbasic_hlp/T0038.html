@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>KEY Statement (Assignment)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0038</span>
+      <a href="index.html#T0038" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Assigns string values to function keys and, optionally, displays key values.
+
+<b>KEY key%, stringexpression$</b>
+<b>KEY LIST</b>
+<b>KEY ON</b>
+<b>KEY OFF</b>
+
+    ■ <b>key%</b>                 The number of a function key. Use 1 through 10 for
+                           function keys F1 through F10. Use 30 and 31 for
+                           function keys F11 and F12 on extended keyboards.
+    ■ <b>stringexpression$</b>    A string of up to 15 characters that is returned
+                           when the function key is pressed.
+    ■ <b>LIST</b>                 Displays the assignments for each key.
+    ■ <b>ON</b>                   Turns on the function-key display line.
+    ■ <b>OFF</b>                  Turns off the function-key display line.
+
+Example:
+    KEY 4, &quot;MENU&quot; + CHR$ (13)
+    KEY LIST
+    KEY 4, &quot;&quot;
+    KEY LIST
+
+See Also    <i>◄</i><a href="T0070.html">KEY, ON KEY (Event Trapping)</a><i>►</i></pre>
+  </body>
+</html>

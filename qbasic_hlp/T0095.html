@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>SELECT CASE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0095</span>
+      <a href="index.html#T0095" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Executes one of several statement blocks depending on the value of an
+expression.
+
+<b>SELECT CASE testexpression</b>
+<b>CASE expressionlist1</b>
+  <b>[statementblock-1]</b>
+<b>[CASE expressionlist2</b>
+  <b>[statementblock-2]]...</b>
+<b>[CASE ELSE</b>
+  <b>[statementblock-n]]</b>
+<b>END SELECT</b>
+
+    ■ <b>testexpression</b>      Any numeric or string expression.
+    ■ <b>expressionlist1</b>     One or more expressions to match testexpression.
+      <b>expressionlist2</b>     The IS keyword must precede any relational operators
+                          in an expression.
+    ■ <b>statementblock-1</b>    One or more statements on one or more lines.
+      <b>statementblock-2</b>
+      <b>statementblock-n</b>
+
+    ■ The expressionlist arguments can have any of these forms or a
+      combination of them, separated by commas:
+
+      <b>expression[,expression]...</b>
+      <b>expression TO expression</b>
+      <b>IS relational-operator expression</b>
+
+          <b>expression</b>             Any numeric or string expression compatible
+                                 with testexpression.
+          <b>relational-operator</b>    One of the following relational operators:
+                                   &lt;, &lt;=, &gt;, &gt;=, &lt;&gt;, or =.
+
+Example:
+    INPUT &quot;Enter acceptable level of risk (1-5): &quot;, Total
+    SELECT CASE Total
+
+        CASE IS &gt;= 5
+            PRINT &quot;Maximum risk and potential return.&quot;
+            PRINT &quot;Choose stock investment plan.&quot;
+
+        CASE 2 TO 4
+            PRINT &quot;Moderate to high risk and potential return.&quot;
+            PRINT &quot;Choose mutual fund or corporate bonds.&quot;
+
+        CASE 1
+            PRINT &quot;No risk, low return.&quot;
+            PRINT &quot;Choose IRA.&quot;
+
+    END SELECT
+
+See Also    <i>◄</i><a href="T0092.html">IF...THEN...ELSE</a><i>►</i></pre>
+  </body>
+</html>

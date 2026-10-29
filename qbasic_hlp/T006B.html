@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>ENVIRON$ Function, ENVIRON Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T006B</span>
+      <a href="index.html#T006B" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+ENVIRON$ returns a DOS environment string.
+ENVIRON changes or adds an environment string in the DOS environment table.
+
+<b>ENVIRON$ (env-variable$)</b>
+<b>ENVIRON$ (n%)</b>
+<b>ENVIRON stringexpression$</b>
+
+    ■ <b>env-variable$</b>        The name of a DOS environment variable.
+    ■ <b>n%</b>                   Specifies that ENVIRON$ returns the nth string
+                           from the environment string table.
+    ■ <b>stringexpression$</b>    The name and setting of a DOS environment
+                           variable (such as PATH or PROMPT) in one of the
+                           following forms:
+
+                           <b>env-variable$=env-string$</b>
+                           <b>env-variable$ env-string$</b>
+
+    ■ Changes made by the ENVIRON statement are erased when the program ends.
+
+Example:
+    ENVIRON &quot;PATH=TEST&quot;
+    PRINT ENVIRON$(&quot;PATH&quot;)</pre>
+  </body>
+</html>

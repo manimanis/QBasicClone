@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>ON...GOSUB, ON...GOTO Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0093</span>
+      <a href="index.html#T0093" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Branch to one of several locations, depending on the value of an expression.
+
+<b>ON expression% GOSUB line-list</b>
+<b>ON expression% GOTO line-list</b>
+
+    ■ <b>expression%</b>    An expression in the range 0 through 255.
+    ■ <b>line-list</b>      A set of labels or line numbers. If the value of the
+                     expression is 1, the program branches to the first line
+                     in the list; if the expression is 2, it branches to the
+                     second line, and so on.
+
+    ■ SELECT CASE provides a better way to perform multiple branching.
+
+Example:
+    FOR i% = 1 TO 2
+        ON i% GOSUB One, Two
+    NEXT i%
+    END
+
+    One: PRINT &quot;One&quot;
+    RETURN
+    Two: PRINT &quot;Two&quot;
+    RETURN
+
+See Also    <i>◄</i><a href="T0079.html">ON Keyword</a><i>►</i>    <i>◄</i><a href="T0095.html">SELECT CASE</a><i>►</i></pre>
+  </body>
+</html>

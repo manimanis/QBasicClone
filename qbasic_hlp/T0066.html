@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>TIME$ Function and Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0066</span>
+      <a href="index.html#T0066" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+The TIME$ function returns the computer&apos;s current system time.
+The TIME$ statement sets the current system time on your computer.
+
+<b>TIME$</b>
+<b>TIME$ = stringexpression$</b>
+
+    ■ <b>stringexpression$</b>    The time in one of the following forms:
+                             hh          Sets the hour; minutes and seconds
+                                         default to 00.
+                             hh:mm       Sets the hour and minutes; seconds
+                                         default to 00.
+                             hh:mm:ss    Sets the hour, minutes, and seconds.
+
+    ■ The TIME$ function returns a string in the form hh:mm:ss.
+
+Example:
+    PRINT TIME$
+    TIME$ = &quot;08:00:58&quot;    &apos;Note: The new system time remains in effect until
+                          &apos;      you change it again.
+    PRINT &quot;Time set to &quot;; TIME$
+
+See Also    <i>◄</i><a href="T0061.html">DATE$</a><i>►</i></pre>
+  </body>
+</html>

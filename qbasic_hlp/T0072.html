@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>PEN, ON PEN Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0072</span>
+      <a href="index.html#T0072" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+PEN enables, disables, or suspends light-pen event trapping.
+If event trapping is enabled, ON PEN branches to a subroutine whenever
+the light pen is activated.
+
+<b>PEN ON</b>
+<b>PEN OFF</b>
+<b>PEN STOP</b>
+<b>ON PEN GOSUB line</b>
+
+    ■ <b>PEN ON</b>      Enables light-pen event trapping.
+    ■ <b>PEN OFF</b>     Disables light-pen event trapping.
+    ■ <b>PEN STOP</b>    Suspends light-pen event trapping. Events are processed
+                  once event trapping is enabled by PEN ON.
+    ■ <b>line</b>        The label or number of the first line of the
+                  event-trapping subroutine.
+
+Example:
+    &apos;This example requires a light pen.
+    ON PEN GOSUB Handler
+    PEN ON
+    PRINT &quot;Press Esc to exit.&quot;
+    DO UNTIL INKEY$ = CHR$(27): LOOP
+    END
+
+Handler:
+    PRINT &quot;Pen is at row&quot;; PEN(6); &quot;, column&quot;; PEN(7)
+    RETURN
+
+
+See Also    <i>◄</i><a href="T003D.html">PEN Function</a><i>►</i></pre>
+  </body>
+</html>

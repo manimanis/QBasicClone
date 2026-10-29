@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>SCREEN Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T005A</span>
+      <a href="index.html#T005A" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the ASCII value or color attribute of a character at a specified
+screen location.
+
+<b>SCREEN (row%,column% [,colorflag%])</b>
+
+    ■ <b>row%</b>          The row coordinate of a character.
+    ■ <b>column%</b>       The column coordinate of a character.
+    ■ <b>colorflag%</b>    A value (0 or 1) that specifies what is returned.
+
+                    Value             Returns
+                    ══════════════    ════════════════════════════════
+                    0 (or omitted)    The character&apos;s ASCII code.
+                    1                 The character&apos;s color attribute.
+
+Example:
+    CLS
+    PRINT &quot;Hello&quot;
+    PRINT &quot;The ASCII value of character at 1,1 is&quot;; SCREEN(1, 1)
+
+See Also    <i>◄</i><a href="T0040.html">POINT</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN Statement</a><i>►</i>
+            <i>◄</i><a href="T0010.html">ASCII Character Codes</a><i>►</i>    <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i></pre>
+  </body>
+</html>

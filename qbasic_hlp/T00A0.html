@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>DEF SEG Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T00A0</span>
+      <a href="index.html#T00A0" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Sets the current segment address.
+
+<b>DEF SEG [=address]</b>
+
+    ■ <b>address</b>    A segment address used by BLOAD, BSAVE, CALL ABSOLUTE,
+                 PEEK, or POKE; a value in the range 0 through 65,535. If
+                 address is omitted, DEF SEG resets the current segment
+                 address to the default data segment.
+
+Example:
+    DEF SEG = 0
+    Status% = PEEK(&amp;H417)              &apos;Read keyboard status.
+    POKE &amp;H417, (Status% XOR &amp;H40)     &apos;Change Caps Lock state, bit 6.
+
+See Also    <i>◄</i><a href="T001B.html">BSAVE, BLOAD</a><i>►</i>    <i>◄</i><a href="T008A.html">CALL ABSOLUTE</a><i>►</i>    <i>◄</i><a href="T00AB.html">PEEK, POKE</a><i>►</i></pre>
+  </body>
+</html>

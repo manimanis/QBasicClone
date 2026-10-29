@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>PRINT USING, LPRINT USING Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0043</span>
+      <a href="index.html#T0043" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+PRINT USING writes formatted output to the screen or to a file.
+LPRINT USING prints formatted output on the printer LPT1.
+
+<b>PRINT [#filenumber%,] USING formatstring$; expressionlist [{; | ,}]</b>
+<b>LPRINT USING formatstring$; expressionlist [{; | ,}]</b>
+
+    ■ <b>filenumber%</b>       The number of an open sequential file.
+    ■ <b>formatstring$;</b>    A string expression containing one or more
+                        <i>◄</i><a href="T0044.html">format specifiers</a><i>►</i>.
+    ■ <b>expressionlist</b>    A list of one or more numeric or string expressions
+                        to print, separated by commas, semicolons, spaces,
+                        or tabs.
+    ■ <b>{; | ,}</b>           Determines where the next output begins:
+                          ; means print immediately after the last value.
+                          , means print at the start of the next print zone.
+                            Print zones are 14 characters wide.
+Example:
+    a = 123.4567
+    PRINT USING &quot;###.##&quot;; a
+    LPRINT USING &quot;+###.####&quot;; a
+    a$ = &quot;ABCDEFG&quot;
+    PRINT USING &quot;!&quot;; a$
+    LPRINT USING &quot;\ \&quot;; a$
+
+See Also    <i>◄</i><a href="T0042.html">PRINT, LPRINT</a><i>►</i>    <i>◄</i><a href="T004B.html">WIDTH</a><i>►</i></pre>
+  </body>
+</html>

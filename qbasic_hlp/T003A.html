@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>LOCATE Statement, CSRLIN, POS Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T003A</span>
+      <a href="index.html#T003A" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+LOCATE moves the cursor to a specified position on the screen.
+CSRLIN returns the current row position of the cursor.
+POS returns the current column position of the cursor.
+
+<b>LOCATE  [row%] [,[column%] [,[cursor%] [,start% [,stop%]]]]</b>
+<b>CSRLIN</b>
+<b>POS(expression)</b>
+
+    ■ <b>row%</b> and <b>column%</b>    The number of the row and column to which the
+                          cursor moves.
+    ■ <b>cursor%</b>             Specifies whether the cursor is visible:
+                            0 = invisible, 1 = visible
+    ■ <b>start%</b> and <b>stop%</b>    Integer expressions in the range 0 through 31
+                          that specify the first and last cursor scan lines.
+                          You can change the cursor size by changing the
+                          cursor scan lines.
+    ■ <b>expression</b>          Any expression.
+
+Example:
+    CLS
+    LOCATE 5, 5
+    MyRow% = CSRLIN
+    MyCol% = POS(0)
+    PRINT &quot;Position 1 (Press any key)&quot;
+    DO
+    LOOP WHILE INKEY$ = &quot;&quot;
+    LOCATE (MyRow% + 2), (MyCol% + 2)
+    PRINT &quot;Position 2&quot;</pre>
+  </body>
+</html>

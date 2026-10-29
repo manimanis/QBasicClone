@@ -186,29 +186,40 @@ node tests/run_all_tests.js
 
 ---
 
+## 📚 Documentation & Aide QBasic Décompilée (QBASIC.HLP)
+
+Le fichier d'aide original MS-DOS **`QBASIC.HLP`** a été intégralement décompilé sous la forme d'un **site web moderne et autonome** :
+
+- **Accès direct hors-ligne** : Double-cliquez sur [`open_help.bat`](file:///c:/xampp-school/htdocs/MesProjets/QBasic/open_help.bat) ou ouvrez [`qbasic_hlp/index.html`](file:///c:/xampp-school/htdocs/MesProjets/QBasic/qbasic_hlp/index.html).
+- **Intégration QBasic Studio** : Bouton `❓ Aide (F1)` dans la barre d'outils, ou touche `F1` sur n'importe quel mot-clé dans Monaco Editor.
+- **366 rubriques & 517 contextes** : Guide de survie, sommaire, index A-Z, 11 catégories de programmation, tables ASCII/ScanCodes/erreurs.
+- **3 Thèmes** : Rétro MS-DOS (Bleu QBasic `#0000a8`), Dark Studio moderne et Clair Documentation.
+- **Moteur de recherche instantané** plein texte avec surbrillance (`Ctrl+K` ou `/`).
+- **Bouton Copier** sur tous les exemples de code.
+
+---
+
 ## 📂 Structure du dépôt
 
 ```
 QBasic/
 ├── QBASIC.EXE               # Exécutable MS-DOS 16-bit d'origine
-├── QBASIC_UNPACKED.EXE      # Binaire décompressé (PKLITE désarchivé)
-├── qbasic_disasm.asm        # Désassemblage complet x86 16-bit
-├── depklite.c               # Décompresseur PKLITE DOS
-├── mz_info.c / hex_dump.c   # Outils d'inspection binaire MZ
+├── QBASIC.HLP               # Fichier d'aide QuickHelp binaire officiel
+├── open_help.bat            # Lanceur en un clic du site web d'aide
+├── qbasic_hlp/              # Site web d'aide QBasic complet décompilé
+│   ├── index.html           # Portail SPA d'aide interactif avec recherche & thèmes
+│   ├── app.js               # Moteur de navigation, recherche plein texte et hash router
+│   ├── style.css            # Feuilles de style (Rétro DOS, Sombre, Clair)
+│   ├── topics.js / .json    # 366 rubriques avec HTML et texte intégral
+│   ├── contexts.js / .json  # 517 contextes et mots-clés indexés
+│   ├── navigation.js / .json# Sommaire, index A-Z et 11 catégories thématiques
+│   └── T0000.html..T016D.html # 366 pages HTML individuelles stylisées
+├── qbasic_studio/           # IDE QBasic professionnel basé sur Monaco Editor
+├── qbasic_win/              # Interpréteur natif Windows 64-bit (SDL2/C11)
+├── utils/                   # Outils de décompilation et rétro-ingénierie
+│   └── helpconvert.exe      # Décompilateur Microsoft QuickHelp (.HLP -> HTML/JSON)
 ├── README.md                # Documentation générale
-└── qbasic_win/              # Projet natif Windows 64-bit
-    ├── main.c               # Point d'entrée et gestion des switches CLI
-    ├── qb_interp.c / .h     # Moteur d'interprétation et pile d'exécution
-    ├── win_compat.c / .h    # Rendu SDL2, audio MML, mémoire DOS, graphismes
-    ├── qb_types.c / .h      # Environnements, variables et conversions
-    ├── sdl_inkey.c / .h     # Gestion clavier et événements SDL2
-    ├── qb_font.h            # Polices bitmap CP437 DOS
-    ├── Makefile             # Fichier de construction MinGW
-    ├── qbasic_win.exe       # Binaire exécutable compilé
-    └── tests/               # Suites de tests et jeux
-        ├── run_all_tests.js # Lanceur de tests automatisés
-        ├── games/           # GORILLA.BAS, NIBBLES.BAS, DEMO.BAS
-        └── qbasic-programs/ # Bibliothèque de programmes réels
+└── ...
 ```
 
 ---

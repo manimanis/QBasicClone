@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>RUN Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0094</span>
+      <a href="index.html#T0094" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Runs the current program or a specified program.
+
+<b>RUN [{linenumber | file$}]</b>
+
+    ■ <b>linenumber</b>    The line number in the current program where execution
+                    should begin. If no line number is specified, execution
+                    begins at the first executable line.
+    ■ <b>file$</b>         The name of a Basic source file. QBasic assumes
+                    a .BAS extension.
+
+    ■ RUN closes all files and clears program memory before loading a
+      program. Use the CHAIN statement to run a program without closing
+      open files.
+
+Example:
+    &apos;Assumes the program TEST.BAS is in a \DOS directory.
+    RUN &quot;C:\DOS\TEST.BAS&quot;
+
+See Also    <i>◄</i><a href="T008B.html">CHAIN</a><i>►</i></pre>
+  </body>
+</html>

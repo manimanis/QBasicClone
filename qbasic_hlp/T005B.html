@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>VIEW Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T005B</span>
+      <a href="index.html#T005B" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Defines the size and location of a viewport where graphics can be displayed
+on the screen.
+
+<b>VIEW [[SCREEN] (x1!,y1!)-(x2!,y2!) [,[color%] [,border%]]]</b>
+
+    ■ <b>SCREEN</b>                 Specifies that coordinates are relative to the
+                             screen rather than the viewport.
+    ■ <b>(x1!,y1!)-(x2!,y2!)</b>    The coordinates of diagonally opposite corners
+                             of the viewport.
+    ■ <b>color%</b>                 A color attribute that sets the viewport fill
+                             color.
+    ■ <b>border%</b>                A color attribute that sets the viewport border
+                             color.
+
+    ■ If all arguments are omitted, the entire screen is the viewport.
+    ■ The available color attributes depend on your graphics adapter and the
+      screen mode set by the most recent SCREEN statement.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    VIEW (10, 10)-(300, 180), , 1
+    LOCATE 1, 11: PRINT &quot;A big graphics viewport&quot;;
+    VIEW SCREEN (80, 80)-(200, 125), , 1
+    LOCATE 11, 11: PRINT &quot;A small graphics viewport&quot;;
+
+See Also    <i>◄</i><a href="T0034.html">CLS</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T0049.html">VIEW PRINT</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

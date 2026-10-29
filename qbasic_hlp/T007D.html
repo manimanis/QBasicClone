@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>DATA, READ, RESTORE Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T007D</span>
+      <a href="index.html#T007D" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+DATA specifies values to be read by subsequent READ statements.
+READ reads those values and assigns them to variables.
+RESTORE allows READ to reread values in specified DATA statements.
+
+<b>DATA constant[,constant]...</b>
+<b>READ variablelist</b>
+<b>RESTORE [line]</b>
+
+    ■ <b>constant</b>        One or more numeric or string constants specifying
+                      the data to be read. String constants containing
+                      commas, colons, or leading or trailing spaces are
+                      enclosed in quotation marks (&quot; &quot;).
+    ■ <b>variablelist</b>    One or more variables, separated by commas, that are
+                      assigned data values. Variable names can consist of up
+                      to 40 characters and must begin with a letter. Valid
+                      characters are A-Z, 0-9, and period (.).
+    ■ <b>line</b>            The label or line number of a DATA statement. If line
+                      is omitted, the next READ statement reads values in
+                      the first DATA statement in the program.
+
+    ■ DATA statements can be entered only at the module level. They cannot
+      be used in procedures.
+
+Example:
+    FOR i% = 1 TO 3
+        READ a%, b$
+        PRINT a%, b$
+        RESTORE
+    NEXT i%
+    DATA 1, &quot;Repeat&quot;</pre>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>CIRCLE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T004E</span>
+      <a href="index.html#T004E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Draws a circle or ellipse on the screen.
+
+<b>CIRCLE [STEP] (x!,y!),radius![,[color%] [,[start!] [,[end!] [,aspect!]]]]</b>
+
+    ■ <b>STEP</b>       Specifies that coordinates are relative to the current
+                 graphics cursor position.
+    ■ <b>(x!,y!)</b>    The coordinates for the center of the circle or ellipse.
+    ■ <b>radius!</b>    The radius of the circle or ellipse in the units of the
+                 current coordinate system, determined by the most recent
+                 SCREEN, VIEW, and WINDOW statements.
+    ■ <b>color%</b>     A color attribute that sets the circle&apos;s color. The
+                 available color attributes depend on your graphics adapter
+                 and the screen mode set by the most recent SCREEN statement.
+    ■ <b>start!</b>     The starting angle for the arc, in radians.
+    ■ <b>end!</b>       The ending angle for the arc, in radians.
+    ■ <b>aspect!</b>    The ratio of the length of the y axis to the length of the
+                 x axis, used to draw ellipses.
+
+    ■ To convert from degrees to radians, multiply degrees by (PI / 180).
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 2
+    CIRCLE (320, 100), 200
+    CIRCLE STEP (0,0), 100
+
+See Also    <i>◄</i><a href="T004F.html">COLOR</a><i>►</i>    <i>◄</i><a href="T0051.html">DRAW</a><i>►</i>    <i>◄</i><a href="T0054.html">LINE</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

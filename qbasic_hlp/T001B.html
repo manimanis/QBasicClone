@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>BSAVE, BLOAD Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T001B</span>
+      <a href="index.html#T001B" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+BSAVE copies the contents of an area of memory to a file.
+BLOAD loads a file created by BSAVE into memory.
+
+<b>BSAVE filespec$, offset%, length&amp;</b>
+<b>BLOAD filespec$[,offset%]</b>
+
+    ■ <b>filespec$</b>    For BSAVE, a file to which an area of memory (a
+                   byte-for-byte memory image) is copied. For BLOAD,
+                   a memory-image file created by a previous BSAVE.
+    ■ <b>offset%</b>      For BSAVE, the offset of the starting address of the
+                   area of memory being saved. For BLOAD, the offset of
+                   the address where loading starts.
+    ■ <b>length&amp;</b>      The number of bytes to copy (from 0 through 65,535).
+
+    ■ The starting address of the memory area saved or loaded is determined
+      by the offset and the most recent DEF SEG statement.
+
+See Also    <i>◄</i><a href="T00A0.html">DEF SEG</a><i>►</i>    <i>◄</i><a href="T00AF.html">VARPTR, VARSEG</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

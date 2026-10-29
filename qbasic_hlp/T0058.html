@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>SCREEN Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0058</span>
+      <a href="index.html#T0058" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Sets the screen mode and other characteristics of your screen.
+
+<b>SCREEN mode% [,[colorswitch%] [,[activepage%] [,visualpage%]]]</b>
+
+    ■ <b>mode%</b>           Sets the screen mode. See <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i>.
+    ■ <b>colorswitch%</b>    A value (0 or 1) that switches between color and
+                      monocolor display (modes 0 and 1 only):
+
+                      Mode    Value       Action
+                      ════    ════════    ══════════════
+                      0       0           Disables color
+                      0       Nonzero     Enables color
+                      1       0           Enables color
+                      1       Nonzero     Disables color
+
+    ■ <b>activepage%</b>     The screen page that text or graphics output writes to.
+    ■ <b>visualpage%</b>     The screen page that is currently displayed on your
+                      screen.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1        &apos;320 x 200 graphics
+    LINE (110, 70)-(190, 120), , B
+    LINE (0, 0)-(320, 200), 3, , &amp;HFF00
+
+See Also    <i>◄</i><a href="T004E.html">CIRCLE</a><i>►</i>    <i>◄</i><a href="T004F.html">COLOR</a><i>►</i>    <i>◄</i><a href="T0051.html">DRAW</a><i>►</i>    <i>◄</i><a href="T0054.html">LINE</a><i>►</i>      <i>◄</i><a href="T0055.html">PAINT</a><i>►</i>
+            <i>◄</i><a href="T005A.html">SCREEN Function</a><i>►</i>      <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

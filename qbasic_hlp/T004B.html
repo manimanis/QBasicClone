@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>WIDTH Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T004B</span>
+      <a href="index.html#T004B" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Assign an output-line width to a device (such as a printer) or file, or
+change the number of screen-display columns and rows.
+
+<b>WIDTH [columns%] [,rows%]</b>
+<b>WIDTH {#filenumber% | device$}, columns%</b>
+<b>WIDTH LPRINT columns%</b>
+
+    ■ <b>columns%</b>        The desired width in columns. Screen display width
+                      must be 40 or 80 columns.
+    ■ <b>rows%</b>           The desired screen-display height in rows. The value
+                      can be 25, 30, 43, 50, or 60, depending on your
+                      display adapter and screen mode.
+    ■ <b>#filenumber%</b>    The number of an open file or device.
+    ■ <b>device$</b>         The name of a device:
+                        SCRN:, COM1:, COM2:, LPT1:, LPT2:, LPT3:
+
+Example:
+    OPEN &quot;LPT1:&quot; FOR OUTPUT AS #1
+    WIDTH #1, 132
+
+See Also    <i>◄</i><a href="T0042.html">PRINT, LPRINT</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T0049.html">VIEW PRINT</a><i>►</i></pre>
+  </body>
+</html>

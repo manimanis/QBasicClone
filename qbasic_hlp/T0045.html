@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>SOUND Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0045</span>
+      <a href="index.html#T0045" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Generates a sound through your computer&apos;s speaker.
+
+<b>SOUND frequency, duration</b>
+
+    ■ <b>frequency</b>    The frequency of the sound in hertz; a value in the range
+                   37 through 32,767.
+    ■ <b>duration</b>     The number of system clock ticks the sound lasts; a value
+                   in the range 0 through 65,535. There are 18.2 clock ticks
+                   per second.
+
+Example:
+    FOR i% = 440 TO 1000 STEP 5
+    SOUND i%, i% / 1000
+    NEXT i%
+
+See Also    <i>◄</i><a href="T003E.html">PLAY</a><i>►</i></pre>
+  </body>
+</html>

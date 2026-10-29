@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>FIELD Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0020</span>
+      <a href="index.html#T0020" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Allocates space for variables in a random-access file buffer.
+
+<b>FIELD [#]filenumber%, fieldwidth% AS stringvariable$</b>
+                    <b>[,fieldwidth% AS stringvariable$] ...</b>
+
+    ■ <b>filenumber%</b>        The number of an open file.
+    ■ <b>fieldwidth%</b>        The number of characters in the field.
+    ■ <b>stringvariable$</b>    A variable that identifies the field and contains
+                         field data.
+
+    ■ Record variables usually provide a better way to handle record data.
+
+Example:
+    OPEN &quot;FILEDAT.DAT&quot; FOR RANDOM AS #1 LEN = 80
+    FIELD #1, 30 AS name$, 50 AS address$
+
+See Also    <i>◄</i><a href="T0023.html">GET, PUT</a><i>►</i>    <i>◄</i><a href="T0029.html">LSET, RSET</a><i>►</i>    <i>◄</i><a href="T0087.html">TYPE</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

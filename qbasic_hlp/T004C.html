@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>WINDOW Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T004C</span>
+      <a href="index.html#T004C" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Defines logical dimensions for the current graphics viewport. Use the WINDOW
+statement to define your own viewport coordinate system.
+
+<b>WINDOW [[SCREEN] (x1!,y1!)-(x2!,y2!)]</b>
+
+    ■ <b>SCREEN</b>       Inverts the normal Cartesian direction of the y screen
+                   coordinates so that y values increase from the top of the
+                   screen to the bottom.
+    ■ <b>(x1!,y1!)</b>    Logical coordinates that map to the upper-left screen
+                   coordinates of the viewport.
+    ■ <b>(x2!,y2!)</b>    Logical coordinates that map to the lower-right screen
+                   coordinates of the viewport.
+
+    ■ WINDOW with no arguments disables the logical coordinate system.
+    ■ Use the VIEW statement to change the size of the viewport.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    FOR i% = 1 TO 10 STEP 2
+        WINDOW (-160 / i%, -100 / i%)-(160 / i%, 100 / i%)
+        CIRCLE (0, 0), 10
+    NEXT i%
+
+See Also    <i>◄</i><a href="T0034.html">CLS</a><i>►</i>    <i>◄</i><a href="T003F.html">PMAP</a><i>►</i>    <i>◄</i><a href="T0040.html">POINT</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004B.html">WIDTH</a><i>►</i></pre>
+  </body>
+</html>

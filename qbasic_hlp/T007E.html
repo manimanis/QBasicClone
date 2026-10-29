@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>DEFtype Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T007E</span>
+      <a href="index.html#T007E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Sets the default data type for variables, DEF FN functions, and FUNCTION
+procedures.
+
+<b>DEFINT letterrange [,letterrange]...</b>
+<b>DEFLNG letterrange [,letterrange]...</b>
+<b>DEFSNG letterrange [,letterrange]...</b>
+<b>DEFDBL letterrange [,letterrange]...</b>
+<b>DEFSTR letterrange [,letterrange]...</b>
+
+    ■ <b>letterrange</b>    A letter or range of letters (such as A-M). QBasic
+                     sets the default data type for variables, DEF FN
+                     functions, and FUNCTION procedures whose names begin
+                     with the specified letter or letters as follows:
+
+                     Statement    Default Data Type
+                     ═════════    ═══════════════════════
+                     DEFINT       Integer
+                     DEFLNG       Long integer
+                     DEFSNG       Single precision
+                     DEFDBL       Double precision
+                     DEFSTR       String
+
+    ■ A data-type suffix (%, &amp;, !, #, or $) always takes precedence over a
+      DEFtype statement.
+    ■ Single-precision is the default data type if you do not specify a
+      DEFtype statement.
+    ■ After you specify a DEFtype statement in your program, QBasic
+      automatically inserts a corresponding DEFtype statement in each
+      procedure you create.
+
+Example:
+    DEFDBL A-Z
+    a = SQR(3)
+    PRINT &quot;Square root of 3 = &quot;; a
+
+See Also    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

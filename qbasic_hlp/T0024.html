@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>INPUT$ Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0024</span>
+      <a href="index.html#T0024" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns a string of characters read from a specified file.
+
+<b>INPUT$(n[,[#]filenumber%])</b>
+
+    ■ <b>n</b>              The number of characters (bytes) to read.
+    ■ <b>filenumber%</b>    The number of an open file. If filenumber% is
+                     omitted, INPUT$ reads from the keyboard.
+
+Example:
+    OPEN &quot;TEST.DAT&quot; FOR OUTPUT AS #1
+    PRINT #1, &quot;The text&quot;
+    CLOSE
+    OPEN &quot;TEST.DAT&quot; FOR INPUT AS #1
+    PRINT INPUT$(3, 1)        &apos;Print first 3 characters.
+    CLOSE
+
+See Also    <i>◄</i><a href="T0037.html">INPUT, LINE INPUT</a><i>►</i></pre>
+  </body>
+</html>

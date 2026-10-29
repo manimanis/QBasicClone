@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>STRIG, ON STRIG Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0076</span>
+      <a href="index.html#T0076" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+STRIG enables, disables, or suspends joystick event trapping.
+If event trapping is enabled, ON STRIG branches to a subroutine whenever
+a specified joystick trigger is pressed.
+
+<b>STRIG(n%) ON</b>
+<b>STRIG(n%) OFF</b>
+<b>STRIG(n%) STOP</b>
+<b>ON STRIG(n%) GOSUB line</b>
+
+    ■ <b>n%</b>                A value that specifies a joystick trigger:
+
+                        n%    Trigger
+                        ══    ═════════════════════════
+                        0     Lower trigger, joystick A
+                        2     Lower trigger, joystick B
+                        4     Upper trigger, joystick A
+                        6     Upper trigger, joystick B
+
+    ■ <b>STRIG(n%) ON</b>      Enables joystick event trapping.
+    ■ <b>STRIG(n%) OFF</b>     Disables joystick event trapping.
+    ■ <b>STRIG(n%) STOP</b>    Suspends joystick event trapping. Events are
+                        processed once event trapping is enabled by STRIG ON.
+    ■ <b>line</b>              The label or number of the first line of the
+                        event-trapping subroutine.
+
+Example:
+    &apos;This example requires a joystick.
+    ON STRIG(0) GOSUB Handler
+    STRIG(0) ON
+    PRINT &quot;Press Esc to exit.&quot;
+    DO UNTIL INKEY$ = CHR$(27): LOOP
+    END
+
+Handler:
+    PRINT &quot;Joystick trigger is depressed.&quot;
+    RETURN
+
+See Also    <i>◄</i><a href="T0047.html">STICK</a><i>►</i>    <i>◄</i><a href="T0075.html">STRIG Function</a><i>►</i></pre>
+  </body>
+</html>

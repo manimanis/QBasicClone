@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>PALETTE, PALETTE USING Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0056</span>
+      <a href="index.html#T0056" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Change the color assignments of color attributes in the current screen mode.
+PALETTE and PALETTE USING work only on systems equipped with EGA, VGA, or
+MCGA adapters.
+
+<b>PALETTE [attribute%,color&amp;]</b>
+<b>PALETTE USING arrayname#[(index%)]</b>
+
+    ■ <b>attribute%</b>    The color attribute to change.
+    ■ <b>color&amp;</b>        A color value to assign to an attribute.
+    ■ <b>arrayname#</b>    An array of color values to assign to the current screen
+                    mode&apos;s set of attributes. The array must be large enough
+                    to assign colors to all the attributes.
+    ■ <b>index%</b>        The index of the first array element to assign to an
+                    attribute.
+
+    ■ The available color attributes and values depend on your graphics
+      adapter and the screen mode set by the most recent SCREEN statement.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    PALETTE 0, 1
+    SCREEN 1
+    FOR i% = 0 TO 3: a%(i%) = i%: NEXT i%
+    LINE (138, 35)-(288, 165), 3, BF
+    LINE (20, 10)-(160, 100), 2, BF
+    DO
+        FOR i% = 0 TO 3
+            a%(i%) = (a%(i%) + 1) MOD 16
+        NEXT i%
+        PALETTE USING a%(0)
+    LOOP WHILE INKEY$ = &quot;&quot;
+
+See Also    <i>◄</i><a href="T004F.html">COLOR</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

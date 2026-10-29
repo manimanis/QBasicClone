@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>EOF Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T001E</span>
+      <a href="index.html#T001E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Tests for the end of a file. EOF returns true (nonzero) if the end of a file
+has been reached.
+
+<b>EOF(filenumber%)</b>
+
+    ■ <b>filenumber%</b>    The number of an open file.
+
+Example:
+    CLS
+    OPEN &quot;TEST.DAT&quot; FOR OUTPUT AS #1
+    FOR i% = 1 TO 10
+        WRITE #1, i%, 2 * i%, 5 * i%
+    NEXT i%
+    CLOSE #1
+    OPEN &quot;TEST.DAT&quot; FOR INPUT AS #1
+    DO
+        LINE INPUT #1, a$
+        PRINT a$
+    LOOP UNTIL (EOF(1))
+
+See Also    <i>◄</i><a href="T001D.html">CLOSE</a><i>►</i>    <i>◄</i><a href="T0026.html">LOC</a><i>►</i>    <i>◄</i><a href="T0028.html">LOF</a><i>►</i>    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i></pre>
+  </body>
+</html>

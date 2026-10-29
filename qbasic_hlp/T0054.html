@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>LINE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0054</span>
+      <a href="index.html#T0054" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Draws a line or rectangle on the screen.
+
+<b>LINE [[STEP](x1!,y1!)]-[STEP](x2!,y2!) [,[color%] [,[B | BF] [,style%]]]</b>
+
+    ■ <b>STEP</b>          Specifies that coordinates are relative to the current
+                    graphics cursor position.
+    ■ <b>(x1!,y1!)</b>,    The screen coordinates of the start of the line and of
+      <b>(x2!,y2!)</b>     the end of the line.
+    ■ <b>color%</b>        A color attribute that sets the color of the line or
+                    rectangle. The available color attributes depend on your
+                    graphics adapter and the screen mode set by the most
+                    recent SCREEN statement.
+    ■ <b>B</b>             Draws a rectangle instead of a line.
+    ■ <b>BF</b>            Draws a filled box.
+    ■ <b>style%</b>        A 16-bit value whose bits set whether or not pixels are
+                    drawn. Use to draw dashed or dotted lines.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    LINE (110, 70)-(190, 120), , B
+    LINE (0, 0)-(320, 200), 3, , &amp;HFF00
+
+See Also    <i>◄</i><a href="T004E.html">CIRCLE</a><i>►</i>    <i>◄</i><a href="T0037.html">INPUT, LINE INPUT</a><i>►</i>    <i>◄</i><a href="T0041.html">PRESET, PSET</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

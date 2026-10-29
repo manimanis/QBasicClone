@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>GOSUB...RETURN Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0090</span>
+      <a href="index.html#T0090" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Branches to and returns from a subroutine.
+
+<b>GOSUB line1</b>
+<b>.</b>
+<b>.</b>
+<b>.</b>
+<b>RETURN [line2]</b>
+
+    ■ <b>line1</b>    The label or line number of the first line of the subroutine.
+    ■ <b>line2</b>    The label or line number where the subroutine returns.
+
+    ■ If you don&apos;t supply a label or line number for RETURN, the program
+      continues execution at the statement following the GOSUB (for
+      subroutine calls) or where an event occurred (for event handling).
+      See the <i>◄</i><a href="T0079.html">ON</a><i>►</i> keyword for information about event-handling statements.
+    ■ SUB and CALL statements provide a better alternative to GOSUB
+      subroutines.
+
+Example:
+    FOR i% = 1 TO 20
+        GOSUB Square
+    NEXT i%
+    END
+
+    Square:
+    PRINT i%, i% * i%
+    RETURN
+
+See Also    <i>◄</i><a href="T0089.html">CALL</a><i>►</i>    <i>◄</i><a href="T0079.html">ON Keyword</a><i>►</i>    <i>◄</i><a href="T0093.html">ON...GOSUB</a><i>►</i>    <i>◄</i><a href="T006E.html">SUB</a><i>►</i></pre>
+  </body>
+</html>

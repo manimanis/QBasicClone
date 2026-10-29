@@ -614,6 +614,21 @@ static QB_Value lval_get(QB_LValue *lval, QB_Env *env) {
 }
 
 static void lval_set(QB_LValue *lval, QB_Env *env, QB_Value val) {
+    bool is_str_var = qb_is_string_var(lval->name);
+    if (is_str_var && val.type == QB_VAL_NUMBER) {
+        QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+        if (interp) qb_trigger_error(interp, 13); // Type mismatch
+        return;
+    } else if (!is_str_var && val.type == QB_VAL_STRING) {
+        size_t nlen = strlen(lval->name);
+        char last_ch = nlen > 0 ? lval->name[nlen - 1] : 0;
+        if (last_ch == '%' || last_ch == '&' || last_ch == '!' || last_ch == '#') {
+            QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+            if (interp) qb_trigger_error(interp, 13); // Type mismatch
+            return;
+        }
+    }
+
     if (lval->is_array) {
         if (!qb_array_set(env, lval->name, lval->dims, lval->indices, val)) {
             QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
@@ -731,6 +746,24 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
         if (strcasecmp(id, "ERL") == 0) {
             QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
             return qb_val_number(interp ? (double)interp->err_line : 0.0);
+        }
+        if (strcasecmp(id, "_ERRORMESSAGE$") == 0 || strcasecmp(id, "_ERROR$") == 0) {
+            QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+            int code = interp ? interp->err_code : 0;
+            skip_whitespace(p);
+            if (**p == '(') {
+                (*p)++;
+                skip_whitespace(p);
+                if (**p != ')') {
+                    QB_Value code_val = qb_eval_expression(env, p);
+                    code = (int)code_val.number;
+                    qb_val_free(&code_val);
+                    skip_whitespace(p);
+                }
+                if (**p == ')') (*p)++;
+            }
+            const char *msg = qb_get_error_message(code);
+            return qb_val_string(msg ? msg : "Unprintable error");
         }
         if (strcasecmp(id, "FREEFILE") == 0) {
             skip_whitespace(p);
@@ -950,6 +983,10 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 return qb_val_number(res);
             }
             if (strcasecmp(id, "SQR") == 0) {
+                if (arg1.number < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                }
                 double res = (arg1.number >= 0) ? sqrt(arg1.number) : 0;
                 qb_val_free(&arg1);
                 return qb_val_number(res);
@@ -975,6 +1012,10 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 return qb_val_number(res);
             }
             if (strcasecmp(id, "LOG") == 0) {
+                if (arg1.number <= 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                }
                 double res = (arg1.number > 0) ? log(arg1.number) : 0;
                 qb_val_free(&arg1);
                 return qb_val_number(res);
@@ -994,15 +1035,18 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
             if (strcasecmp(id, "CHR$") == 0) {
                 int code = (int)arg1.number;
                 qb_val_free(&arg1);
-                if (code >= 0 && code <= 255) {
+                if (code < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                    return qb_val_string("");
+                } else if (code <= 255) {
                     char ch[2] = { (char)code, '\0' };
                     return qb_val_string_len(ch, 1);
-                } else if (code > 255) {
+                } else {
                     char ubuf[5];
                     int ulen = qb_utf8_encode((unsigned int)code, ubuf);
                     return qb_val_string_len(ubuf, ulen);
                 }
-                return qb_val_string("");
             }
             if (strcasecmp(id, "UCHR$") == 0 || strcasecmp(id, "_UCHR$") == 0) {
                 int code = (int)arg1.number;
@@ -1020,6 +1064,9 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                     const unsigned char *us = (const unsigned char*)arg1.string;
                     int consumed = 0;
                     res = (double)qb_utf8_decode(us, arg1.string_len, &consumed);
+                } else {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
                 }
                 qb_val_free(&arg1);
                 return qb_val_number(res);
@@ -1047,7 +1094,11 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
             }
             if (strcasecmp(id, "SPACE$") == 0) {
                 int count = (int)arg1.number;
-                if (count < 0) count = 0;
+                if (count < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                    count = 0;
+                }
                 char *s = (char*)malloc(count + 1);
                 memset(s, ' ', count);
                 s[count] = '\0';
@@ -1058,7 +1109,11 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
             }
             if (strcasecmp(id, "STRING$") == 0) {
                 int count = (int)arg1.number;
-                if (count < 0) count = 0;
+                if (count < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                    count = 0;
+                }
                 char fill = (arg2.type == QB_VAL_STRING && arg2.string && arg2.string[0]) ? arg2.string[0] : (char)(int)arg2.number;
                 char *s = (char*)malloc(count + 1);
                 memset(s, fill, count);
@@ -1145,7 +1200,11 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
                 int count = (int)arg2.number;
-                if (count < 0) count = 0;
+                if (count < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                    count = 0;
+                }
                 if (count > len) count = len;
                 QB_Value ret = qb_val_string_len(src, count);
                 qb_val_free(&arg1);
@@ -1156,7 +1215,11 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
                 int count = (int)arg2.number;
-                if (count < 0) count = 0;
+                if (count < 0) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                    count = 0;
+                }
                 if (count > len) count = len;
                 const char *start = src + (len - count);
                 QB_Value ret = qb_val_string_len(start, count);
@@ -1167,7 +1230,13 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
             if (strcasecmp(id, "MID$") == 0 || strcasecmp(id, "MID") == 0) {
                 const char *src = (arg1.type == QB_VAL_STRING && arg1.string) ? arg1.string : "";
                 int len = (arg1.type == QB_VAL_STRING) ? arg1.string_len : 0;
-                int start = (int)arg2.number - 1;
+                int start_param = (int)arg2.number;
+                int count_param = (arg3.type == QB_VAL_NUMBER) ? (int)arg3.number : (len - (start_param - 1));
+                if (start_param <= 0 || (farg_cnt >= 3 && count_param < 0)) {
+                    QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
+                    if (interp) qb_trigger_error(interp, 5); // Illegal function call
+                }
+                int start = start_param - 1;
                 if (start < 0) start = 0;
                 if (start >= len) {
                     qb_val_free(&arg1);
@@ -1175,7 +1244,7 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                     qb_val_free(&arg3);
                     return qb_val_string("");
                 }
-                int count = (arg3.type == QB_VAL_NUMBER) ? (int)arg3.number : (len - start);
+                int count = count_param;
                 if (count < 0) count = 0;
                 if (start + count > len) count = len - start;
                 QB_Value ret = qb_val_string_len(src + start, count);
@@ -1434,6 +1503,8 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                     } else {
                         loc_val = (double)(ftell(interp->files[fnum]) / 128);
                     }
+                } else if (interp) {
+                    qb_trigger_error(interp, 52); // Bad file number
                 }
                 for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                 return qb_val_number(loc_val);
@@ -1447,6 +1518,8 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                     } else {
                         seek_val = (double)(ftell(interp->files[fnum]) + 1);
                     }
+                } else if (interp) {
+                    qb_trigger_error(interp, 52); // Bad file number
                 }
                 for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                 return qb_val_number(seek_val);
@@ -1461,6 +1534,8 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                     fseek(f, 0, SEEK_END);
                     size = (double)ftell(f);
                     fseek(f, cur, SEEK_SET);
+                } else if (interp) {
+                    qb_trigger_error(interp, 52); // Bad file number
                 }
                 for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
                 return qb_val_number(size);
@@ -1488,6 +1563,9 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                             }
                         }
                     }
+                } else if (interp) {
+                    qb_trigger_error(interp, 52); // Bad file number
+                    eof_val = -1.0;
                 } else {
                     eof_val = -1.0;
                 }
@@ -1535,7 +1613,19 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
                 }
             }
 
+            if (strncasecmp(id, "FN", 2) == 0) {
+                for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
+                if (interp) {
+                    qb_trigger_error(interp, 18); // Function not defined
+                }
+                return qb_val_number(0);
+            }
+
+            int indices[16];
+            for (int fi = 0; fi < farg_cnt && fi < 16; fi++) indices[fi] = (int)fargs[fi].number;
+            QB_Value arr_val = qb_array_get(env, resolved_id, farg_cnt, indices);
             for (int fi = 0; fi < farg_cnt; fi++) qb_val_free(&fargs[fi]);
+            return arr_val;
         }
 
         // Fonction personnalisée sans parenthèses (ex: x = MaFonction)
@@ -2193,6 +2283,44 @@ QB_Interpreter* qb_interp_create(QB_Program *prog) {
         }
     }
 
+    // Détection des labels dupliqués (Error 33: Duplicate label)
+    for (int i = 0; i < prog->line_count; i++) {
+        const char *p = prog->lines[i];
+        skip_whitespace(&p);
+        if (!*p || *p == '\'' || match_keyword(&p, "REM")) continue;
+        char token[64] = {0};
+        int idx = 0;
+        bool is_label = false;
+        if (!isdigit((unsigned char)*p)) {
+            const char *sp = p;
+            while ((isalnum((unsigned char)*sp) || *sp == '_') && idx < 63) token[idx++] = *sp++;
+            token[idx] = '\0';
+            if (*sp == ':') is_label = true;
+        }
+        if (is_label && idx > 0) {
+            for (int j = 0; j < i; j++) {
+                const char *p2 = prog->lines[j];
+                skip_whitespace(&p2);
+                if (!*p2 || *p2 == '\'' || match_keyword(&p2, "REM")) continue;
+                char token2[64] = {0};
+                int idx2 = 0;
+                bool is_label2 = false;
+                if (!isdigit((unsigned char)*p2)) {
+                    const char *sp2 = p2;
+                    while ((isalnum((unsigned char)*sp2) || *sp2 == '_') && idx2 < 63) token2[idx2++] = *sp2++;
+                    token2[idx2] = '\0';
+                    if (*sp2 == ':') is_label2 = true;
+                }
+                if (is_label2 && strcasecmp(token, token2) == 0) {
+                    interp->pc = i;
+                    qb_trigger_error(interp, 33); // Duplicate label
+                    break;
+                }
+            }
+            if (!interp->running) break;
+        }
+    }
+
     return interp;
 }
 
@@ -2233,6 +2361,66 @@ static int find_label_or_linenum(QB_Program *prog, const char *target) {
     return -1;
 }
 
+const char* qb_get_error_message(int code) {
+    switch (code) {
+        case 1:  return "NEXT without FOR";
+        case 2:  return "Syntax error";
+        case 3:  return "RETURN without GOSUB";
+        case 4:  return "Out of DATA";
+        case 5:  return "Illegal function call";
+        case 6:  return "Overflow";
+        case 7:  return "Out of memory";
+        case 8:  return "Label not defined";
+        case 9:  return "Subscript out of range";
+        case 10: return "Duplicate definition";
+        case 11: return "Division by zero";
+        case 12: return "Illegal in direct mode";
+        case 13: return "Type mismatch";
+        case 14: return "Out of string space";
+        case 16: return "String formula too complex";
+        case 17: return "Cannot continue";
+        case 18: return "Function not defined";
+        case 19: return "No RESUME";
+        case 20: return "RESUME without error";
+        case 24: return "Device timeout";
+        case 25: return "Device fault";
+        case 26: return "FOR without NEXT";
+        case 27: return "Out of paper";
+        case 29: return "WHILE without WEND";
+        case 30: return "WEND without WHILE";
+        case 33: return "Duplicate label";
+        case 35: return "Subprogram not defined";
+        case 37: return "Argument-count mismatch";
+        case 38: return "Array not defined";
+        case 40: return "Variable required";
+        case 50: return "FIELD overflow";
+        case 51: return "Internal error";
+        case 52: return "Bad file name or number";
+        case 53: return "File not found";
+        case 54: return "Bad file mode";
+        case 55: return "File already open";
+        case 56: return "FIELD statement active";
+        case 57: return "Device I/O error";
+        case 58: return "File already exists";
+        case 59: return "Bad record length";
+        case 61: return "Disk full";
+        case 62: return "Input past end of file";
+        case 63: return "Bad record number";
+        case 64: return "Bad file name";
+        case 67: return "Too many files";
+        case 68: return "Device unavailable";
+        case 69: return "Communication-buffer overflow";
+        case 70: return "Permission denied";
+        case 71: return "Disk not ready";
+        case 72: return "Disk-media error";
+        case 73: return "Feature unavailable";
+        case 74: return "Rename across disks";
+        case 75: return "Path/File access error";
+        case 76: return "Path not found";
+        default: return "Unprintable error";
+    }
+}
+
 void qb_trigger_error(QB_Interpreter *interp, int code) {
     if (!interp || !interp->program) return;
 
@@ -2263,7 +2451,13 @@ void qb_trigger_error(QB_Interpreter *interp, int code) {
         return;
     }
 
-    fprintf(stderr, "Erreur QBasic non gérée : code %d (ligne %d, PC %d) -> '%s'\n", code, line_num, interp->pc + 1, (interp->program && interp->pc >= 0 && interp->pc < interp->program->line_count) ? interp->program->lines[interp->pc] : "");
+    const char *msg = qb_get_error_message(code);
+    if (line_num > 0) {
+        fprintf(stderr, "%s in line %d\n", msg, line_num);
+    } else {
+        fprintf(stderr, "%s (code %d, PC %d) -> '%s'\n", msg, code, interp->pc + 1,
+            (interp->program && interp->pc >= 0 && interp->pc < interp->program->line_count) ? interp->program->lines[interp->pc] : "");
+    }
     interp->running = false;
 }
 
@@ -2900,7 +3094,6 @@ static void qb_read_var_from_file(QB_Interpreter *interp, FILE *f, const char *v
         if (len <= 0) len = 1;
         char *buf = (char*)malloc(len + 1);
         memset(buf, 0, len + 1);
-        long cur_tell = ftell(f);
         int nread = (int)fread(buf, 1, len, f);
         qb_env_set(interp->env, var_name, qb_val_string_len(buf, nread));
         free(buf);
@@ -2936,6 +3129,10 @@ static void qb_file_put(QB_Interpreter *interp, int fnum, long rec_or_pos, bool 
     QB_FileMode mode = interp->file_modes[fnum];
 
     if (mode == QB_FILE_MODE_RANDOM) {
+        if (has_rec && rec_or_pos <= 0) {
+            qb_trigger_error(interp, 63); // Bad record number
+            return;
+        }
         long rec = has_rec ? rec_or_pos : (interp->file_current_record[fnum] + 1);
         if (rec <= 0) rec = 1;
         interp->file_current_record[fnum] = rec;
@@ -2958,6 +3155,10 @@ static void qb_file_put(QB_Interpreter *interp, int fnum, long rec_or_pos, bool 
         interp->file_last_pos[fnum] = rec;
         fflush(f);
     } else if (mode == QB_FILE_MODE_BINARY) {
+        if (has_rec && rec_or_pos <= 0) {
+            qb_trigger_error(interp, 63); // Bad record number
+            return;
+        }
         if (has_rec && rec_or_pos > 0) {
             fseek(f, rec_or_pos - 1, SEEK_SET);
         }
@@ -2987,6 +3188,10 @@ static void qb_file_get(QB_Interpreter *interp, int fnum, long rec_or_pos, bool 
     QB_FileMode mode = interp->file_modes[fnum];
 
     if (mode == QB_FILE_MODE_RANDOM) {
+        if (has_rec && rec_or_pos <= 0) {
+            qb_trigger_error(interp, 63); // Bad record number
+            return;
+        }
         long rec = has_rec ? rec_or_pos : (interp->file_current_record[fnum] + 1);
         if (rec <= 0) rec = 1;
         interp->file_current_record[fnum] = rec;
@@ -3009,6 +3214,10 @@ static void qb_file_get(QB_Interpreter *interp, int fnum, long rec_or_pos, bool 
         }
         interp->file_last_pos[fnum] = rec;
     } else if (mode == QB_FILE_MODE_BINARY) {
+        if (has_rec && rec_or_pos <= 0) {
+            qb_trigger_error(interp, 63); // Bad record number
+            return;
+        }
         if (has_rec && rec_or_pos > 0) {
             fseek(f, rec_or_pos - 1, SEEK_SET);
         }
@@ -3239,8 +3448,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 interp->pc = target_pc;
                 return true;
             } else {
-                fprintf(stderr, "Erreur QBasic: Ligne ou label introuvable '%s'\n", target);
-                interp->running = false;
+                qb_trigger_error(interp, 8); // Label not defined
                 return true;
             }
         }
@@ -3258,6 +3466,9 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 interp->gosub_stack[interp->gosub_sp++] = interp->pc + 1;
                 interp->pc = target_pc;
                 return true;
+            } else {
+                qb_trigger_error(interp, 8); // Label not defined
+                return true;
             }
         }
         return true;
@@ -3268,6 +3479,9 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         if (interp && interp->gosub_sp > 0) {
             interp->pc = interp->gosub_stack[--interp->gosub_sp];
             interp->in_event_handler = false;
+            return true;
+        } else if (interp) {
+            qb_trigger_error(interp, 3); // RETURN without GOSUB
             return true;
         }
         return true;
@@ -3459,7 +3673,9 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             if (arr_name[0]) {
                 char res_buf[128];
                 const char *resolved_arr = qb_resolve_var_name(interp->env, arr_name, res_buf, sizeof(res_buf));
-                qb_array_erase(interp->env, resolved_arr);
+                if (!qb_array_erase(interp->env, resolved_arr)) {
+                    qb_trigger_error(interp, 38); // Array not defined
+                }
             }
             skip_whitespace(&p);
             if (*p == ',') p++;
@@ -3568,6 +3784,10 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
     }
 
     if (match_keyword(&p, "RESUME")) {
+        if (!interp->in_error_handler) {
+            qb_trigger_error(interp, 20); // RESUME without error
+            return true;
+        }
         skip_whitespace(&p);
         if (match_keyword(&p, "NEXT")) {
             interp->pc = interp->err_pc + 1;
@@ -3589,8 +3809,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 interp->err_code = 0;
                 return true;
             } else {
-                fprintf(stderr, "Erreur QBasic: Label RESUME introuvable '%s'\n", target);
-                interp->running = false;
+                qb_trigger_error(interp, 8); // Label not defined
                 return true;
             }
         } else {
@@ -3739,7 +3958,12 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
     // SCREEN mode [, colorswitch] [, apage] [, vpage]
     if (match_keyword(&p, "SCREEN")) {
         QB_Value m = qb_eval_expression(interp->env, &p);
-        qb_screen((int)m.number);
+        int smode = (int)m.number;
+        if (smode < 0 || smode > 13) {
+            qb_trigger_error(interp, 5); // Illegal function call
+        } else {
+            qb_screen(smode);
+        }
         qb_val_free(&m);
         while (*p) {
             skip_whitespace(&p);
@@ -4277,17 +4501,31 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             if (parse_lvalue(&p, interp->env, &lv2)) {
                 QB_Value v1 = lval_get(&lv1, interp->env);
                 QB_Value v2 = lval_get(&lv2, interp->env);
+                if (v1.type != v2.type) {
+                    qb_trigger_error(interp, 13); // Type mismatch
+                    qb_val_free(&v1);
+                    qb_val_free(&v2);
+                    return true;
+                }
                 lval_set(&lv1, interp->env, v2);
                 lval_set(&lv2, interp->env, v1);
                 qb_val_free(&v1);
                 qb_val_free(&v2);
                 return true;
+            } else {
+                qb_trigger_error(interp, 40); // Variable required
+                return true;
             }
+        } else {
+            qb_trigger_error(interp, 40); // Variable required
+            return true;
         }
     }
 
     // DIM / REDIM [SHARED] arr(bounds) [AS TypeName] [, var2 ...]
-    if (match_keyword(&p, "DIM") || match_keyword(&p, "REDIM")) {
+    bool is_redim = match_keyword(&p, "REDIM");
+    bool is_dim = !is_redim && match_keyword(&p, "DIM");
+    if (is_dim || is_redim) {
         bool is_shared = match_keyword(&p, "SHARED");
         while (*p) {
             skip_whitespace(&p);
@@ -4339,6 +4577,11 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                 skip_whitespace(&p);
                 if (*p == ')') p++;
                 if (dims == 1 && ubounds[0] <= 0 && lbounds[0] == 0) ubounds[0] = 100;
+            }
+
+            if (is_array && !is_redim && interp->call_sp == 0 && qb_array_exists(interp->env, resolved_arr)) {
+                qb_trigger_error(interp, 10); // Duplicate definition
+                return true;
             }
 
             char type_name[64] = {0};
@@ -4429,8 +4672,12 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                     lval_set(&lv, interp->env, val);
                     qb_val_free(&val);
                 } else {
-                    fprintf(stderr, "Erreur: Out of DATA\n");
+                    qb_trigger_error(interp, 4); // Out of DATA
+                    return true;
                 }
+            } else {
+                qb_trigger_error(interp, 40); // Variable required
+                return true;
             }
             skip_whitespace(&p);
             if (*p == ',') p++;
@@ -4538,11 +4785,23 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             }
         }
 
+        if (file_num < 1 || file_num > 255) {
+            qb_trigger_error(interp, 52); // Bad file number
+            qb_val_free(&fn);
+            return true;
+        }
+        if (interp->files[file_num]) {
+            qb_trigger_error(interp, 55); // File already open
+            qb_val_free(&fn);
+            return true;
+        }
+        if (file_mode == QB_FILE_MODE_RANDOM && (reclen <= 0 || reclen > 32767)) {
+            qb_trigger_error(interp, 59); // Bad record length
+            qb_val_free(&fn);
+            return true;
+        }
+
         if (file_num >= 1 && file_num <= 255) {
-            if (interp->files[file_num]) {
-                fclose(interp->files[file_num]);
-                interp->files[file_num] = NULL;
-            }
             const char *fname = (fn.type == QB_VAL_STRING && fn.string) ? fn.string : "";
             if (file_mode == QB_FILE_MODE_RANDOM || file_mode == QB_FILE_MODE_BINARY) {
                 FILE *f = qb_fopen_helper(fname, "rb+");
@@ -4616,9 +4875,15 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             while (isdigit((unsigned char)*p)) p++;
             skip_whitespace(&p);
             if (*p == ',') p++;
-            if (file_num >= 1 && file_num <= 255 && interp->files[file_num]) {
-                target_out = interp->files[file_num];
+            if (file_num < 1 || file_num > 255 || !interp->files[file_num]) {
+                qb_trigger_error(interp, 52); // Bad file number
+                return true;
             }
+            if (interp->file_modes[file_num] == QB_FILE_MODE_INPUT) {
+                qb_trigger_error(interp, 54); // Bad file mode
+                return true;
+            }
+            target_out = interp->files[file_num];
         }
 
         skip_whitespace(&p);
@@ -4818,9 +5083,15 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             while (isdigit((unsigned char)*p)) p++;
             skip_whitespace(&p);
             if (*p == ',') p++;
-            if (file_num >= 1 && file_num <= 255 && interp->files[file_num]) {
-                target_in = interp->files[file_num];
+            if (file_num < 1 || file_num > 255 || !interp->files[file_num]) {
+                qb_trigger_error(interp, 52); // Bad file number
+                return true;
             }
+            if (interp->file_modes[file_num] != QB_FILE_MODE_INPUT) {
+                qb_trigger_error(interp, 54); // Bad file mode
+                return true;
+            }
+            target_in = interp->files[file_num];
         }
         skip_whitespace(&p);
         if (*p == '"') {
@@ -4852,7 +5123,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
                     nl = strchr(input_buf, '\r');
                     if (nl) *nl = '\0';
                 } else {
-                    interp->running = false;
+                    qb_trigger_error(interp, 62); // Input past end of file
                     return true;
                 }
             }
@@ -4873,9 +5144,15 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             while (isdigit((unsigned char)*p)) p++;
             skip_whitespace(&p);
             if (*p == ',') p++;
-            if (file_num >= 1 && file_num <= 255 && interp->files[file_num]) {
-                target_in = interp->files[file_num];
+            if (file_num < 1 || file_num > 255 || !interp->files[file_num]) {
+                qb_trigger_error(interp, 52); // Bad file number
+                return true;
             }
+            if (interp->file_modes[file_num] != QB_FILE_MODE_INPUT) {
+                qb_trigger_error(interp, 54); // Bad file mode
+                return true;
+            }
+            target_in = interp->files[file_num];
         }
         skip_whitespace(&p);
         char prompt[256] = "? ";
@@ -4911,7 +5188,7 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
 
                 char val_str[1024] = {0};
                 if (!qb_read_file_token(interp, file_num, val_str, sizeof(val_str))) {
-                    interp->running = false;
+                    qb_trigger_error(interp, 62); // Input past end of file
                     return true;
                 }
 
@@ -4989,8 +5266,16 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             int arg_count = 0;
             parse_proc_args(interp->env, &p, args, arg_refs, &arg_count, 16);
             if (has_paren && *p == ')') p++;
+            if (arg_count != interp->procs[proc_idx].param_count) {
+                for (int i = 0; i < arg_count; i++) qb_val_free(&args[i]);
+                qb_trigger_error(interp, 37); // Argument-count mismatch
+                return true;
+            }
             execute_sub(interp, proc_idx, args, arg_count, (const char (*)[64])arg_refs);
             for (int i = 0; i < arg_count; i++) qb_val_free(&args[i]);
+            return true;
+        } else {
+            qb_trigger_error(interp, 35); // Subprogram not defined
             return true;
         }
     }
@@ -5097,46 +5382,58 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         int fnum = (int)fv.number;
         qb_val_free(&fv);
 
-        if (fnum >= 1 && fnum <= 255) {
-            interp->file_fields[fnum].count = 0;
-            int curr_off = 0;
-            while (*p && *p != ':' && *p != '\n') {
+        if (fnum < 1 || fnum > 255 || !interp->files[fnum]) {
+            qb_trigger_error(interp, 52); // Bad file number
+            return true;
+        }
+        if (interp->file_modes[fnum] != QB_FILE_MODE_RANDOM) {
+            qb_trigger_error(interp, 54); // Bad file mode
+            return true;
+        }
+
+        interp->file_fields[fnum].count = 0;
+        int curr_off = 0;
+        while (*p && *p != ':' && *p != '\n') {
+            skip_whitespace(&p);
+            if (*p == ',') { p++; skip_whitespace(&p); }
+            if (!*p || *p == ':' || *p == '\n') break;
+
+            QB_Value wv = qb_eval_expression(interp->env, &p);
+            int width = (int)wv.number;
+            qb_val_free(&wv);
+            skip_whitespace(&p);
+
+            if (match_keyword(&p, "AS")) {
                 skip_whitespace(&p);
-                if (*p == ',') { p++; skip_whitespace(&p); }
-                if (!*p || *p == ':' || *p == '\n') break;
+            }
 
-                QB_Value wv = qb_eval_expression(interp->env, &p);
-                int width = (int)wv.number;
-                qb_val_free(&wv);
-                skip_whitespace(&p);
+            char var_name[64] = {0};
+            int vi = 0;
+            while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '#' || *p == '!') && vi < 63) {
+                var_name[vi++] = *p++;
+            }
+            var_name[vi] = '\0';
 
-                if (match_keyword(&p, "AS")) {
-                    skip_whitespace(&p);
-                }
+            if (curr_off + width > interp->file_record_lens[fnum]) {
+                qb_trigger_error(interp, 50); // FIELD overflow
+                return true;
+            }
 
-                char var_name[64] = {0};
-                int vi = 0;
-                while ((isalnum((unsigned char)*p) || *p == '_' || *p == '$' || *p == '%' || *p == '&' || *p == '#' || *p == '!') && vi < 63) {
-                    var_name[vi++] = *p++;
-                }
-                var_name[vi] = '\0';
+            int fidx = interp->file_fields[fnum].count;
+            if (fidx < QB_MAX_FIELD_VARS && width > 0) {
+                interp->file_fields[fnum].fields[fidx].width = width;
+                interp->file_fields[fnum].fields[fidx].offset = curr_off;
+                strncpy(interp->file_fields[fnum].fields[fidx].var_name, var_name, 63);
+                interp->file_fields[fnum].count++;
 
-                int fidx = interp->file_fields[fnum].count;
-                if (fidx < QB_MAX_FIELD_VARS && width > 0) {
-                    interp->file_fields[fnum].fields[fidx].width = width;
-                    interp->file_fields[fnum].fields[fidx].offset = curr_off;
-                    strncpy(interp->file_fields[fnum].fields[fidx].var_name, var_name, 63);
-                    interp->file_fields[fnum].count++;
-
-                    qb_env_set(interp->env, var_name, qb_val_string_len(interp->file_random_buffers[fnum] + curr_off, width));
-                    curr_off += width;
-                }
-                skip_whitespace(&p);
-                if (*p == ',') {
-                    // continue
-                } else {
-                    break;
-                }
+                qb_env_set(interp->env, var_name, qb_val_string_len(interp->file_random_buffers[fnum] + curr_off, width));
+                curr_off += width;
+            }
+            skip_whitespace(&p);
+            if (*p == ',') {
+                // continue
+            } else {
+                break;
             }
         }
         return true;
@@ -5196,23 +5493,25 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         QB_Value pv = qb_eval_expression(interp->env, &p);
         long pos = (long)pv.number;
         qb_val_free(&pv);
-        if (fnum >= 1 && fnum <= 255 && interp->files[fnum]) {
-            FILE *f = interp->files[fnum];
-            QB_FileMode mode = interp->file_modes[fnum];
-            if (mode == QB_FILE_MODE_RANDOM) {
-                int rlen = interp->file_record_lens[fnum];
-                if (rlen <= 0) rlen = 128;
-                if (pos <= 0) pos = 1;
-                interp->file_current_record[fnum] = pos - 1;
-                interp->file_last_pos[fnum] = pos;
-                fseek(f, (pos - 1) * (long)rlen, SEEK_SET);
-            } else {
-                if (pos <= 0) pos = 1;
-                fseek(f, pos - 1, SEEK_SET);
-                interp->file_last_pos[fnum] = pos;
-            }
+        if (fnum < 1 || fnum > 255 || !interp->files[fnum]) {
+            qb_trigger_error(interp, 52); // Bad file number
+            return true;
+        }
+        if (pos <= 0) {
+            qb_trigger_error(interp, 63); // Bad record number
+            return true;
+        }
+        FILE *f = interp->files[fnum];
+        QB_FileMode mode = interp->file_modes[fnum];
+        if (mode == QB_FILE_MODE_RANDOM) {
+            int rlen = interp->file_record_lens[fnum];
+            if (rlen <= 0) rlen = 128;
+            interp->file_current_record[fnum] = pos - 1;
+            interp->file_last_pos[fnum] = pos;
+            fseek(f, (pos - 1) * (long)rlen, SEEK_SET);
         } else {
-            qb_trigger_error(interp, 52);
+            fseek(f, pos - 1, SEEK_SET);
+            interp->file_last_pos[fnum] = pos;
         }
         return true;
     }
@@ -5227,7 +5526,11 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         }
         QB_Value new_v = qb_eval_expression(interp->env, &p);
         if (old_v.type == QB_VAL_STRING && old_v.string && new_v.type == QB_VAL_STRING && new_v.string) {
-            if (qb_os_rename(old_v.string, new_v.string) != 0) {
+            FILE *fexist = qb_os_fopen(new_v.string, "rb");
+            if (fexist) {
+                fclose(fexist);
+                qb_trigger_error(interp, 58); // File already exists
+            } else if (qb_os_rename(old_v.string, new_v.string) != 0) {
                 const char *pdir = qb_get_program_dir();
                 if (pdir && pdir[0] && !strchr(old_v.string, ':')) {
                     char f1[512], f2[512];
@@ -5271,10 +5574,14 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         if (dir_v.type == QB_VAL_STRING && dir_v.string) {
             if (_rmdir(dir_v.string) != 0) {
                 const char *pdir = qb_get_program_dir();
+                int ret = -1;
                 if (pdir && pdir[0] && !strchr(dir_v.string, ':') && dir_v.string[0] != '/' && dir_v.string[0] != '\\') {
                     char full_dir[512];
                     snprintf(full_dir, sizeof(full_dir), "%s/%s", pdir, dir_v.string);
-                    _rmdir(full_dir);
+                    ret = _rmdir(full_dir);
+                }
+                if (ret != 0) {
+                    qb_trigger_error(interp, 76); // Path not found
                 }
             }
         }
@@ -5287,7 +5594,9 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
         skip_whitespace(&p);
         QB_Value dir_v = qb_eval_expression(interp->env, &p);
         if (dir_v.type == QB_VAL_STRING && dir_v.string) {
-            _chdir(dir_v.string);
+            if (_chdir(dir_v.string) != 0) {
+                qb_trigger_error(interp, 76); // Path not found
+            }
         }
         qb_val_free(&dir_v);
         return true;
@@ -5691,6 +6000,10 @@ void qb_interp_step(QB_Interpreter *interp) {
         // Standalone END (fin normale du programme)
         skip_whitespace(&p);
         if (!*p || *p == '\'') {
+            if (interp->in_error_handler) {
+                qb_trigger_error(interp, 19); // No RESUME
+                return;
+            }
             interp->running = false;
             interp->exit_requested = true;
             return;
@@ -5822,6 +6135,10 @@ void qb_interp_step(QB_Interpreter *interp) {
 
     // RESUME [NEXT | label]
     if (match_keyword(&p, "RESUME")) {
+        if (!interp->in_error_handler) {
+            qb_trigger_error(interp, 20); // RESUME without error
+            return;
+        }
         skip_whitespace(&p);
         if (match_keyword(&p, "NEXT")) {
             interp->pc = interp->err_pc + 1;
@@ -5843,8 +6160,7 @@ void qb_interp_step(QB_Interpreter *interp) {
                 interp->err_code = 0;
                 return;
             } else {
-                fprintf(stderr, "Erreur QBasic: Label RESUME introuvable '%s'\n", target);
-                interp->running = false;
+                qb_trigger_error(interp, 8); // Label not defined
                 return;
             }
         } else {
@@ -5899,6 +6215,9 @@ void qb_interp_step(QB_Interpreter *interp) {
                     interp->gosub_stack[interp->gosub_sp++] = interp->pc + 1;
                 }
                 interp->pc = target_pc;
+                return;
+            } else {
+                qb_trigger_error(interp, 8); // Label not defined
                 return;
             }
         }
@@ -5973,12 +6292,21 @@ void qb_interp_step(QB_Interpreter *interp) {
             parse_proc_args(interp->env, &p, args, arg_refs, &arg_count, 16);
             if (has_paren && *p == ')') p++;
 
+            if (arg_count != interp->procs[proc_idx].param_count) {
+                for (int i = 0; i < arg_count; i++) qb_val_free(&args[i]);
+                qb_trigger_error(interp, 37); // Argument-count mismatch
+                return;
+            }
+
             int old_call_pc = interp->pc;
             execute_sub(interp, proc_idx, args, arg_count, arg_refs);
             for (int i = 0; i < arg_count; i++) qb_val_free(&args[i]);
             if (interp->pc == old_call_pc) {
                 interp->pc++;
             }
+            return;
+        } else {
+            qb_trigger_error(interp, 35); // Subprogram not defined
             return;
         }
     }
@@ -6107,8 +6435,7 @@ void qb_interp_step(QB_Interpreter *interp) {
             interp->pc = target_pc;
             return;
         } else {
-            fprintf(stderr, "Erreur QBasic: Ligne ou label introuvable '%s'\n", target);
-            interp->running = false;
+            qb_trigger_error(interp, 8); // Label not defined
             return;
         }
     }
@@ -6123,6 +6450,9 @@ void qb_interp_step(QB_Interpreter *interp) {
             interp->gosub_stack[interp->gosub_sp++] = interp->pc + 1;
             interp->pc = target_pc;
             return;
+        } else {
+            qb_trigger_error(interp, 8); // Label not defined
+            return;
         }
     }
 
@@ -6131,6 +6461,9 @@ void qb_interp_step(QB_Interpreter *interp) {
         if (interp->gosub_sp > 0) {
             interp->pc = interp->gosub_stack[--interp->gosub_sp];
             interp->in_event_handler = false;
+            return;
+        } else {
+            qb_trigger_error(interp, 3); // RETURN without GOSUB
             return;
         }
     }
@@ -6214,6 +6547,10 @@ void qb_interp_step(QB_Interpreter *interp) {
 
     // NEXT [var1 [, var2 ...]]
     if (match_keyword(&p, "NEXT")) {
+        if (interp->for_sp <= 0) {
+            qb_trigger_error(interp, 1); // NEXT without FOR
+            return;
+        }
         while (interp->for_sp > 0) {
             skip_whitespace(&p);
             char target_var[64] = {0};
@@ -6239,7 +6576,8 @@ void qb_interp_step(QB_Interpreter *interp) {
                     }
                 }
                 if (top < 0) {
-                    top = interp->for_sp - 1;
+                    qb_trigger_error(interp, 1); // NEXT without FOR
+                    return;
                 }
             }
 
@@ -6333,6 +6671,10 @@ void qb_interp_step(QB_Interpreter *interp) {
                     }
                 }
             }
+            if (depth != 0) {
+                qb_trigger_error(interp, 29); // WHILE without WEND
+                return;
+            }
             interp->running = false;
             return;
         }
@@ -6343,9 +6685,10 @@ void qb_interp_step(QB_Interpreter *interp) {
         if (interp->while_sp > 0) {
             interp->pc = interp->while_stack[--interp->while_sp];
             return;
+        } else {
+            qb_trigger_error(interp, 30); // WEND without WHILE
+            return;
         }
-        interp->pc++;
-        return;
     }
 
     // Instruction immédiate (LET, PRINT, INPUT, DIM, SWAP, CLS...)
@@ -6359,5 +6702,14 @@ void qb_interp_step(QB_Interpreter *interp) {
 void qb_interp_run(QB_Interpreter *interp) {
     while (interp->running && interp->pc < interp->program->line_count) {
         qb_interp_step(interp);
+    }
+    if (interp->running) {
+        if (interp->in_error_handler) {
+            qb_trigger_error(interp, 19); // No RESUME
+        } else if (interp->for_sp > 0) {
+            qb_trigger_error(interp, 26); // FOR without NEXT
+        } else if (interp->while_sp > 0) {
+            qb_trigger_error(interp, 29); // WHILE without WEND
+        }
     }
 }

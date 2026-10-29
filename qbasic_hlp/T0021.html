@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>FILEATTR Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0021</span>
+      <a href="index.html#T0021" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns information about an open file.
+
+<b>FILEATTR(filenumber%,attribute%)</b>
+
+    ■ <b>filenumber%</b>    The number of an open file.
+    ■ <b>attribute%</b>     Specifies the type of information to return. When
+                     attribute% is 1, FILEATTR returns a value indicating
+                     the file&apos;s access mode:
+
+                     Value   Mode
+                     ═════   ══════
+                     1       Input
+                     2       Output
+                     4       Random
+                     8       Append
+                     32      Binary
+
+                     When attribute% is 2, FILEATTR returns the DOS file
+                     handle.
+
+Example:
+    OPEN &quot;TEST.DAT&quot; FOR BINARY AS #1
+    PRINT FILEATTR(1, 1)
+    CLOSE
+
+See Also    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i></pre>
+  </body>
+</html>

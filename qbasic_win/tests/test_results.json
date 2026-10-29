@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-28T07:53:09.753Z",
-  "totalSuites": 31,
+  "timestamp": "2026-10-29T05:40:24.353Z",
+  "totalSuites": 32,
   "totalVintagePrograms": 21,
   "totalGames": 3,
-  "grandTotal": 396,
-  "grandPassed": 396,
+  "grandTotal": 509,
+  "grandPassed": 509,
   "grandFailed": 0,
   "passRate": "100.0%",
-  "totalElapsedMs": 28508,
+  "totalElapsedMs": 30087,
   "suites": [
     {
       "type": "unit_suite",
@@ -16,7 +16,7 @@
       "passed": 31,
       "failed": 0,
       "total": 31,
-      "elapsed": 315,
+      "elapsed": 325,
       "exitCode": 0,
       "items": [
         {
@@ -152,7 +152,7 @@
       "passed": 28,
       "failed": 0,
       "total": 28,
-      "elapsed": 331,
+      "elapsed": 317,
       "exitCode": 0,
       "items": [
         {
@@ -276,7 +276,7 @@
       "passed": 19,
       "failed": 0,
       "total": 19,
-      "elapsed": 316,
+      "elapsed": 311,
       "exitCode": 0,
       "items": [
         {
@@ -364,7 +364,7 @@
       "passed": 18,
       "failed": 0,
       "total": 18,
-      "elapsed": 323,
+      "elapsed": 300,
       "exitCode": 0,
       "items": [
         {
@@ -448,7 +448,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 284,
+      "elapsed": 289,
       "exitCode": 0,
       "items": [
         {
@@ -492,7 +492,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 264,
+      "elapsed": 267,
       "exitCode": 0,
       "items": [
         {
@@ -524,7 +524,7 @@
       "passed": 10,
       "failed": 0,
       "total": 10,
-      "elapsed": 316,
+      "elapsed": 290,
       "exitCode": 0,
       "items": [
         {
@@ -576,7 +576,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 349,
+      "elapsed": 343,
       "exitCode": 0,
       "items": [
         {
@@ -620,7 +620,7 @@
       "passed": 11,
       "failed": 0,
       "total": 11,
-      "elapsed": 351,
+      "elapsed": 307,
       "exitCode": 0,
       "items": [
         {
@@ -676,7 +676,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 317,
+      "elapsed": 285,
       "exitCode": 0,
       "items": [
         {
@@ -716,7 +716,7 @@
       "passed": 23,
       "failed": 0,
       "total": 23,
-      "elapsed": 333,
+      "elapsed": 337,
       "exitCode": 0,
       "items": [
         {
@@ -820,7 +820,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 286,
+      "elapsed": 284,
       "exitCode": 0,
       "items": [
         {
@@ -852,7 +852,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 317,
+      "elapsed": 278,
       "exitCode": 0,
       "items": [
         {
@@ -884,7 +884,7 @@
       "passed": 5,
       "failed": 0,
       "total": 5,
-      "elapsed": 369,
+      "elapsed": 305,
       "exitCode": 0,
       "items": [
         {
@@ -916,7 +916,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 457,
+      "elapsed": 300,
       "exitCode": 0,
       "items": [
         {
@@ -952,7 +952,7 @@
       "passed": 10,
       "failed": 0,
       "total": 10,
-      "elapsed": 332,
+      "elapsed": 330,
       "exitCode": 0,
       "items": [
         {
@@ -1004,7 +1004,7 @@
       "passed": 12,
       "failed": 0,
       "total": 12,
-      "elapsed": 319,
+      "elapsed": 342,
       "exitCode": 0,
       "items": [
         {
@@ -1064,7 +1064,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 284,
+      "elapsed": 278,
       "exitCode": 0,
       "items": [
         {
@@ -1108,7 +1108,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 267,
+      "elapsed": 284,
       "exitCode": 0,
       "items": [
         {
@@ -1144,7 +1144,7 @@
       "passed": 8,
       "failed": 0,
       "total": 8,
-      "elapsed": 272,
+      "elapsed": 280,
       "exitCode": 0,
       "items": [
         {
@@ -1188,7 +1188,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 278,
+      "elapsed": 281,
       "exitCode": 0,
       "items": [
         {
@@ -1228,7 +1228,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 338,
+      "elapsed": 350,
       "exitCode": 0,
       "items": [
         {
@@ -1268,7 +1268,7 @@
       "passed": 7,
       "failed": 0,
       "total": 7,
-      "elapsed": 261,
+      "elapsed": 300,
       "exitCode": 0,
       "items": [
         {
@@ -1308,7 +1308,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 266,
+      "elapsed": 289,
       "exitCode": 0,
       "items": [
         {
@@ -1344,7 +1344,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 269,
+      "elapsed": 281,
       "exitCode": 0,
       "items": [
         {
@@ -1380,7 +1380,7 @@
       "passed": 6,
       "failed": 0,
       "total": 6,
-      "elapsed": 265,
+      "elapsed": 310,
       "exitCode": 0,
       "items": [
         {
@@ -1416,7 +1416,7 @@
       "passed": 31,
       "failed": 0,
       "total": 31,
-      "elapsed": 318,
+      "elapsed": 389,
       "exitCode": 0,
       "items": [
         {
@@ -1552,7 +1552,7 @@
       "passed": 17,
       "failed": 0,
       "total": 17,
-      "elapsed": 311,
+      "elapsed": 348,
       "exitCode": 0,
       "items": [
         {
@@ -1632,7 +1632,7 @@
       "passed": 13,
       "failed": 0,
       "total": 13,
-      "elapsed": 638,
+      "elapsed": 726,
       "exitCode": 0,
       "items": [
         {
@@ -1696,7 +1696,7 @@
       "passed": 12,
       "failed": 0,
       "total": 12,
-      "elapsed": 283,
+      "elapsed": 305,
       "exitCode": 0,
       "items": [
         {
@@ -1756,7 +1756,7 @@
       "passed": 27,
       "failed": 0,
       "total": 27,
-      "elapsed": 328,
+      "elapsed": 365,
       "exitCode": 0,
       "items": [
         {
@@ -1868,6 +1868,470 @@
           "status": "PASS"
         }
       ]
+    },
+    {
+      "type": "unit_suite",
+      "file": "test_32_error_detection.bas",
+      "category": "ERROR_DETECTION",
+      "passed": 113,
+      "failed": 0,
+      "total": 113,
+      "elapsed": 469,
+      "exitCode": 0,
+      "items": [
+        {
+          "name": "ERR_MSG_1",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_2",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_3",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_4",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_5",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_6",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_7",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_8",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_9",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_10",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_11",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_12",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_13",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_14",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_16",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_17",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_18",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_19",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_20",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_24",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_25",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_26",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_27",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_29",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_30",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_33",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_35",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_37",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_38",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_40",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_50",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_51",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_52",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_53",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_54",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_55",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_56",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_57",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_58",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_59",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_61",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_62",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_63",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_64",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_67",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_68",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_69",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_70",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_71",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_72",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_73",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_74",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_75",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_MSG_76",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_ILLEGAL_FUNC_SQR",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_ILLEGAL_FUNC_LOG",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_ILLEGAL_FUNC_CHR",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_ILLEGAL_FUNC_ASC",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_DIV_ZERO_SLASH",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_DIV_ZERO_BACKSLASH",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_DIV_ZERO_MOD",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_SUBSCRIPT_OUT_OF_RANGE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_DUPLICATE_DEFINITION",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_TYPE_MISMATCH",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_ARRAY_NOT_DEFINED",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_BAD_FILE_NUMBER",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_FILE_NOT_FOUND",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_BAD_FILE_MODE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_FILE_ALREADY_OPEN",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_BAD_RECORD_LENGTH",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_BAD_RECORD_NUMBER",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_PATH_NOT_FOUND",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_OUT_OF_DATA",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_RETURN_WITHOUT_GOSUB",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_WEND_WITHOUT_WHILE",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_RUN_FUNCTION_NOT_DEFINED",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_1",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_2",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_6",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_7",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_8",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_12",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_14",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_16",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_17",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_19",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_20",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_24",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_25",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_26",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_27",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_29",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_33",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_35",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_37",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_40",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_50",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_51",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_56",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_57",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_58",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_61",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_62",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_64",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_67",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_68",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_69",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_70",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_71",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_72",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_73",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_74",
+          "status": "PASS"
+        },
+        {
+          "name": "ERR_STMT_CODE_75",
+          "status": "PASS"
+        }
+      ]
     }
   ],
   "vintagePrograms": [
@@ -1879,7 +2343,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 311,
+      "elapsed": 269,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1891,7 +2355,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 273,
+      "elapsed": 297,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1903,7 +2367,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 694,
+      "elapsed": 751,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1915,7 +2379,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 308,
+      "elapsed": 395,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1927,7 +2391,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 568,
+      "elapsed": 632,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1939,7 +2403,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 277,
+      "elapsed": 311,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1951,7 +2415,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 743,
+      "elapsed": 873,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1963,7 +2427,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 525,
+      "elapsed": 573,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1975,7 +2439,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 347,
+      "elapsed": 393,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1987,7 +2451,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 451,
+      "elapsed": 534,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -1999,7 +2463,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 1904,
+      "elapsed": 2138,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2011,7 +2475,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 332,
+      "elapsed": 352,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2023,7 +2487,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 300,
+      "elapsed": 319,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2035,7 +2499,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 904,
+      "elapsed": 940,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2047,7 +2511,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 332,
+      "elapsed": 352,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2059,7 +2523,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 247,
+      "elapsed": 271,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2083,7 +2547,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 573,
+      "elapsed": 571,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2095,7 +2559,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 2681,
+      "elapsed": 2686,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2107,7 +2571,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 4020,
+      "elapsed": 4127,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2119,7 +2583,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 477,
+      "elapsed": 480,
       "exitCode": 0,
       "status": "PASS"
     }
@@ -2133,7 +2597,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 225,
+      "elapsed": 234,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2145,7 +2609,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 331,
+      "elapsed": 372,
       "exitCode": 0,
       "status": "PASS"
     },
@@ -2157,7 +2621,7 @@
       "passed": 1,
       "failed": 0,
       "total": 1,
-      "elapsed": 1270,
+      "elapsed": 1298,
       "exitCode": 0,
       "status": "PASS"
     }

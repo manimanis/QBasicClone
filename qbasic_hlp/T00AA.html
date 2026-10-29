@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>MKSMBF$, MKDMBF$, CVSMBF, CVDMBF Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T00AA</span>
+      <a href="index.html#T00AA" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+MKSMBF$ and MKDMBF$ convert IEEE-format numbers to Microsoft-Binary-format
+numeric strings that can be stored in FIELD statement string variables.
+CVSMBF and CVDMBF convert those strings back to IEEE-format numbers.
+
+<b>MKSMBF$(single-precision-expression!)</b>
+<b>MKDMBF$(double-precision-expression#)</b>
+<b>CVSMBF (4-byte-numeric-string)</b>
+<b>CVDMBF (8-byte-numeric-string)</b>
+
+    Function    Returns
+    ════════    ════════════════════════════════════════════════════════════
+    MKSMBF$     A 4-byte string containing a Microsoft-Binary-format number
+    MKDMBF$     An 8-byte string containing a Microsoft-Binary-format number
+    CVSMBF      A single-precision number in IEEE format
+    CVDMBF      A double-precision number in IEEE format
+
+    ■ These functions are useful for maintaining data files created with
+      older versions of Basic.
+
+Example:
+    TYPE Buffer
+        SngNum AS STRING * 4
+        DblNum AS STRING * 8
+    END TYPE
+    DIM RecBuffer AS Buffer
+    OPEN &quot;TESTDAT.DAT&quot; FOR RANDOM AS #1 LEN = 12
+    SNum = 98.9
+    DNum = 645.3235622#
+    RecBuffer.SngNum = MKSMBF$(SNum)
+    RecBuffer.DblNum = MKDMBF$(DNum)
+    PUT #1, 1, RecBuffer
+    GET #1, 1, RecBuffer
+    CLOSE #1
+    PRINT CVSMBF(RecBuffer.SngNum), CVDMBF(RecBuffer.DblNum)
+
+See Also    <i>◄</i><a href="T0020.html">FIELD</a><i>►</i>    <i>◄</i><a href="T00A9.html">MKn$, CVn</a><i>►</i></pre>
+  </body>
+</html>

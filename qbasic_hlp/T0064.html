@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>RANDOMIZE Statement, RND Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0064</span>
+      <a href="index.html#T0064" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+RANDOMIZE initializes the random-number generator.
+RND returns a single-precision random number between 0 and 1.
+
+<b>RANDOMIZE [seed%]</b>
+<b>RND[(n#)]</b>
+
+    ■ <b>seed%</b>    A number used to initialize the random-number generator.
+               If omitted, RANDOMIZE prompts for it.
+    ■ <b>n#</b>       A value that sets how RND generates the next random number:
+
+               n#                             RND returns
+               ═══════════════════════════    ═══════════════════════════
+               Less than 0                    The same number for any n#
+               Greater than 0 (or omitted)    The next random number
+               0                              The last number generated
+
+Example:
+    RANDOMIZE TIMER
+    x% = INT(RND * 6) + 1
+    y% = INT(RND * 6) + 1
+    PRINT &quot;Roll of two dice: die 1 =&quot;; x%; &quot;and die 2 =&quot;; y%</pre>
+  </body>
+</html>

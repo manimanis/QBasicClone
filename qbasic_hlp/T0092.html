@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>IF...THEN...ELSE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0092</span>
+      <a href="index.html#T0092" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Executes a statement or statement block depending on specified conditions.
+
+<b>IF condition1 THEN</b>
+    <b>[statementblock-1]</b>
+<b>[ELSEIF condition2 THEN</b>
+    <b>[statementblock-2]]...</b>
+<b>[ELSE</b>
+    <b>[statementblock-n]]</b>
+<b>END IF</b>
+
+<b>IF condition THEN statements [ELSE statements]</b>
+
+    ■ <b>condition1</b>          Any expression that can be evaluated as
+      <b>condition2</b>          true (nonzero) or false (zero).
+    ■ <b>statementblock-1</b>    One or more statements on one or more lines.
+      <b>statementblock-2</b>
+      <b>statementblock-n</b>
+    ■ <b>statements</b>          One or more statements, separated by colons.
+
+Example:
+    INPUT &quot;1 or 2? &quot;, i%
+    IF i% = 1 OR i% = 2 THEN
+        PRINT &quot;OK&quot;
+    ELSE
+        PRINT &quot;Out of range&quot;
+    END IF
+
+See Also    <i>◄</i><a href="T0093.html">ON...GOSUB</a><i>►</i>    <i>◄</i><a href="T0093.html">ON...GOTO</a><i>►</i>    <i>◄</i><a href="T0095.html">SELECT CASE</a><i>►</i></pre>
+  </body>
+</html>

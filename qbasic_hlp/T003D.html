@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>PEN Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T003D</span>
+      <a href="index.html#T003D" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the status of the light pen.
+
+<b>PEN(n%)</b>
+
+    ■ <b>n%</b>    Specifies the information to be returned about light pen status:
+
+            n%    Returns
+            ══    ═════════════════════════════════════════════════════════
+            0     Whether pen was used since last call (-1 if yes, 0 if no)
+            1     The x screen coordinate of the last pen press
+            2     The y screen coordinate of the last pen press
+            3     The current pen switch status (-1 if down, 0 if up)
+            4     The x screen coordinate where the pen last left the screen
+            5     The y screen coordinate where the pen last left the screen
+            6     The character row of the last pen press
+            7     The character column of the last pen press
+            8     The character row where the pen last left the screen
+            9     The character column where the pen last left the screen
+
+Example:
+    DO
+      P = PEN(3)
+      LOCATE 1, 1: PRINT &quot;Pen is &quot;;
+      IF P THEN PRINT &quot;down&quot; ELSE PRINT &quot;up  &quot;
+      PRINT &quot;X =&quot;; PEN(4), &quot; Y =&quot;; PEN(5); &quot;  &quot;
+    LOOP
+
+See Also    <i>◄</i><a href="T0072.html">PEN, ON PEN Statements</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

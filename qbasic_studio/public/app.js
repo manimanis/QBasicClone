@@ -73,9 +73,12 @@
                 }
             });
 
-            // Fournisseurs d'IntelliSense & d'infobulles
+            // Fournisseurs d'IntelliSense, d'infobulles et de formatage
             if (window.registerQBasicProviders) {
                 window.registerQBasicProviders(monaco);
+            }
+            if (window.registerQBasicFormatter) {
+                window.registerQBasicFormatter(monaco);
             }
 
             // Création de l'instance de l'éditeur
@@ -99,19 +102,33 @@
                 document.getElementById('cursor-pos').textContent = `Ln ${pos.lineNumber}, Col ${pos.column}`;
             });
 
-            // Détection des modifications pour marquer l'onglet dirty
+            // Linter en temps réel avec temporisateur (debounce)
+            let lintTimer = null;
+            function triggerLint() {
+                if (lintTimer) clearTimeout(lintTimer);
+                lintTimer = setTimeout(() => {
+                    if (editor && editor.getModel() && window.runQBasicLinterOnModel) {
+                        window.runQBasicLinterOnModel(editor.getModel());
+                    }
+                }, 250);
+            }
+
+            // Détection des modifications pour marquer l'onglet dirty et relancer le linter
             editor.onDidChangeModelContent(() => {
                 const tab = openTabs.find(t => t.path === activeTabPath);
                 if (tab && !tab.isDirty) {
                     tab.isDirty = true;
                     renderTabs();
                 }
+                triggerLint();
             });
 
             // Raccourcis clavier globaux dans Monaco
             editor.addCommand(monaco.KeyCode.F5, () => runCurrentProgram());
             editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.F5, () => stopExecution());
             editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => saveCurrentFile());
+            editor.addCommand(monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.KeyF, () => formatCurrentDocument());
+            editor.addCommand(monaco.KeyCode.F1, () => openHelp());
 
             // Charger l'arborescence des fichiers et ouvrir le fichier initial
             loadFiles();
@@ -209,6 +226,9 @@
         if (tab && editor) {
             editor.setModel(tab.model);
             editor.focus();
+            if (window.runQBasicLinterOnModel) {
+                window.runQBasicLinterOnModel(tab.model);
+            }
         }
         renderTabs();
         highlightActiveInTree();
@@ -275,6 +295,25 @@
                 el.classList.add('active');
             }
         });
+    }
+
+    function formatCurrentDocument() {
+        if (!editor) return;
+        const action = editor.getAction('editor.action.formatDocument');
+        if (action) {
+            action.run().then(() => {
+                const procStatus = document.getElementById('proc-status');
+                if (procStatus) {
+                    const prev = procStatus.textContent;
+                    procStatus.textContent = 'Document formaté';
+                    setTimeout(() => {
+                        if (procStatus.textContent === 'Document formaté') {
+                            procStatus.textContent = prev;
+                        }
+                    }, 1500);
+                }
+            });
+        }
     }
 
     async function saveCurrentFile() {
@@ -459,15 +498,35 @@
         }
     }
 
+    function openHelp() {
+        let keyword = '';
+        if (editor) {
+            const position = editor.getPosition();
+            const model = editor.getModel();
+            if (position && model) {
+                const wordObj = model.getWordAtPosition(position);
+                if (wordObj && wordObj.word) {
+                    keyword = wordObj.word.toUpperCase();
+                }
+            }
+        }
+        const url = '/help/index.html' + (keyword ? '#' + encodeURIComponent(keyword) : '');
+        window.open(url, 'QBasicHelp', 'width=1150,height=780,resizable=yes,scrollbars=yes');
+    }
+
     // 6. Attachement des Événements du DOM
     document.getElementById('btn-run').onclick = runCurrentProgram;
     document.getElementById('btn-stop').onclick = stopExecution;
     document.getElementById('btn-save').onclick = saveCurrentFile;
+    const btnFormat = document.getElementById('btn-format');
+    if (btnFormat) btnFormat.onclick = formatCurrentDocument;
     document.getElementById('btn-new').onclick = showNewFileModal;
     document.getElementById('btn-new-in-folder').onclick = showNewFileModal;
     document.getElementById('btn-refresh-files').onclick = loadFiles;
     document.getElementById('btn-clear-console').onclick = clearConsole;
     document.getElementById('btn-theme').onclick = toggleTheme;
+    const btnHelp = document.getElementById('btn-help');
+    if (btnHelp) btnHelp.onclick = openHelp;
 
     document.getElementById('btn-cancel-modal').onclick = hideNewFileModal;
     document.getElementById('btn-create-modal').onclick = createNewFile;
@@ -491,9 +550,15 @@
         } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
             e.preventDefault();
             saveCurrentFile();
+        } else if (e.shiftKey && e.altKey && (e.key.toLowerCase() === 'f' || e.code === 'KeyF')) {
+            e.preventDefault();
+            formatCurrentDocument();
         } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
             e.preventDefault();
             showNewFileModal();
+        } else if (e.key === 'F1') {
+            e.preventDefault();
+            openHelp();
         }
     });
 

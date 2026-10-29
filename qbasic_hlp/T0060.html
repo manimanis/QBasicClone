@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>CINT, CLNG Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0060</span>
+      <a href="index.html#T0060" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+CINT rounds a numeric expression to an integer.
+CLNG rounds a numeric expression to a long (4-byte) integer.
+
+<b>CINT(numeric-expression)</b>
+<b>CLNG(numeric-expression)</b>
+
+    ■ <b>numeric-expression</b>    For CINT, any numeric expression in the range
+                            -32,768 through 32,767.
+                            For CLNG, any numeric expression in the range
+                            -2,147,483,648 through 2,147,483,647.
+
+Example:
+    PRINT CINT(12.49), CINT(12.51)    &apos;Output is:  12  13
+    PRINT CLNG(338457.8)              &apos;Output is:  338458
+
+See Also    <i>◄</i><a href="T005F.html">CDBL, CSNG</a><i>►</i>    <i>◄</i><a href="T0063.html">FIX, INT</a><i>►</i></pre>
+  </body>
+</html>

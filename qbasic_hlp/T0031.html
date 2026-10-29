@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>WRITE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0031</span>
+      <a href="index.html#T0031" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Writes data to the screen or a sequential file.
+
+<b>WRITE [[#]filenumber%,] expressionlist</b>
+
+    ■ <b>filenumber%</b>       The number of an open sequential file. If the file
+                        number is omitted, WRITE writes to the screen.
+    ■ <b>expressionlist</b>    One or more variables or expressions, separated by
+                        commas, whose values are written to the screen or
+                        file.
+
+    ■ WRITE inserts commas between items and quotation marks around strings
+      as they are written. WRITE writes values to a file in a form that can
+      be read by the INPUT statement.
+
+Example:
+    CLS
+    OPEN &quot;LIST&quot; FOR OUTPUT AS #1
+    DO
+        INPUT &quot;   NAME:       &quot;, Name$
+        INPUT &quot;   AGE:        &quot;, Age$
+        WRITE #1, Name$, Age$
+        INPUT &quot;Add another entry&quot;; R$
+    LOOP WHILE UCASE$(R$) = &quot;Y&quot;
+    CLOSE #1
+    &apos;Print the file to the screen.
+    OPEN &quot;LIST&quot; FOR INPUT AS #1
+    CLS
+    PRINT &quot;Entries in file:&quot;: PRINT
+    DO WHILE NOT EOF(1)
+        INPUT #1, Rec1$, Rec2$   &apos;Read entries from file.
+        PRINT Rec1$, Rec2$       &apos;Print the entries on the screen.
+    LOOP
+    CLOSE #1
+    KILL &quot;LIST&quot;
+
+See Also    <i>◄</i><a href="T0037.html">INPUT, LINE INPUT</a><i>►</i>    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i>    <i>◄</i><a href="T0042.html">PRINT, LPRINT</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>PLAY Statement (Music)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T003E</span>
+      <a href="index.html#T003E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Plays musical notes.
+
+<b>PLAY commandstring$</b>
+
+    ■ <b>commandstring$</b>    A string expression that contains one or more of
+                        the following PLAY commands:
+
+      Octave and tone commands:
+        O<b>octave</b>    Sets the current octave (0 - 6).
+        &lt; or &gt;     Moves up or down one octave.
+        A - G      Plays the specified note in the current octave.
+        N<b>note</b>      Plays a specified note (0 - 84) in the seven-octave
+                   range (0 is a rest).
+
+      Duration and tempo commands:
+        L<b>length</b>    Sets the length of each note (1 - 64). L1 is whole note,
+                   L2 is a half note, etc.
+        ML         Sets music legato.
+        MN         Sets music normal.
+        MS         Sets music staccato.
+        P<b>pause</b>     Specifies a pause (1 - 64). P1 is a whole-note pause,
+                   P2 is a half-note pause, etc.
+        T<b>tempo</b>     Sets the tempo in quarter notes per minute (32 - 255).
+
+      Mode commands:
+        MF          Plays music in foreground.
+        MB          Plays music in background.
+
+      Suffix commands:
+        # or +      Turns preceding note into a sharp.
+        -           Turns preceding note into a flat.
+        .           Plays the preceding note 3/2 as long as specified.
+
+    ■ To execute a PLAY command substring from a PLAY command string,
+      use the &quot;X&quot; command:
+
+      PLAY &quot;X&quot;+ VARPTR$(commandstring$)
+
+Example:
+    &apos;Play scale in 7 different octaves
+    scale$ = &quot;CDEFGAB&quot;
+    PLAY &quot;L16&quot;
+    FOR i% = 0 TO 6
+        PLAY &quot;O&quot; + STR$(i%)
+        PLAY &quot;X&quot; + VARPTR$(scale$)
+    NEXT i%
+
+See Also    <i>◄</i><a href="T0033.html">BEEP</a><i>►</i>     <i>◄</i><a href="T0073.html">PLAY Function</a><i>►</i>    <i>◄</i><a href="T0074.html">PLAY, ON PLAY (Event Trapping)</a><i>►</i>
+            <i>◄</i><a href="T0045.html">SOUND</a><i>►</i>    <i>◄</i><a href="T00B0.html">VARPTR$</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

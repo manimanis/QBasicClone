@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Declaring User-Defined Keys</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0071</span>
+      <a href="index.html#T0071" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+To declare a user-defined key, use the following variation of the KEY
+statement:
+
+<b>KEY n%, CHR$(keyboardflag%) + CHR$(scancode%)</b>
+
+    ■ <b>n%</b>               A value in the range 15 through 25 that identifies
+                       the key.
+    ■ <b>keyboardflag%</b>    One of the following values, or a sum of values,
+                       specifying whether the user-defined key is used in
+                       combination with the Shift, Ctrl, Alt, NumLock, or
+                       Caps Lock keys, or with extended keys:
+
+                       Value            Key
+                       ═════════════    ═══════════════════════════════════
+                       0                No keyboard flag
+                       1 through 3      Either Shift key
+                       4                Ctrl key
+                       8                Alt key
+                       32               NumLock key
+                       64               Caps Lock key
+                       128              Extended keys on a 101-key keyboard
+
+                       To specify multiple shift states, add the values
+                       together. For example, a value of 12 specifies that
+                       the user-defined key is used in combination with
+                       the Ctrl and Alt keys.
+
+    ■ <b>scancode%</b>        The scan code for the key being declared.
+                       See <i>◄</i><a href="T0011.html">Keyboard Scan Codes</a><i>►</i>.
+
+See Also    <i>◄</i><a href="T0038.html">KEY (Assignment)</a><i>►</i>    <i>◄</i><a href="T0070.html">KEY, ON KEY (Event Trapping)</a><i>►</i></pre>
+  </body>
+</html>

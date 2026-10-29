@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>TYPE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0087</span>
+      <a href="index.html#T0087" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Defines a data type containing one or more elements.
+
+<b>TYPE usertype</b>
+  <b>elementname AS typename</b>
+  <b>[elementname AS typename]</b>
+<b>.</b>
+<b>.</b>
+<b>.</b>
+<b>END TYPE</b>
+
+    ■ <b>usertype</b>       The name of the data type being defined. The name can
+                     consist of up to 40 characters and must begin with a
+                     letter. Valid characters are A-Z, 0-9, and period (.).
+    ■ <b>elementname</b>    An element of the user-defined data type.
+    ■ <b>typename</b>       The element&apos;s type (INTEGER, LONG, SINGLE, DOUBLE,
+                     STRING, or a user-defined data type).
+
+    ■ Use DIM, REDIM, COMMON, STATIC, or SHARED to create a variable of a
+      user-defined data type.
+
+Example:
+    TYPE Card
+        Suit AS STRING * 9
+        Value AS INTEGER
+    END TYPE
+    DIM Deck(1 TO 52) AS Card
+    Deck(1).Suit = &quot;Club&quot;
+    Deck(1).Value = 2
+    PRINT Deck(1).Suit, Deck(1).Value
+
+See Also    <i>◄</i><a href="T007C.html">COMMON</a><i>►</i>    <i>◄</i><a href="T007F.html">DIM, REDIM</a><i>►</i>    <i>◄</i><a href="T0085.html">SHARED, STATIC</a><i>►</i></pre>
+  </body>
+</html>

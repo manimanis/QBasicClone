@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>OPEN Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T002B</span>
+      <a href="index.html#T002B" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Opens a file or device.
+
+<b>OPEN file$ [FOR mode] [ACCESS access] [lock] AS [#]filenumber% [LEN=reclen%]</b>
+
+    ■ <b>file$</b>          The name of the file or device. The file name may
+                     include a drive and path.
+    ■ <b>mode</b>           One of the following file modes: APPEND, BINARY, INPUT,
+                     OUTPUT, or RANDOM. See <i>◄</i><a href="T002C.html">OPEN Statement File Modes</a><i>►</i>.
+    ■ <b>access</b>         In network environments, specifies whether the file is
+                     opened for READ, WRITE, or READ WRITE access.
+                     See <i>◄</i><a href="T002D.html">OPEN Statement ACCESS Clause</a><i>►</i>.
+    ■ <b>lock</b>           Specifies the file locking in network environments:
+                     SHARED, LOCK READ, LOCK WRITE, LOCK READ WRITE.
+    ■ <b>filenumber%</b>    A number in the range 1 through 255 that identifies the
+                     file while it is open.
+    ■ <b>reclen%</b>        For random-access files, the record length (default is
+                     128 bytes). For sequential files, the number of
+                     characters buffered (default is 512 bytes).
+
+Example:
+    INPUT &quot;Enter Filename: &quot;; n$
+    OPEN n$ FOR OUTPUT AS #1
+    PRINT #1, &quot;This is saved to the file.&quot;
+    CLOSE
+    OPEN n$ FOR INPUT AS #1
+    INPUT #1, a$
+    PRINT &quot;Read from file: &quot;; a$
+    CLOSE
+
+See Also    <i>◄</i><a href="T001D.html">CLOSE</a><i>►</i>    <i>◄</i><a href="T0022.html">FREEFILE</a><i>►</i>    <i>◄</i><a href="T003C.html">OPEN COM</a><i>►</i>    <i>◄</i><a href="T0087.html">TYPE</a><i>►</i>
+            <i>◄</i><a href="T002E.html">OPEN Statement Alternate Syntax</a><i>►</i></pre>
+  </body>
+</html>

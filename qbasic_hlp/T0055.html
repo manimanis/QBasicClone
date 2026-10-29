@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>PAINT Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0055</span>
+      <a href="index.html#T0055" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Fills a graphics area with a specified color or pattern.
+
+<b>PAINT [STEP] (x!,y!)[,[{color% | tile$}] [,[bordercolor%] [,background$]]]</b>
+
+    ■ <b>STEP</b>            Specifies that coordinates are relative to the current
+                      graphics cursor position.
+    ■ <b>(x!,y!)</b>         The screen coordinates where painting begins.
+    ■ <b>color%</b>          A color attribute that sets the fill color.
+    ■ <b>tile$</b>           A fill pattern that is 8 bits wide and up to 64 bytes
+                      long, defined as follows:
+
+                        tile$ = CHR$(arg1) + CHR$(arg2) + ... + CHR$(argn%)
+
+                      The arguments to CHR$ are numbers between 0 and 255.
+                      Each CHR$(argn%) defines a 1-byte, 8-pixel slice of
+                      the pattern based on the binary form of the number.
+    ■ <b>bordercolor%</b>    A color attribute that specifies the color of the
+                      filled area&apos;s border. PAINT stops filling an area when
+                      it encounters a border of the specified color.
+    ■ <b>background$</b>     A 1-byte, 8-pixel background tile slice. Specifying a
+                      background tile slice allows you to paint over an area
+                      that has already been painted.
+
+    ■ The available color attributes depend on your graphics adapter and the
+      screen mode set by the most recent SCREEN statement.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    CIRCLE (106, 100), 75, 1
+    LINE (138, 35)-(288, 165), 1, B
+    PAINT (160, 100), 2, 1
+
+See Also    <i>◄</i><a href="T005D.html">ASC, CHR$</a><i>►</i>    <i>◄</i><a href="T004E.html">CIRCLE</a><i>►</i>    <i>◄</i><a href="T0051.html">DRAW</a><i>►</i>    <i>◄</i><a href="T0054.html">LINE</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

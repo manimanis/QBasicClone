@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>GET, PUT Statements (File I/O)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0023</span>
+      <a href="index.html#T0023" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+GET reads from a file into a random-access buffer or variable.
+PUT writes a variable or random-access buffer to a file.
+
+<b>GET [#]filenumber%[,[recordnumber&amp;][,variable]]</b>
+<b>PUT [#]filenumber%[,[recordnumber&amp;][,variable]]</b>
+
+    ■ <b>filenumber%</b>      The number of an open file.
+    ■ <b>recordnumber&amp;</b>    For random-access files, the number of the record to
+                       read or write. For binary-mode files, the byte
+                       position where reading or writing starts.
+    ■ <b>variable</b>         For GET, a variable used to receive input from the
+                       file. For PUT, a variable that contains output to
+                       write to the file. The variable is usually a variable
+                       of a user-defined data type.
+
+Example:
+    TYPE TestRecord
+        Student AS STRING * 20
+        Score AS SINGLE
+    END TYPE
+    DIM MyClass AS TestRecord
+    OPEN &quot;FINAL.DAT&quot; FOR RANDOM AS #1 LEN = LEN(MyClass)
+    MyClass.Student = &quot;MarySa&quot;
+    MyClass.Score = 99
+    PUT #1, 1, MyClass
+    CLOSE #1
+    OPEN &quot;FINAL.DAT&quot; FOR RANDOM AS #1 LEN = LEN(MyClass)
+    GET #1, 1, MyClass
+    PRINT &quot;STUDENT:&quot;, MyClass.Student
+    PRINT &quot;SCORE:&quot;, MyClass.Score
+    CLOSE #1
+    KILL &quot;FINAL.DAT&quot;
+
+See Also    <i>◄</i><a href="T0020.html">FIELD</a><i>►</i>    <i>◄</i><a href="T0052.html">GET, PUT (Graphics)</a><i>►</i>    <i>◄</i><a href="T0029.html">LSET, RSET</a><i>►</i>
+            <i>◄</i><a href="T00A9.html">MKn$, CVn Functions</a><i>►</i>               <i>◄</i><a href="T0087.html">TYPE</a><i>►</i></pre>
+  </body>
+</html>

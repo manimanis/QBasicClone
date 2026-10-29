@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>GET, PUT Statements (Graphics)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0052</span>
+      <a href="index.html#T0052" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+GET captures a graphics screen image. PUT displays an image captured by GET.
+
+<b>GET [STEP](x1!,y1!)-[STEP](x2!,y2!), arrayname[(index%)]</b>
+<b>PUT [STEP] (x1!,y1!), arrayname[(index%)] [,actionverb]</b>
+
+    ■ <b>STEP</b>          Specifies that coordinates are relative to the current
+                    graphics cursor position.
+    ■ <b>(x1!,y1!)</b>     The upper-left coordinates of the image captured by GET
+                    or of the screen location where PUT displays the image.
+    ■ <b>(x2!,y2!)</b>     The lower-right coordinates of the captured image.
+    ■ <b>arrayname</b>     The name of the array where the image is stored.
+                    See <i>◄</i><a href="T0053.html">Screen Image Arrays and Compatibility</a><i>►</i> to determine
+                    the required size of the array.
+    ■ <b>index%</b>        The array index at which storage of the image begins.
+    ■ <b>actionverb</b>    A keyword indicating how the image is displayed:
+
+                    Keyword    Action
+                    ═══════    ═════════════════════════════════════════════
+                    AND        Merges stored image with an existing image.
+                    OR         Superimposes stored image on existing image.
+                    PSET       Draws stored image, erasing existing image.
+                    PRESET     Draws stored image in reverse colors, erasing
+                               existing image.
+                    XOR        Draws a stored image or erases a previously
+                               drawn image while preserving the background,
+                               producing animation effects.
+
+    ■ A PUT statement should always be executed in the same screen mode as
+      the GET statement used to capture the image, or a compatible mode.
+      See <i>◄</i><a href="T0053.html">Screen Image Arrays and Compatibility</a><i>►</i>.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    DIM Box%(1 TO 200)
+    x1% = 0: x2% = 10: y1% = 0: y2% = 10
+    LINE (x1%, y1%)-(x2%, y2%), 2, BF
+    GET (x1%, y1%)-(x2%, y2%), Box%
+    DO
+        PUT (x1%, y1%), Box%, XOR
+        x1% = RND * 300
+        y1% = RND * 180
+        PUT (x1%, y1%), Box%
+    LOOP WHILE INKEY$ = &quot;&quot;
+
+See Also    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

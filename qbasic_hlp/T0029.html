@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>LSET, RSET Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0029</span>
+      <a href="index.html#T0029" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+LSET and RSET move data into a random-access file buffer (in preparation for
+a PUT statement) and left- or right-justify the value of a string variable.
+LSET also copies the contents of one record variable to another.
+
+<b>LSET stringvariable$=stringexpression$</b>
+<b>RSET stringvariable$=stringexpression$</b>
+<b>LSET recordvariable1=recordvariable2</b>
+
+    ■ <b>stringvariable$</b>      Any string variable or a random-access file field
+                           defined in a FIELD statement.
+    ■ <b>stringexpression$</b>    For LSET, the left-justified version of
+                           stringvariable$. For RSET, the right-justified
+                           version of stringvariable$.
+    ■ <b>recordvariable1</b>      Record variables of any user-defined data type.
+      <b>recordvariable2</b>      Use LSET to assign a record variable of one data
+                           type to a different user-defined data type.
+
+Example:
+    OPEN &quot;FILEDAT.DAT&quot; FOR RANDOM AS #1 LEN = 10
+    FIELD #1, 5 AS Ls1$, 5 AS Rs1$
+    LSET Ls1$ = &quot;LSET&quot;
+    RSET Rs1$ = &quot;RSET&quot;
+    PUT #1, 1
+    CLOSE #1
+    OPEN &quot;FILEDAT.DAT&quot; FOR RANDOM AS #1 LEN = 10
+    FIELD #1, 5 AS Ls2$, 5 AS Rs2$
+    GET #1, 1
+    PRINT &quot;*&quot; + Ls2$ + &quot;*&quot;, &quot;*&quot; + Rs2$ + &quot;*&quot;
+    CLOSE #1
+
+See Also    <i>◄</i><a href="T0020.html">FIELD</a><i>►</i>    <i>◄</i><a href="T0023.html">GET, PUT</a><i>►</i></pre>
+  </body>
+</html>

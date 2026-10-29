@@ -23,6 +23,9 @@
                 <button id="btn-save" class="btn" title="Enregistrer (Ctrl+S)">
                     <span>💾</span> Enregistrer
                 </button>
+                <button id="btn-format" class="btn" title="Formater le document (Maj+Alt+F)">
+                    <span>🪄</span> Formater
+                </button>
 
                 <div class="divider"></div>
 
@@ -37,6 +40,9 @@
 
                 <button id="btn-theme" class="btn" title="Basculer entre thème Dark Moderne et Rétro DOS QBasic">
                     <span>🎨</span> Thème
+                </button>
+                <button id="btn-help" class="btn" title="Ouvrir l'Aide QBasic (F1 sur n'importe quel mot-clé)">
+                    <span>❓</span> Aide (F1)
                 </button>
                 <button id="btn-clear-console" class="btn" title="Effacer la console">
                     <span>🧹</span> Effacer sortie
@@ -105,13 +111,16 @@
                 <div class="status-item">
                     <span>Langage : <strong>QBasic 1.1 / Win64</strong></span>
                 </div>
+                <div class="status-item">
+                    <span id="linter-status" class="status-badge success">✓ 0 erreur</span>
+                </div>
             </div>
             <div class="status-right">
                 <div class="status-item">
                     <span id="proc-status">Prêt</span>
                 </div>
                 <div class="status-item">
-                    <span>Raccourcis : <strong>F5</strong> Exécuter | <strong>Ctrl+S</strong> Sauvegarder</span>
+                    <span>Raccourcis : <strong>F5</strong> Exécuter | <strong>Ctrl+S</strong> Sauvegarder | <strong>Maj+Alt+F</strong> Formater</span>
                 </div>
             </div>
         </footer>
@@ -135,6 +144,8 @@
     <!-- Scripts de Monaco et de l'IDE -->
     <script src="qbasic-lang.js"></script>
     <script src="qbasic-completions.js"></script>
+    <script src="qbasic-formatter.js"></script>
+    <script src="qbasic-linter.js"></script>
     <script src="/vs/loader.js"></script>
     <script src="app.js"></script>
 </body>

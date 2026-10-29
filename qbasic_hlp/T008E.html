@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>EXIT Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T008E</span>
+      <a href="index.html#T008E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Exits a DO or FOR loop, a FUNCTION or SUB procedure, or a DEF FN function.
+
+<b>EXIT {DEF | DO | FOR | FUNCTION | SUB}</b>
+
+    ■ <b>DEF</b>         Exits a DEF FN function.
+    ■ <b>DO</b>          Exits a DO loop.
+    ■ <b>FOR</b>         Exits a FOR loop.
+    ■ <b>FUNCTION</b>    Exits a FUNCTION procedure.
+    ■ <b>SUB</b>         Exits a SUB procedure.
+
+Example:
+    i% = 0
+    DO
+        i% = i% + 1
+        IF i% = 500 THEN EXIT DO
+    LOOP
+    PRINT &quot;EXIT at&quot;; i%
+
+See Also    <i>◄</i><a href="T006A.html">DEF FN</a><i>►</i>    <i>◄</i><a href="T008C.html">DO...LOOP</a><i>►</i>    <i>◄</i><a href="T008F.html">FOR...NEXT</a><i>►</i>    <i>◄</i><a href="T006C.html">FUNCTION</a><i>►</i>    <i>◄</i><a href="T006E.html">SUB</a><i>►</i></pre>
+  </body>
+</html>

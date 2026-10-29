@@ -1,142 +1,146 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QBasic Online Help System (QBASIC.HLP)</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230000aa'/><text x='50' y='68' font-size='50' font-family='monospace' font-weight='bold' fill='%23ffff55' text-anchor='middle'>QB</text></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QBasic Online Help System (QBASIC.HLP)</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230000aa'/><text x='50' y='68' font-size='50' font-family='monospace' font-weight='bold' fill='%23ffff55' text-anchor='middle'>QB</text></svg>">
 </head>
+
 <body>
-    <div id="app">
-        <!-- Top Application Header -->
-        <header id="header">
-            <div class="brand-section">
-                <button id="btn-toggle-sidebar" class="btn" title="Afficher / Masquer la barre latérale">
-                    <span>☰</span>
-                </button>
-                <div class="brand-logo" onclick="QBasicPortal.navigateTo('T0000')">
-                    <span>🖩</span>
-                    <span>QBasic Help</span>
-                    <span class="brand-badge">MS-DOS 1.1</span>
-                </div>
-            </div>
-
-            <!-- Quick Navigation Buttons -->
-            <div class="header-nav">
-                <button class="btn" onclick="window.history.back()" title="Page précédente (Alt+Flèche Gauche)">
-                    <span>◄</span> Précédent
-                </button>
-                <button class="btn" onclick="window.history.forward()" title="Page suivante (Alt+Flèche Droite)">
-                    Suivant <span>►</span>
-                </button>
-                <button class="btn" onclick="QBasicPortal.navigateTo('T0000')" title="Guide de survie (Survival Guide)">
-                    <span>🏠</span> Accueil
-                </button>
-                <button class="btn" onclick="QBasicPortal.navigateTo('T0002')" title="Sommaire général">
-                    <span>📑</span> Sommaire
-                </button>
-                <button class="btn" onclick="QBasicPortal.navigateTo('T00B6')" title="Index alphabétique de A à Z">
-                    <span>🔤</span> Index
-                </button>
-            </div>
-
-            <!-- Global Instant Search -->
-            <div class="search-wrapper">
-                <input id="global-search" type="text" class="search-input" placeholder="Recherche rapide... (Ctrl+K)">
-                <span class="search-shortcut">Ctrl+K</span>
-            </div>
-
-            <!-- Controls (Theme, Font, Copy, Links) -->
-            <div class="header-controls">
-                <button id="btn-copy-example" class="btn btn-primary" style="display:none;" title="Copier le code exemple dans le presse-papier">
-                    <span>📋</span> Copier Code
-                </button>
-                <button id="btn-font-dec" class="btn" title="Diminuer la taille du texte">A-</button>
-                <button id="btn-font-inc" class="btn" title="Agrandir la taille du texte">A+</button>
-                <button id="btn-theme" class="btn" title="Basculer entre les thèmes Rétro DOS, Sombre et Clair">
-                    <span>🎨</span> Thème
-                </button>
-                <a href="../qbasic_studio/public/index.html" class="btn" title="Ouvrir l'IDE QBasic Studio">
-                    <span>💻</span> Studio
-                </a>
-            </div>
-        </header>
-
-        <!-- Main Workspace -->
-        <div id="main">
-            <!-- Sidebar Navigation -->
-            <aside id="sidebar">
-                <!-- Sidebar Tabs -->
-                <div class="sidebar-tabs">
-                    <button class="tab-btn active" data-tab="toc">
-                        <span>📑</span> Sommaire
-                    </button>
-                    <button class="tab-btn" data-tab="index">
-                        <span>🔤</span> Index A-Z
-                    </button>
-                    <button class="tab-btn" data-tab="categories">
-                        <span>📂</span> Catégories
-                    </button>
-                    <button id="tab-search-btn" class="tab-btn" data-tab="search">
-                        <span>🔍</span> Recherche
-                    </button>
-                </div>
-
-                <!-- Tab 1: Sommaire (TOC) -->
-                <div id="tab-toc" class="tab-content"></div>
-
-                <!-- Tab 2: Index A-Z -->
-                <div id="tab-index" class="tab-content" style="display:none;">
-                    <div id="alpha-bar" class="alpha-bar"></div>
-                    <div id="index-items-list"></div>
-                </div>
-
-                <!-- Tab 3: Categories -->
-                <div id="tab-categories" class="tab-content" style="display:none;"></div>
-
-                <!-- Tab 4: Search Results -->
-                <div id="tab-search" class="tab-content" style="display:none;">
-                    <div id="search-results">
-                        <div style="padding:16px;color:var(--qb-text-dim);text-align:center;">
-                            Tapez un mot-clé dans la barre de recherche en haut ou appuyez sur <b>Ctrl+K</b>.
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Main Content Pane -->
-            <main id="content-pane">
-                <!-- Breadcrumbs & Status Bar -->
-                <div class="topic-header-bar">
-                    <div class="breadcrumbs">
-                        <span>Aide QBasic</span>
-                        <span>›</span>
-                        <span id="breadcrumb-topic" style="color:var(--qb-highlight);font-weight:bold;">Topic</span>
-                    </div>
-                    <div class="topic-actions">
-                        <span style="font-size:11px;color:var(--qb-text-dim);">Fichier source: QBASIC.HLP</span>
-                    </div>
-                </div>
-
-                <!-- Scrollable Topic Text Area -->
-                <div id="topic-scroll-area">
-                    <div class="topic-wrapper">
-                        <pre id="topic-content" class="help-content"></pre>
-                    </div>
-                </div>
-            </main>
+  <div id="app">
+    <!-- Top Application Header -->
+    <header id="header">
+      <div class="brand-section">
+        <button id="btn-toggle-sidebar" class="btn" title="Afficher / Masquer la barre latérale">
+          <span>☰</span>
+        </button>
+        <div class="brand-logo" onclick="QBasicPortal.navigateTo('T0000')">
+          <span>🖩</span>
+          <span>QBasic Help</span>
+          <span class="brand-badge">MS-DOS 1.1</span>
         </div>
+      </div>
+
+      <!-- Quick Navigation Buttons -->
+      <div class="header-nav">
+        <button class="btn" onclick="window.history.back()" title="Page précédente (Alt+Flèche Gauche)">
+          <span>◄</span> Précédent
+        </button>
+        <button class="btn" onclick="window.history.forward()" title="Page suivante (Alt+Flèche Droite)">
+          Suivant <span>►</span>
+        </button>
+        <button class="btn" onclick="QBasicPortal.navigateTo('T0000')" title="Guide de survie (Survival Guide)">
+          <span>🏠</span> Accueil
+        </button>
+        <button class="btn" onclick="QBasicPortal.navigateTo('T0002')" title="Sommaire général">
+          <span>📑</span> Sommaire
+        </button>
+        <button class="btn" onclick="QBasicPortal.navigateTo('T00B6')" title="Index alphabétique de A à Z">
+          <span>🔤</span> Index
+        </button>
+      </div>
+
+      <!-- Global Instant Search -->
+      <div class="search-wrapper">
+        <input id="global-search" type="text" class="search-input" placeholder="Recherche rapide... (Ctrl+K)">
+        <span class="search-shortcut">Ctrl+K</span>
+      </div>
+
+      <!-- Controls (Theme, Font, Copy, Links) -->
+      <div class="header-controls">
+        <button id="btn-copy-example" class="btn btn-primary" style="display:none;"
+          title="Copier le code exemple dans le presse-papier">
+          <span>📋</span> Copier Code
+        </button>
+        <button id="btn-font-dec" class="btn" title="Diminuer la taille du texte">A-</button>
+        <button id="btn-font-inc" class="btn" title="Agrandir la taille du texte">A+</button>
+        <button id="btn-theme" class="btn" title="Basculer entre les thèmes Rétro DOS, Sombre et Clair">
+          <span>🎨</span> Thème
+        </button>
+        <a href="../qbasic_studio/public/index.html" class="btn" title="Ouvrir l'IDE QBasic Studio">
+          <span>💻</span> Studio
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div id="main">
+      <!-- Sidebar Navigation -->
+      <aside id="sidebar">
+        <!-- Sidebar Tabs -->
+        <div class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="toc">
+            <span>📑</span> Sommaire
+          </button>
+          <button class="tab-btn" data-tab="index">
+            <span>🔤</span> Index A-Z
+          </button>
+          <button class="tab-btn" data-tab="categories">
+            <span>📂</span> Catégories
+          </button>
+          <button id="tab-search-btn" class="tab-btn" data-tab="search">
+            <span>🔍</span> Recherche
+          </button>
+        </div>
+
+        <!-- Tab 1: Sommaire (TOC) -->
+        <div id="tab-toc" class="tab-content"></div>
+
+        <!-- Tab 2: Index A-Z -->
+        <div id="tab-index" class="tab-content" style="display:none;">
+          <div id="alpha-bar" class="alpha-bar"></div>
+          <div id="index-items-list"></div>
+        </div>
+
+        <!-- Tab 3: Categories -->
+        <div id="tab-categories" class="tab-content" style="display:none;"></div>
+
+        <!-- Tab 4: Search Results -->
+        <div id="tab-search" class="tab-content" style="display:none;">
+          <div id="search-results">
+            <div style="padding:16px;color:var(--qb-text-dim);text-align:center;">
+              Tapez un mot-clé dans la barre de recherche en haut ou appuyez sur <b>Ctrl+K</b>.
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Pane -->
+      <main id="content-pane">
+        <!-- Breadcrumbs & Status Bar -->
+        <div class="topic-header-bar">
+          <div class="breadcrumbs">
+            <span>Aide QBasic</span>
+            <span>›</span>
+            <span id="breadcrumb-topic" style="color:var(--qb-highlight);font-weight:bold;">Topic</span>
+          </div>
+          <div class="topic-actions">
+            <span style="font-size:11px;color:var(--qb-text-dim);">Fichier source: QBASIC.HLP</span>
+          </div>
+        </div>
+
+        <!-- Scrollable Topic Text Area -->
+        <div id="topic-scroll-area">
+          <div class="topic-wrapper">
+            <pre id="topic-content" class="help-content"></pre>
+          </div>
+        </div>
+      </main>
     </div>
+  </div>
 
-    <!-- Notification Toast -->
-    <div id="toast"></div>
+  <!-- Notification Toast -->
+  <div id="toast"></div>
 
-    <!-- Offline Data and Engine Scripts -->
-    <script src="topics.js"></script>
-    <script src="contexts.js"></script>
-    <script src="navigation.js"></script>
-    <script src="app.js"></script>
+  <!-- Offline Data and Engine Scripts -->
+  <script src="topics.js"></script>
+  <script src="contexts.js"></script>
+  <script src="navigation.js"></script>
+  <script src="app.js"></script>
 </body>
-</html>
 
+</html>

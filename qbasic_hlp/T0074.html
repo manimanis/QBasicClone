@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>PLAY, ON PLAY Statements (Event Trapping)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0074</span>
+      <a href="index.html#T0074" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+PLAY enables, disables, or suspends play event trapping.
+If event trapping is enabled, ON PLAY branches to a subroutine whenever
+the music buffer contains fewer than a specified number of notes.
+
+<b>PLAY ON</b>
+<b>PLAY OFF</b>
+<b>PLAY STOP</b>
+<b>ON PLAY(queuelimit%) GOSUB line</b>
+
+    ■ <b>PLAY ON</b>        Enables play event trapping.
+    ■ <b>PLAY OFF</b>       Disables play event trapping.
+    ■ <b>PLAY STOP</b>      Suspends play event trapping. Events are processed once
+                     event trapping is enabled by PLAY ON.
+    ■ <b>queuelimit%</b>    A number in the range 1 through 32. ON PLAY branches to
+                     a subroutine when there are fewer than queuelimit%
+                     notes in the music buffer.
+    ■ <b>line</b>           The label or number of the first line of the
+                     event-trapping subroutine.
+
+Example:
+    ON PLAY(3) GOSUB Background
+    PLAY ON
+    Music$ = &quot;MBo3L8ED+ED+Eo2Bo3DCL2o2A&quot;
+    PLAY Music$
+    LOCATE 2, 1: PRINT &quot;Press any key to stop.&quot;;
+    DO WHILE INKEY$ = &quot;&quot;: LOOP
+    END
+
+    Background:
+        i% = i% + 1
+        LOCATE 1, 1: PRINT &quot;Background called &quot;; i%; &quot;time(s)&quot;;
+        PLAY Music$
+        RETURN
+
+See Also    <i>◄</i><a href="T003E.html">PLAY (Music)</a><i>►</i>    <i>◄</i><a href="T0073.html">PLAY Function</a><i>►</i></pre>
+  </body>
+</html>

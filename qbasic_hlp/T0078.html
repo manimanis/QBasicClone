@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>TIMER, ON TIMER Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0078</span>
+      <a href="index.html#T0078" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+TIMER enables, disables, or suspends timer event trapping.
+If event trapping is enabled, ON TIMER branches to a subroutine whenever
+a specified number of seconds has elapsed.
+
+<b>TIMER ON</b>
+<b>TIMER OFF</b>
+<b>TIMER STOP</b>
+<b>ON TIMER(n%) GOSUB line</b>
+
+    ■ <b>TIMER ON</b>      Enables timer event trapping.
+    ■ <b>TIMER OFF</b>     Disables timer event trapping.
+    ■ <b>TIMER STOP</b>    Suspends timer event trapping. Events are processed
+                    once event trapping is enabled by TIMER ON.
+    ■ <b>n%</b>            The number of seconds that elapse before ON TIMER
+                    branches to the event-trapping subroutine; a value in
+                    the range 1 through 86,400 (24 hours).
+    ■ <b>line</b>          The label or number of the first line of the
+                    event-trapping subroutine.
+
+Example:
+    ON TIMER(1) GOSUB TimeUpdate
+    TIMER ON
+    CLS
+    PRINT &quot;Time: &quot;; TIME$
+    StartTime = TIMER
+    WHILE TimePast &lt; 10
+        TimePast = TIMER - StartTime
+    WEND
+    END
+
+    TimeUpdate:
+        LOCATE 1, 7: PRINT TIME$
+        RETURN
+
+See Also    <i>◄</i><a href="T0077.html">TIMER Function</a><i>►</i></pre>
+  </body>
+</html>

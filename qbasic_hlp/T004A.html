@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>WAIT Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T004A</span>
+      <a href="index.html#T004A" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Suspends program execution until a specified bit pattern is input from an
+input port.
+
+<b>WAIT portnumber%, AND-expression% [,XOR-expression%]</b>
+
+    ■ <b>portnumber%</b>        The number of the input port.
+    ■ <b>AND-expression%</b>    An integer expression that WAIT combines with the
+                         bit pattern value using an AND operator. When the
+                         result is nonzero, WAIT stops monitoring the port.
+    ■ <b>XOR-expression%</b>    Can be used to turn line bits on and off in the bit
+                         pattern before the AND operation is applied.
+
+Example:
+    &apos;Reads the interrupt controller port address &amp;H20.
+    &apos;Press any key to continue.
+    WAIT &amp;H20, 1
+
+See Also    <i>◄</i><a href="T0036.html">INP, OUT</a><i>►</i>    <i>◄</i><a href="T009B.html">Boolean Operators</a><i>►</i></pre>
+  </body>
+</html>

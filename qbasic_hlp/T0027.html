@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>LOCK, UNLOCK Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0027</span>
+      <a href="index.html#T0027" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+LOCK limits or prevents access to a file by a network process.
+UNLOCK releases the locks imposed by the last LOCK statement.
+
+<b>LOCK [#]filenumber% [,{record&amp; | [start&amp;] TO end&amp;}]</b>
+<b>UNLOCK [#]filenumber% [,{record&amp; | [start&amp;] TO end&amp;}]</b>
+
+    ■ <b>filenumber%</b>        The number of an open file.
+    ■ <b>record&amp;</b>            For random-access files, the number of a record to
+                         lock, relative to the first record in the file.
+                         For binary files, the number of a byte to lock,
+                         relative to the first byte in the file.
+    ■ <b>start&amp;</b> and <b>end&amp;</b>    The numbers of the first and last records or bytes
+                         in a range of records or bytes to lock or unlock.
+
+    ■ For sequential files, LOCK and UNLOCK affect the entire file.
+
+Example:
+    &apos;This example runs only in a network environment.
+    OPEN &quot;TEST.DAT&quot; FOR RANDOM AS #1
+    FOR i% = 1 TO 10
+        PUT #1, , i%
+    NEXT i%
+    LOCK #1, 2         &apos;Lock record 2.
+    GET #1, 2, i%
+    UNLOCK #1, 2       &apos;Unlock record 2.</pre>
+  </body>
+</html>

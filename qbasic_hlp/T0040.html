@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>POINT Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0040</span>
+      <a href="index.html#T0040" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the current graphics cursor coordinates or the color attribute of a
+specified pixel.
+
+<b>POINT {(n%) | (x%,y%)}</b>
+
+    ■ <b>(n%)</b>       Indicates the type of coordinate to return:
+
+                 n%    Returns
+                 ══    ═════════════════════════════════
+                 0     The current viewport x coordinate
+                 1     The current viewport y coordinate
+                 2     The current window x coordinate
+                 3     The current window y coordinate
+
+    ■ <b>(x%,y%)</b>    The coordinates of the pixel that POINT checks for color.
+                     If the coordinates are outside the current viewport,
+                     POINT returns -1.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    LINE (0, 0)-(100, 100), 2
+    LOCATE 14, 1
+    FOR y% = 1 TO 10
+        FOR x% = 1 TO 10
+            PRINT POINT(x%, y%);
+        NEXT x%
+        PRINT
+    NEXT y%
+
+See Also    <i>◄</i><a href="T004F.html">COLOR</a><i>►</i>    <i>◄</i><a href="T003F.html">PMAP</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>DRAW Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0051</span>
+      <a href="index.html#T0051" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Draws an object.
+
+<b>DRAW commandstring$</b>
+
+    ■ <b>commandstring$</b>    A string expression that contains one or more of
+                        the following DRAW commands.
+
+      Line-drawing and cursor-movement commands:
+        D[n%]            Moves cursor down n% units.
+        E[n%]            Moves cursor up and right n% units.
+        F[n%]            Moves cursor down and right n% units.
+        G[n%]            Moves cursor down and left n% units.
+        H[n%]            Moves cursor up and left n% units.
+        L[n%]            Moves cursor left n% units.
+        M[{+|-}]x%,y%    Moves cursor to point x%,y%. If x% is preceded
+                         by + or -, moves relative to the current point.
+        R[n%]            Moves cursor right n% units.
+        U[n%]            Moves cursor up n% units.
+        [B]              Optional prefix that moves cursor without drawing.
+        [N]              Optional prefix that draws and returns cursor to
+                         its original position.
+
+      Color, rotation, and scale commands:
+        An%              Rotates an object n% * 90 degrees (n% can be 0, 1,
+                         2, or 3).
+        Cn%              Sets the drawing color (n% is a color attribute).
+        Pn1%,n2%         Sets the paint fill and border colors of an object
+                         (n1% is the fill-color attribute, n2% is the
+                         border-color attribute).
+        Sn%              Determines the drawing scale by setting the length
+                         of a unit of cursor movement. The default n% is 4,
+                         which is equivalent to 1 pixel.
+        TAn%             Turns an angle n% degrees (-360 through 360).
+
+    ■ If you omit n% from line-drawing and cursor-movement commands, the
+      cursor moves 1 unit.
+    ■ To execute a DRAW command substring from a DRAW command string, use
+      the &quot;X&quot; command:
+
+      DRAW &quot;X&quot;+ VARPTR$(commandstring$)
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    Triangle$ = &quot;F60 L120 E60&quot;
+    DRAW &quot;C2 X&quot; + VARPTR$(Triangle$)
+    DRAW &quot;BD30 P1,2 C3 M-30,-30&quot;
+
+See Also    <i>◄</i><a href="T0056.html">PALETTE, PALETTE USING</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T00B0.html">VARPTR$</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

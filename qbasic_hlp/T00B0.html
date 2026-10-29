@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>VARPTR$ Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T00B0</span>
+      <a href="index.html#T00B0" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>        <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns a string representation of a variable&apos;s address for use in DRAW and
+PLAY statements.
+
+<b>VARPTR$(commandstring$)</b>
+
+    ■ <b>commandstring$</b>    A string variable containing DRAW or PLAY commands.
+
+Example:
+    Scale$ = &quot;CDEFGAB&quot;
+    PLAY &quot;L16&quot;
+    FOR i% = 0 TO 6
+        PLAY &quot;O&quot; + STR$(i%)
+        PLAY &quot;X&quot; + VARPTR$(Scale$)
+    NEXT i%
+
+See Also   <i>◄</i><a href="T0051.html">DRAW</a><i>►</i>   <i>◄</i><a href="T003E.html">PLAY (Music)</a><i>►</i>    <i>◄</i><a href="T00AF.html">VARPTR, VARSEG</a><i>►</i></pre>
+  </body>
+</html>

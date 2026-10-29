@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>CALL ABSOLUTE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T008A</span>
+      <a href="index.html#T008A" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Transfers control to a machine-language procedure.
+
+<b>CALL ABSOLUTE ([argumentlist,] offset%)</b>
+
+    ■ <b>argumentlist</b>    Arguments passed to a machine-language procedure
+                      as offsets from the current data segment.
+    ■ <b>offset%</b>         The offset from the current code segment, set by
+                      DEF SEG, to the starting location of the procedure.
+
+Example:
+    &apos;Calls routine for printing the screen to a local printer.
+    DIM a%(2)
+    DEF SEG = VARSEG(a%(0))
+    FOR i% = 0 TO 2
+       READ d%
+       POKE VARPTR(a%(0)) + i%, d%
+    NEXT i%
+    DATA 205, 5, 203  : &apos; int 5  retf  &apos;Machine-language code
+                                       &apos;for printing screen.
+    CALL ABSOLUTE(VARPTR(a%(0)))
+    DEF SEG
+
+See Also    <i>◄</i><a href="T0089.html">CALL</a><i>►</i>    <i>◄</i><a href="T00AF.html">VARPTR, VARSEG</a><i>►</i>    <i>◄</i><a href="T001A.html">Differences from BASICA</a><i>►</i></pre>
+  </body>
+</html>

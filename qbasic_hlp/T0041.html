@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>PRESET, PSET Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0041</span>
+      <a href="index.html#T0041" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Draw a specified point on the screen.
+
+<b>PRESET [STEP] (x!,y!) [,color%]</b>
+<b>PSET [STEP] (x!,y!) [,color%]</b>
+
+    ■ <b>STEP</b>       Specifies that the x! and y! are expressed relative
+                 to the current graphics cursor location.
+    ■ <b>(x!,y!)</b>    The screen coordinates of the pixel to be set.
+    ■ <b>color%</b>     A color attribute that sets the pixel color. If color% is
+                 omitted, PRESET uses the current background and PSET uses
+                 the current foreground color.
+
+    ■ Available color attributes depend on your graphics adapter and screen
+      mode. Coordinate values depend on the graphics adapter, screen mode,
+      and most recent VIEW and WINDOW statements.
+
+Example:
+    &apos;This example requires a color graphics adapter.
+    SCREEN 1
+    FOR i% = 0 TO 320
+        PSET (i%, 100)
+        FOR delay% = 1 TO 100: NEXT delay%
+        PRESET (i%, 100)
+    NEXT i%
+
+See Also    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T005B.html">VIEW</a><i>►</i>    <i>◄</i><a href="T004C.html">WINDOW</a><i>►</i>
+            <i>◄</i><a href="T0050.html">Color Attributes and Values</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

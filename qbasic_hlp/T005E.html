@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>ATN, COS, SIN, TAN Functions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T005E</span>
+      <a href="index.html#T005E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+ATN returns the arctangent of a specified numeric expression.
+COS, SIN, and TAN return the cosine, sine, and tangent of a specified angle.
+
+<b>ATN(numeric-expression)</b>
+<b>COS(angle)</b>
+<b>SIN(angle)</b>
+<b>TAN(angle)</b>
+
+    ■ <b>numeric-expression</b>    The ratio between the sides of a right triangle.
+    ■ <b>angle</b>                 An angle expressed in radians.
+
+    ■ The ATN function returns an angle in radians.
+    ■ To convert from degrees to radians, multiply degrees by (PI / 180).
+
+Example:
+    CONST PI=3.141592654
+    PRINT ATN(TAN(PI/4.0)), PI/4.0    &apos;Output is:  .7853981635  .7853981635
+    PRINT (COS(180 * (PI / 180)))     &apos;Output is:  -1
+    PRINT (SIN(90 * (PI / 180)))      &apos;Output is:  1
+    PRINT (TAN(45 * (PI / 180)))      &apos;Output is:  1.000000000205103</pre>
+  </body>
+</html>

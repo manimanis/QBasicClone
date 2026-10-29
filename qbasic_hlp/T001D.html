@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>CLOSE Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T001D</span>
+      <a href="index.html#T001D" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Closes one or more open files or devices.
+
+<b>CLOSE [[#]filenumber%[,[#]filenumber%]...]</b>
+
+    ■ <b>filenumber%</b>    The number of an open file or device.
+
+    ■ CLOSE with no arguments closes all open files and devices.
+
+Example:
+    CLS
+    INPUT &quot;Enter filename: &quot;, n$
+    OPEN n$ FOR OUTPUT AS #1
+    PRINT #1, &quot;This is saved to the file.&quot;
+    CLOSE
+    OPEN n$ FOR INPUT AS #1
+    INPUT #1, a$
+    PRINT &quot;Read from file: &quot;; a$
+    CLOSE
+
+See Also    <i>◄</i><a href="T008D.html">END</a><i>►</i>    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i>    <i>◄</i><a href="T002F.html">RESET</a><i>►</i>    <i>◄</i><a href="T0097.html">STOP</a><i>►</i></pre>
+  </body>
+</html>

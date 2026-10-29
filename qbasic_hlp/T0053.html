@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Screen Image Arrays and Compatibility</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0053</span>
+      <a href="index.html#T0053" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Use bits-per-pixel-per-plane and planes values to determine the required size
+of the array that holds a graphics screen image. Bits-per-pixel-per-plane and
+planes values, along with the horizontal resolution, also determine which
+screen modes are compatibile:
+
+                                                                 Horizontal
+                                    Bits-per-pixel-              resolution
+    Screen mode                     per-plane          Planes    (in pixels)
+    ════════════════════════════    ═══════════════    ══════    ═══════════
+    1                               2                  1         320
+    2, 4, 11                        1                  1         640
+    3                               1                  1         720
+    7                               1                  4         320
+    8, 9(&gt; 64K video memory), 12    1                  4         640
+    9(64K video memory), 10         1                  2         640
+    13                              8                  1         320
+
+The following formula gives the required size, in bytes, of an array used
+to hold a captured image:
+
+size% = 4 + INT(((PMAP (x2!, 0) - PMAP (x1!, 0) + 1) *
+        (bits-per-pixel-per-plane%) + 7) / 8) * planes% *
+        (PMAP (y2!, 1) - PMAP (y1!, 1) + 1)
+
+GET and PUT operations are compatible in screen modes with the same
+horizontal resolution and bits-per-pixel-per-plane and planes values. For
+example, screen modes 2, 4, and 11 are compatible, and screen modes 8 and 12
+are compatible.
+
+See Also    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

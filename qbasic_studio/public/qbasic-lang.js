@@ -35,7 +35,7 @@
             'POINT', 'POS', 'RIGHT$', 'RIGHT', 'RND', 'RTRIM$', 'RTRIM', 'SADD', 'SCREEN', 'SEEK',
             'SGN', 'SIN', 'SPACE$', 'SPC', 'SQR', 'STICK', 'STR$', 'STR', 'STRIG', 'STRING$',
             'TAB', 'TAN', 'TIME$', 'TIMER', 'TRIM$', 'TRIM', 'UCASE$', 'UCASE', 'UCODE', '_UCODE', 'VAL', 'VARPTR',
-            'VARPTR$', 'VARSEG'
+            'VARPTR$', 'VARSEG', '_ERRORMESSAGE$', '_ERROR$'
         ],
 
         typeKeywords: [

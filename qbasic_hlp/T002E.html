@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>OPEN Statement Alternate Syntax</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T002E</span>
+      <a href="index.html#T002E" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+<b>OPEN mode2$,[#]filenum%,file$[,reclen%]</b>
+
+    ■ <b>mode2$</b>      A string expression that begins with one of the
+                  following characters and specifies the file mode:
+                    O    Sequential output mode.
+                    I    Sequential input mode.
+                    R    Random-access file input/output mode.
+                    B    Binary-file mode.
+                    A    Sequential output mode. Sets the file pointer to
+                         the end of the file and the record number to the
+                         last record of the file. A PRINT # or WRITE #
+                         statement extends (appends to) the file.
+    ■ <b>filenum%</b>    A number in the range 1 through 255 that identifies
+                  the file while it is open.
+    ■ <b>file$</b>       The name of the file (may include drive and path).
+    ■ <b>reclen%</b>     For random-access files, the record length in bytes.
+                  For sequential files, the number of characters buffered.
+
+    ■ QBasic supports this syntax for compatibility with programs written
+      in earlier versions of BASIC.
+
+See Also    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i></pre>
+  </body>
+</html>

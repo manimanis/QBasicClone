@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>COM, ON COM Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T006F</span>
+      <a href="index.html#T006F" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+COM enables, disables, or suspends event trapping on a communications port.
+If event trapping is enabled, ON COM branches to a subroutine whenever
+characters are received at the port.
+
+<b>COM(n%) ON</b>
+<b>COM(n%) OFF</b>
+<b>COM(n%) STOP</b>
+<b>ON COM(n%) GOSUB line</b>
+
+    ■ <b>n%</b>              The number of a COM (serial) port (1 or 2).
+    ■ <b>COM(n%) ON</b>      Enables trapping of a communications event.
+    ■ <b>COM(n%) OFF</b>     Disables communications event trapping.
+    ■ <b>COM(n%) STOP</b>    Suspends communications event trapping. Events are
+                      processed once event trapping is enabled by COM ON.
+    ■ <b>line</b>            The label or number of the first line of the
+                      event-trapping subroutine.
+
+Example:
+    COM(1) ON       &apos;Enable event trapping on port 1.
+    ON COM(1) GOSUB ComHandler
+    DO : LOOP WHILE INKEY$ = &quot;&quot;
+    COM(1) OFF
+    END
+
+    ComHandler:
+        PRINT &quot;Something was typed at the terminal attached to COM1.&quot;
+        RETURN
+
+See Also    <i>◄</i><a href="T003C.html">OPEN COM</a><i>►</i></pre>
+  </body>
+</html>

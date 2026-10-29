@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>MID$ Function and Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T00A8</span>
+      <a href="index.html#T00A8" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+The MID$ function returns part of a string (a substring).
+The MID$ statement replaces part of a string variable with another string.
+
+<b>MID$(stringexpression$,start%[,length%])</b>
+<b>MID$(stringvariable$,start%[,length%])=stringexpression$</b>
+
+    ■ <b>stringexpression$</b>    The string from which the MID$ function returns
+                           a substring, or the replacement string used by the
+                           MID$ statement. It can be any string expression.
+    ■ <b>start%</b>               The position of the first character in the
+                           substring being returned or replaced.
+    ■ <b>length%</b>              The number of characters in the substring. If the
+                           length is omitted, MID$ returns or replaces all
+                           characters to the right of the start position.
+    ■ <b>stringvariable$</b>      The string variable being modified by the MID$
+                           statement.
+
+Example:
+    a$ = &quot;Where is Paris?&quot;
+    PRINT MID$(a$, 10, 5)       &apos;Output is:  Paris
+    Text$ = &quot;Paris, France&quot;
+    PRINT Text$                 &apos;Output is:  Paris, France
+    MID$(Text$, 8) = &quot;Texas &quot;
+    PRINT Text$                 &apos;Output is:  Paris, Texas
+
+See Also    <i>◄</i><a href="T00A5.html">LEFT$, RIGHT$</a><i>►</i>    <i>◄</i><a href="T00A6.html">LEN</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>VIEW PRINT Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0049</span>
+      <a href="index.html#T0049" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Sets the boundaries of the screen text viewport.
+
+<b>VIEW PRINT [toprow% TO bottomrow%]</b>
+
+    ■ <b>toprow%</b>       The number of the top row of the text viewport.
+    ■ <b>bottomrow%</b>    The number of the bottom row of the text viewport.
+
+    ■ If you omit the toprow% and bottomrow% arguments, VIEW PRINT sets the
+      entire screen as the text viewport.
+    ■ Ranges for toprow% and bottomrow% depend on the screen mode.
+
+Example:
+    VIEW PRINT 10 TO 15
+    FOR i% = 1 TO 100      &apos;Output will scroll.
+        PRINT i%
+    NEXT i%
+
+See Also    <i>◄</i><a href="T0034.html">CLS</a><i>►</i>    <i>◄</i><a href="T003A.html">LOCATE</a><i>►</i>    <i>◄</i><a href="T0042.html">PRINT, LPRINT</a><i>►</i>    <i>◄</i><a href="T0058.html">SCREEN</a><i>►</i>    <i>◄</i><a href="T004B.html">WIDTH</a><i>►</i>
+            <i>◄</i><a href="T0059.html">Screen Modes</a><i>►</i></pre>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>STICK Function</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0047</span>
+      <a href="index.html#T0047" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+Returns the coordinates of a joystick.
+
+<b>STICK(n%)</b>
+
+    ■ <b>n%</b>    Indicates the coordinate returned:
+
+            n%    Returns
+            ══    ══════════════════════════
+            0     x coordinate of joystick A
+            1     y coordinate of joystick A
+            2     x coordinate of joystick B
+            3     y coordinate of joystick B
+
+    ■ You must call STICK(0) before STICK(1), STICK (2), or STICK(3).
+      STICK(0) records the current coordinates.
+
+Example:
+    Temp% = STICK(0)
+    PRINT STICK(2), STICK(3)
+
+See Also    <i>◄</i><a href="T0075.html">STRIG Function</a><i>►</i>    <i>◄</i><a href="T0076.html">STRIG, ON STRIG Statements</a><i>►</i></pre>
+  </body>
+</html>

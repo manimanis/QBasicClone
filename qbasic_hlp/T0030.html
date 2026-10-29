@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>SEEK Function and Statement</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="standalone-body">
+
+    <div class="standalone-nav-bar">
+      <span>🖩 QBasic Help &bull; T0030</span>
+      <a href="index.html#T0030" title="Ouvrir dans l'application web avec recherche et navigation">🚀 Ouvrir dans le portail d'aide complet</a>
+    </div>
+    <pre class="help-content">  <i>◄</i><a href="T0002.html">Contents</a><i>►</i>  <i>◄</i><a href="T00B6.html">Index</a><i>►</i>  <i>◄</i><a href="javascript:history.back()">Back</a><i>►</i>
+──────────────────────────────────────────────────────────────────────────────
+The SEEK function returns the current file position.
+The SEEK statement sets the file position for the next read or write.
+
+<b>SEEK(filenumber%)</b>
+<b>SEEK [#]filenumber%, position&amp;</b>
+
+    ■ <b>filenumber%</b>    The number of an open file.
+    ■ <b>position&amp;</b>      The position where the next read or write occurs. For
+                     random-access files, a record number. For other files,
+                     the byte position relative to the beginning of the file.
+                     The first byte is at position 1.
+
+Example:
+    OPEN &quot;TEST.DAT&quot; FOR RANDOM AS #1
+    FOR i% = 1 TO 10
+        PUT #1, , i%
+    NEXT i%
+    SEEK #1, 2
+    GET #1, , i%
+    PRINT &quot;Data: &quot;; i%; &quot; Current record: &quot;; LOC(1); &quot; Next: &quot;; SEEK(1)
+
+See Also    <i>◄</i><a href="T0023.html">GET, PUT</a><i>►</i>    <i>◄</i><a href="T002B.html">OPEN</a><i>►</i></pre>
+  </body>
+</html>
