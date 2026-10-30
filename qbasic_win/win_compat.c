@@ -1205,6 +1205,27 @@ const char* qb_get_program_dir(void) {
     return g_prog_dir;
 }
 
+static char g_exe_path[MAX_PATH] = {0};
+
+void qb_set_executable_path(const char *path) {
+    if (path && path[0]) {
+        strncpy(g_exe_path, path, sizeof(g_exe_path) - 1);
+        g_exe_path[sizeof(g_exe_path) - 1] = '\0';
+    } else {
+        g_exe_path[0] = '\0';
+    }
+}
+
+const char* qb_get_executable_path(void) {
+    if (g_exe_path[0] == '\0') {
+        wchar_t wpath[MAX_PATH];
+        if (GetModuleFileNameW(NULL, wpath, MAX_PATH)) {
+            WideCharToMultiByte(CP_UTF8, 0, wpath, -1, g_exe_path, sizeof(g_exe_path), NULL, NULL);
+        }
+    }
+    return g_exe_path;
+}
+
 static int vga_dac_write_idx = 0;
 static int vga_dac_write_step = 0;
 static uint8_t vga_dac_r = 0, vga_dac_g = 0, vga_dac_b = 0;

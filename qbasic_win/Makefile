@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -std=c11 -IC:/msys64/ucrt64/include/SDL2
 LDFLAGS = -static -lSDL2 -lm -lkernel32 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lversion -luuid -ladvapi32 -lsetupapi -lshell32 -ldinput8
 
-SRC = main.c win_compat.c qb_types.c qb_interp.c sdl_inkey.c
+SRC = main.c win_compat.c qb_types.c qb_interp.c sdl_inkey.c qb_compiler.c
 OBJ = $(SRC:.c=.o)
 TARGET = qbasic_win.exe
 

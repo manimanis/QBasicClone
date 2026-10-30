@@ -194,6 +194,11 @@ QB_Program* qb_program_create(void);
 void qb_program_free(QB_Program *prog);
 void qb_program_add_line(QB_Program *prog, const char *line);
 bool qb_program_load_file(QB_Program *prog, const char *filename);
+bool qb_program_load_string(QB_Program *prog, const char *source_text);
+
+// Gestion de la ligne de commande (COMMAND$)
+void qb_set_command_string(const char *cmd);
+const char* qb_get_command_string(void);
 
 // Interpréteur
 QB_Interpreter* qb_interp_create(QB_Program *prog);

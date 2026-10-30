@@ -663,12 +663,20 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
         return eval_primary(env, p);
     }
 
-    // Littéral chaîne entre guillemets "..."
+    // Littéral chaîne entre guillemets "..." (support de l'échappement standard QBasic "")
     if (**p == '"') {
         (*p)++;
         char buf[1024];
         int idx = 0;
-        while (**p && **p != '"' && idx < (int)sizeof(buf) - 1) {
+        while (**p && idx < (int)sizeof(buf) - 1) {
+            if (**p == '"') {
+                if ((*p)[1] == '"') {
+                    buf[idx++] = '"';
+                    *p += 2;
+                    continue;
+                }
+                break;
+            }
             buf[idx++] = *(*p)++;
         }
         if (**p == '"') (*p)++;
@@ -738,6 +746,24 @@ static QB_Value eval_primary(QB_Env *env, const char **p) {
             char buf[32];
             snprintf(buf, sizeof(buf), "%02d:%02d:%02d", ti ? ti->tm_hour : 0, ti ? ti->tm_min : 0, ti ? ti->tm_sec : 0);
             return qb_val_string(buf);
+        }
+        if (strcasecmp(id, "COMMAND$") == 0 || strcasecmp(id, "COMMAND") == 0) {
+            skip_whitespace(p);
+            if (**p == '(') {
+                (*p)++;
+                skip_whitespace(p);
+                if (**p == ')') (*p)++;
+            }
+            return qb_val_string(qb_get_command_string());
+        }
+        if (strcasecmp(id, "_EXEPATH$") == 0 || strcasecmp(id, "_EXENAME$") == 0) {
+            skip_whitespace(p);
+            if (**p == '(') {
+                (*p)++;
+                skip_whitespace(p);
+                if (**p == ')') (*p)++;
+            }
+            return qb_val_string(qb_get_executable_path());
         }
         if (strcasecmp(id, "ERR") == 0) {
             QB_Interpreter *interp = (QB_Interpreter*)env->user_data;
@@ -1942,7 +1968,7 @@ static bool is_basic_keyword(const char *s) {
         "WEND", "ELSE", "DO", "FOR", "WHILE", "IF", "SELECT", "SUB", "FUNCTION",
         "TYPE", "DEF", "DIM", "REDIM", "COMMON", "SHARED", "STATIC", "CONST",
         "DATA", "READ", "PRINT", "INPUT", "LINE", "OPEN", "CLOSE", "GET", "PUT",
-        "SEEK", "KILL", "NAME", "MKDIR", "RMDIR", "CHDIR", "OUT", "WAIT", "POKE",
+        "SEEK", "KILL", "NAME", "MKDIR", "RMDIR", "CHDIR", "SHELL", "OUT", "WAIT", "POKE",
         "CALL", "GOTO", "GOSUB", "EXIT", "PLAY", "SOUND", "DRAW", "PAINT", "CIRCLE",
         "PSET", "PRESET", "BSAVE", "BLOAD", "TROFF", "TRON", "FIELD", "LPRINT",
         "THEN", "TO", "STEP", "AS", "USING", "TAB", "SPC", "CASE", "ON", NULL
@@ -2119,6 +2145,46 @@ bool qb_program_load_file(QB_Program *prog, const char *filename) {
     }
     fclose(f);
     return true;
+}
+
+bool qb_program_load_string(QB_Program *prog, const char *source_text) {
+    if (!prog || !source_text) return false;
+    const char *p = source_text;
+
+    // Supprimer le marqueur BOM UTF-8 si présent (EF BB BF)
+    if ((unsigned char)p[0] == 0xEF &&
+        (unsigned char)p[1] == 0xBB &&
+        (unsigned char)p[2] == 0xBF) {
+        p += 3;
+    }
+
+    char buffer[4096];
+    while (*p) {
+        int idx = 0;
+        while (*p && *p != '\n' && *p != '\r' && idx < (int)sizeof(buffer) - 1) {
+            buffer[idx++] = *p++;
+        }
+        buffer[idx] = '\0';
+        qb_program_add_line(prog, buffer);
+        if (*p == '\r') p++;
+        if (*p == '\n') p++;
+    }
+    return true;
+}
+
+static char g_command_string[4096] = {0};
+
+void qb_set_command_string(const char *cmd) {
+    if (cmd) {
+        strncpy(g_command_string, cmd, sizeof(g_command_string) - 1);
+        g_command_string[sizeof(g_command_string) - 1] = '\0';
+    } else {
+        g_command_string[0] = '\0';
+    }
+}
+
+const char* qb_get_command_string(void) {
+    return g_command_string;
 }
 
 static void init_data_pool(QB_Interpreter *interp) {
@@ -5599,6 +5665,21 @@ bool qb_interp_exec_immediate(QB_Interpreter *interp, const char *line) {
             }
         }
         qb_val_free(&dir_v);
+        return true;
+    }
+
+    // SHELL [cmd$]
+    if (match_keyword(&p, "SHELL")) {
+        skip_whitespace(&p);
+        if (*p && *p != ':' && *p != '\'') {
+            QB_Value cmd_v = qb_eval_expression(interp->env, &p);
+            if (cmd_v.type == QB_VAL_STRING && cmd_v.string) {
+                system(cmd_v.string);
+            }
+            qb_val_free(&cmd_v);
+        } else {
+            system("cmd.exe");
+        }
         return true;
     }
 

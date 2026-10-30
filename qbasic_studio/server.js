@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { spawn, exec } = require('child_process');
+const { spawn, exec, execFile } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -315,7 +315,60 @@ app.post('/api/kill', (req, res) => {
     }
 });
 
-// 9. Statut général
+// 9. Compilation en exécutable autonome Win64 (.EXE) ou export C
+app.post('/api/compile', (req, res) => {
+    const { file: targetFile, emitC, nativeMode, outputPath } = req.body;
+    if (!targetFile) return res.status(400).json({ success: false, error: "Paramètre file manquant" });
+
+    const fullFilePath = path.resolve(QBASIC_DIR, targetFile);
+    if (!fs.existsSync(fullFilePath)) {
+        return res.status(404).json({ success: false, error: "Fichier source introuvable" });
+    }
+    if (!fs.existsSync(EXE_PATH)) {
+        return res.status(500).json({ success: false, error: "qbasic_win.exe introuvable pour la compilation" });
+    }
+
+    const args = ['-b', fullFilePath];
+    if (emitC) {
+        args.push('--c');
+    }
+    if (nativeMode) {
+        args.push('--native');
+    }
+    let targetOut = outputPath;
+    if (!targetOut) {
+        const ext = emitC ? '.c' : '.exe';
+        targetOut = fullFilePath.replace(/\.bas$/i, '') + ext;
+    } else {
+        targetOut = path.resolve(QBASIC_DIR, targetOut);
+    }
+    args.push('-o', targetOut);
+
+    const startTime = Date.now();
+    execFile(EXE_PATH, args, { cwd: QBASIC_DIR }, (error, stdout, stderr) => {
+        const durationMs = Date.now() - startTime;
+        if (error) {
+            return res.status(500).json({
+                success: false,
+                error: (stderr || '') + (error.message || ''),
+                stdout: stdout || '',
+                durationMs
+            });
+        }
+        const stats = fs.existsSync(targetOut) ? fs.statSync(targetOut) : null;
+        res.json({
+            success: true,
+            sourceFile: targetFile,
+            outputFile: path.relative(QBASIC_DIR, targetOut).replace(/\\/g, '/'),
+            outputFullPath: targetOut,
+            size: stats ? stats.size : 0,
+            stdout: stdout || '',
+            durationMs
+        });
+    });
+});
+
+// 10. Statut général
 app.get('/api/status', (req, res) => {
     res.json({
         success: true,

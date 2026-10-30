@@ -106,6 +106,8 @@ void qb_bload(const char *filename, int offset);
 // Répertoire du programme en cours d'exécution
 void qb_set_program_dir(const char *dir);
 const char* qb_get_program_dir(void);
+void qb_set_executable_path(const char *path);
+const char* qb_get_executable_path(void);
 extern int g_title_done;
 
 #ifdef __cplusplus

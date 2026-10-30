@@ -403,6 +403,45 @@
         inputBar.value = '';
     }
 
+    async function compileCurrentProgram() {
+        if (!activeTabPath) {
+            alert("Aucun fichier ouvert à compiler.");
+            return;
+        }
+
+        const tab = openTabs.find(t => t.path === activeTabPath);
+        if (tab && tab.isDirty) {
+            await saveCurrentFile();
+        }
+
+        clearConsole();
+        setProcessStatus('Compilation...', true);
+        appendConsole(`=== Compilation de ${activeTabPath} en binaire autonome .EXE ===\n`, 'system');
+
+        try {
+            const res = await fetch('/api/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file: activeTabPath })
+            });
+            const data = await res.json();
+            if (data.success) {
+                appendConsole(data.stdout || '', 'stdout');
+                const sizeKb = (data.size / 1024).toFixed(1);
+                const sizeMb = (data.size / (1024 * 1024)).toFixed(2);
+                appendConsole(`\n[Compilateur] Succès ! Exécutable généré : ${data.outputFile} (${sizeMb} Mo / ${sizeKb} Ko)\n`, 'success');
+                appendConsole(`[Compilateur] Binaire autonome Win64 100% autonome (temps : ${data.durationMs} ms)\n`, 'system');
+                await loadFiles();
+            } else {
+                appendConsole(`\n[Erreur de compilation]\n${data.error || 'Échec de la compilation'}\n`, 'stderr');
+            }
+        } catch (err) {
+            appendConsole(`\n[Erreur réseau / serveur] : ${err.message}\n`, 'stderr');
+        } finally {
+            setProcessStatus('Prêt', false);
+        }
+    }
+
     function setProcessStatus(text, isRunning) {
         document.getElementById('proc-status').textContent = text;
         const ind = document.getElementById('status-indicator');
@@ -516,6 +555,8 @@
 
     // 6. Attachement des Événements du DOM
     document.getElementById('btn-run').onclick = runCurrentProgram;
+    const btnCompile = document.getElementById('btn-compile');
+    if (btnCompile) btnCompile.onclick = compileCurrentProgram;
     document.getElementById('btn-stop').onclick = stopExecution;
     document.getElementById('btn-save').onclick = saveCurrentFile;
     const btnFormat = document.getElementById('btn-format');
@@ -544,6 +585,9 @@
         if (e.key === 'F5' && !e.shiftKey) {
             e.preventDefault();
             runCurrentProgram();
+        } else if (e.key === 'F7' || ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'b' || e.code === 'KeyB'))) {
+            e.preventDefault();
+            compileCurrentProgram();
         } else if (e.key === 'F5' && e.shiftKey) {
             e.preventDefault();
             stopExecution();
